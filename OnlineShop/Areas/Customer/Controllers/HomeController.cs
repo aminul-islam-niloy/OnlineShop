@@ -6,8 +6,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace OnlineShop.Controllers
+namespace OnlineShop.Areas.Customer.Controllers
 {
+    [Area("Customer")]
     public class HomeController : Controller
     {
         public IActionResult Index()
