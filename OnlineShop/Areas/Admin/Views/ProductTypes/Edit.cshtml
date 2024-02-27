@@ -1,0 +1,52 @@
+﻿@using OnlineShop.Models
+@model OnlineShop.Models.ProductTypes
+@{
+}
+
+<br/>
+
+
+<h2 class="text-info">Edit Product Type</h2>
+
+<div>
+    <form asp-action="Edit" method="post">
+
+        <div class="p-4 rounded border">
+            <input type="hidden" asp-for="Id"/>
+            <div asp-validation-summary="ModelOnly" class="text-danger">
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="ProductType"></label>
+                </div>
+                <div class="col-4">
+                    <input asp-for="ProductType" class="form-control" />
+                </div>
+                <span asp-validation-for="ProductType" class="text-danger"></span>
+
+
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Update" />
+                <a asp-action="Index" class="btn btn-success">Back to List</a>
+                <a asp-action="Delete" class="btn btn-danger" asp-route-id="@Model"><i class="fa-solid fa-trash"></i></a>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+
+
+
+

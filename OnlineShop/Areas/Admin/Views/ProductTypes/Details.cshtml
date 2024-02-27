@@ -1,0 +1,75 @@
+﻿@model OnlineShop.Models.ProductTypes
+@{
+    ViewData["Title"] = "Details";
+}
+<br />
+
+<h4 class="text-info">Product Type Details</h4>
+<div>
+    <br />
+    <br />
+    <br/>
+</div>
+<form asp-action="Details" method="post">
+    <div class="p-4 rounded border">
+        <div asp-validation-summary="ModelOnly" class="text-danger">
+
+        </div>
+       @*  <div class="form-group row">
+            <div class="col-2">
+                <label asp-for="ProductType"></label>
+            </div>
+            <div class="col-5">
+                <input asp-for="ProductType" readonly="readonly" class="form-control" />
+            </div>
+            <span asp-validation-for="ProductType" class="text-danger"></span>
+        </div> *@
+
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ProductType)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ProductType)
+            </dd>
+
+        </dl>
+
+
+
+        <div class="form-group">
+
+           @*  <a asp-action="Edit" asp-route-id="@Model.Id" class="btn  btn-primary">Edit</a> *@
+            
+            <a asp-action="Index" class="btn btn-success">Back to List</a>
+
+            @*<input type="submit" class="btn btn-success" value="Back to List" />*@
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<br />
+@* 
+<div>
+    <h4>PersonInfo</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ProductType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ProductType)
+        </dd>
+       
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+ *@
+
