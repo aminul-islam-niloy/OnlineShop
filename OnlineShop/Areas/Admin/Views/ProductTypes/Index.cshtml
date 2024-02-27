@@ -55,8 +55,11 @@
     </table>
 </div>
 
-@* @section scripts{
-    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/alertify.min.js"></script>
+
+@* TempData["delete"] = "Product type has been deleted"; *@
+
+@section scripts{
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
     <script type="text/javascript">
         $(function(){
             var save = '@TempData["save"]'
@@ -74,5 +77,3 @@
         })
     </script>
 }
-
- *@

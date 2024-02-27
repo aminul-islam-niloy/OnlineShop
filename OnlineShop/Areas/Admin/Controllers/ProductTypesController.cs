@@ -36,6 +36,7 @@ namespace OnlineShop.Areas.Admin.Controllers
             {
                 _db.ProductTypes.Add(productTypes);
                 await _db.SaveChangesAsync();
+                TempData["save"] = "Product has been Added";
                 return RedirectToAction(nameof(Index));
             }
         
@@ -65,6 +66,7 @@ namespace OnlineShop.Areas.Admin.Controllers
             {
                 _db.Update(productTypes);
                 await _db.SaveChangesAsync();
+                TempData["edit"] = "Product has been Updated";
                 return RedirectToAction(nameof(Index));
             }
 
