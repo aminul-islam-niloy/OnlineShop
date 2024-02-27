@@ -39,6 +39,7 @@ namespace OnlineShop.Areas.Admin.Controllers
             {
                 _db.SpecialTag.Add(specialTag);
                 await _db.SaveChangesAsync();
+                TempData["create"] = "Product type has been Added";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -69,6 +70,7 @@ namespace OnlineShop.Areas.Admin.Controllers
             {
                 _db.Update(specialTag);
                 await _db.SaveChangesAsync();
+                TempData["edit"] = "Product type has been Updated";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -144,6 +146,7 @@ namespace OnlineShop.Areas.Admin.Controllers
             {
                 _db.Remove(specialTags);
                 await _db.SaveChangesAsync();
+                TempData["delete"] = "Product type has been deleted";
                 return RedirectToAction(nameof(Index));
             }
 
