@@ -58,6 +58,7 @@ namespace OnlineShop.Areas.Admin.Controllers
                 }
                 _db.Products.Add(product);
                 await _db.SaveChangesAsync();
+                TempData["save"] = "Product has been Added";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -104,6 +105,7 @@ namespace OnlineShop.Areas.Admin.Controllers
                 }
                 _db.Products.Update(products);
                 await _db.SaveChangesAsync();
+                TempData["save"] = "Product has been updated";
                 return RedirectToAction(nameof(Index));
             }
 
@@ -164,6 +166,7 @@ namespace OnlineShop.Areas.Admin.Controllers
 
             _db.Products.Remove(product);
             await _db.SaveChangesAsync();
+            TempData["save"] = "Product has been Deleted";
             return RedirectToAction(nameof(Index));
         }
 
