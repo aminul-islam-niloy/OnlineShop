@@ -40,6 +40,7 @@
                     <label asp-for="Image"></label>
                 </div>
                 <div class="col-8">
+                  
                     <input asp-for="Image" class="form-control" type="file" />
                 </div>
                 <span asp-validation-for="Image" class="text-danger"></span>
@@ -59,7 +60,7 @@
                 </div>
                 <div class="col-8">
                     <select asp-for="ProductTypeId" asp-items="ViewBag.productTypeId" class="form-control"></select>
-                    @*<input asp-for="ProductTypeId" class="form-control"/>*@
+                   
                 </div>
                 <span asp-validation-for="ProductTypeId" class="text-danger"></span>
             </div>
@@ -69,10 +70,31 @@
                 </div>
                 <div class="col-8">
                     <select asp-for="SpecialTagId" asp-items="ViewBag.TagId" class="form-control"></select>
-                    @*<input asp-for="SpecialTagId" class="form-control" />*@
+                   
                 </div>
                 <span asp-validation-for="SpecialTagId" class="text-danger"></span>
             </div>
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Description"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Description" class="form-control" />
+                </div>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Quantity"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Quantity" class="form-control" />
+                </div>
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+
             <div class="form-group row">
                 <div class="col-4">
                     <label asp-for="IsAvailable"></label>

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace OnlineShop.Models
 {
@@ -27,6 +28,12 @@ namespace OnlineShop.Models
         public int SpecialTagId { get; set; }
         [ForeignKey("SpecialTagId")]
         public virtual SpecialTag SpecialTag { get; set; }
+
+
+        [Required]
+        [DisplayName("Product Quantity")]
+        public int Quantity { get; set; }
+        public string Description { get; set; }
 
     }
 }
