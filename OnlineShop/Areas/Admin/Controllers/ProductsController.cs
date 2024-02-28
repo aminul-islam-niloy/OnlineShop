@@ -43,7 +43,16 @@ namespace OnlineShop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+                var searchProduct = _db.Products.FirstOrDefault(c => c.Name == product.Name);
+                if (searchProduct != null)
+                {
+                    ViewBag.message = "This product is already exist";
+                    ViewData["productTypeId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
+                    ViewData["TagId"] = new SelectList(_db.SpecialTag.ToList(), "Id", "Name");
+                    return View(product);
+                }
+
+
 
                 if (image != null)
                 {
