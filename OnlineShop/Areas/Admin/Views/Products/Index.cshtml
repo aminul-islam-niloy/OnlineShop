@@ -59,7 +59,7 @@
 
 <br />
 <div>
-    <table class="table table-striped border" id="myTable">
+    <table class=" display table table-striped border" id="myTable">
         <thead>
             <tr class="table-info">
                 <th>
@@ -120,18 +120,31 @@
     </table>
 </div>
 
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+    });
+</script>
+
 @section scripts{
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/alertify.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.1/css/dataTables.dataTables.css" />
+
+    <script src="https://cdn.datatables.net/2.0.1/js/dataTables.js"></script>
+
 
     <script type="text/javascript">
+
+   
         $(document).ready(function () {
-            $('#myTable').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    'pageLength', 'copy', 'csv', 'excel', 'pdf', 'print'
-                ]
-            });
-        });
+                $('#myTable').DataTable({
+            //         dom: 'Bfrtip',
+            //         buttons: [
+            //             'pageLength', 'copy', 'csv', 'excel', 'pdf', 'print'
+            //         ]
+
+             });
+       
         $(function () {
             var save = '@TempData["save"]'
             if (save != '') {
