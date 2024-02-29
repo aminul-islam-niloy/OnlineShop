@@ -37,8 +37,14 @@
         <thead>
             <tr class="table-info">
                 <th>
+                    @Html.DisplayNameFor(c => c.Image)
+                </th>
+
+                <th>
                     @Html.DisplayNameFor(c => c.Name)
                 </th>
+
+
                 <th>
                     @Html.DisplayNameFor(c => c.Price)
                 </th>
@@ -51,9 +57,9 @@
                 <th>
                     @Html.DisplayNameFor(c => c.ProductTypeId)
                 </th>
-                <th>
+               @*  <th>
                     @Html.DisplayNameFor(c => c.SpecialTagId)
-                </th>
+                </th> *@
                 <th>
                     @Html.DisplayNameFor(c => c.Description)
                 </th>
@@ -67,12 +73,14 @@
             @foreach (var item in Model)
             {
                 <tr>
+
+                    <td><img src="~/@item.Image" style="max-width: 50px; max-height: 50px;" /></td>
                     <td>@item.Name</td>
                     <td>@item.Price</td>
                     <td>@item.ProductColor</td>
                     <td>@item.IsAvailable</td>
                     <td>@item.ProductTypes.ProductType</td>
-                    <td>@item.SpecialTag.Name</td>
+                 
                     <td>@item.Description</td>
                     <td>@item.Quantity</td>
                     <td>

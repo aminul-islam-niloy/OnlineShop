@@ -12,18 +12,18 @@ namespace OnlineShop.Models
         [Required]
         public decimal Price { get; set; }
         public string Image { get; set; }
-        [Display(Name = "Product Color")]
+        [Display(Name = "Color")]
         public string ProductColor { get; set; }
         [Required]
         [Display(Name = "Available")]
         public bool IsAvailable { get; set; }
 
-        [Display(Name = "Product Type")]
+        [Display(Name = "Type")]
         [Required]
         public int ProductTypeId { get; set; }
         [ForeignKey("ProductTypeId")]
         public virtual ProductTypes ProductTypes { get; set; }
-        [Display(Name = "Special Tag")]
+        [Display(Name = "Tag")]
         [Required]
         public int SpecialTagId { get; set; }
         [ForeignKey("SpecialTagId")]
@@ -31,7 +31,7 @@ namespace OnlineShop.Models
 
 
         [Required]
-        [DisplayName("Product Quantity")]
+        [DisplayName("Quantity")]
         public int Quantity { get; set; }
         public string Description { get; set; }
 
