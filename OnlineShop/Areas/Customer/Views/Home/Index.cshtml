@@ -1,6 +1,16 @@
-﻿@{
+﻿@using OnlineShop.Models;
+@model List<Products>
+
+
+
+@{
     ViewData["Title"] = "Home Page";
 }
+
+<br />
+<br />
+<br />
+<br />
 
 <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
     <ol class="carousel-indicators">
@@ -10,11 +20,11 @@
     </ol>
     <div class="carousel-inner" role="listbox">
         <div class="item active">
-            <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
+            <img src="~/images/banner1.svg" alt="Online Shop" class="img-responsive" />
             <div class="carousel-caption" role="option">
                 <p>
-                    Learn how to build ASP.NET apps that can run anywhere.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
+                    Explore with new Product
+                    <a class="btn btn-default" href="">
                         Learn More
                     </a>
                 </p>
@@ -24,10 +34,6 @@
             <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
             <div class="carousel-caption" role="option">
                 <p>
-                    There are powerful new features in Visual Studio for building modern web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">
-                        Learn More
-                    </a>
                 </p>
             </div>
         </div>
@@ -35,10 +41,6 @@
             <img src="~/images/banner3.svg" alt="Microsoft Azure" class="img-responsive" />
             <div class="carousel-caption" role="option">
                 <p>
-                    Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
-                        Learn More
-                    </a>
                 </p>
             </div>
         </div>
@@ -53,42 +55,94 @@
     </a>
 </div>
 
+<br />
 <div class="row">
-    <div class="col-md-3">
-        <h2>Application uses</h2>
-        <ul>
-            <li>Sample pages using ASP.NET Core MVC</li>
-            <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkID=398939">Bootstrap</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>How to</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Overview</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699320">Fundamentals of ASP.NET Core such as Startup and middleware.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398602">Working with Data</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398603">Security</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699321">Client side development</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699322">Develop on different platforms</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699323">Read more on the documentation site</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Run &amp; Deploy</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517853">Run tools such as EF migrations and more</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
-        </ul>
+    <div class="col-lg-12 text-center">
+        <h3>Search Product</h3>
     </div>
 </div>
+<br />
+
+<div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-8">
+        <form method="post">
+            <div class="col-lg-6">
+                <input class="form-control " name="SearchString" type="search" placeholder="Search" aria-label="Search">
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-success" type="submit">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <br />
+</div>
+
+<br />
+<div class="row">
+    <div class="col-lg-12 ">
+        <h3>All Products </h3>
+    </div>
+</div>
+<br />
+
+
+<div class="row" style="display: flex; flex-wrap: wrap;">
+    @foreach (var product in Model)
+    {
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4" style="width: 25%; padding: 5px 10px; margin-top:20px">
+            <div class="card" style="border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <div>
+                    <h5 class="card-title text-center">@product.Name</h5>
+                </div>
+                <br />
+                <img src="~/@product.Image" alt="Card Image" class="card-img-top" style="height: 250px; width: 100%; object-fit: cover; border-top-left-radius: 5px; border-top-right-radius: 5px;" />
+                <div class="card-body">
+                    <p class="card-text text-center">
+                        Price: <strong>@product.Price</strong>
+                    </p>
+                    <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id" class="btn btn-success" style="display: block; width: 100%; text-align: center; background-color: #28a745; color: #fff; padding: 8px 0; text-decoration: none; border-radius: 5px;">Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+
+<br />
+<br />
+
+
+
+   @*  <div class="col-md-3">
+       
+    </div>
+    <div class="col-md-3">
+       
+    </div>
+    <div class="col-md-3">
+        
+    </div>
+    <div class="col-md-3">
+        
+    </div> *@
+@* </div> *@
+
+
+
+
+<br />
+<br />
+
+
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+
