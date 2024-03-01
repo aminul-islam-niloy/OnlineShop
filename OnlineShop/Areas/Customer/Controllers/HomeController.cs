@@ -121,7 +121,7 @@ namespace OnlineShop.Areas.Customer.Controllers
                     HttpContext.Session.Set("products", products);
                 }
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Detail));
         }
 
 
@@ -158,10 +158,6 @@ namespace OnlineShop.Areas.Customer.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+       
     }
 }
