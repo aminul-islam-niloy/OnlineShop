@@ -29,7 +29,7 @@ namespace OnlineShop.Areas.Admin.Controllers
 
         //POST Index action method
         [HttpPost]
-        public IActionResult Index(decimal? lowAmount, decimal? largeAmount,string searchString)
+        public IActionResult Index(decimal? lowAmount, decimal? largeAmount)
         {
             var products = _db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag)
                 .Where(c => c.Price >= lowAmount && c.Price <= largeAmount).ToList();
@@ -38,17 +38,17 @@ namespace OnlineShop.Areas.Admin.Controllers
                 products = _db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList();
             }
 
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                // Filter products based on search string
-                products = products.Where(p => p.Name.Contains(searchString)).ToList();
-            }
+            //if (!string.IsNullOrEmpty(searchString))
+            //{
+            //    // Filter products based on search string
+            //    products = products.Where(p => p.Name.Contains(searchString)).ToList();
+            //}
 
-            if (string.IsNullOrEmpty(searchString))
-            {
-                // Filter products based on search string
-                products = _db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList();
-            }
+            //if (string.IsNullOrEmpty(searchString))
+            //{
+            //    // Filter products based on search string
+            //    products = _db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList();
+            //}
 
 
             return View(products);
