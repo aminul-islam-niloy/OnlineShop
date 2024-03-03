@@ -51,7 +51,7 @@
     <div class="col-lg-6 text-center">
         <h3>Total Amount</h3>
         <h3> Total : @Model.Sum(c=>c.Price) </h3>
-        <a asp-area="Customer" asp-action="@* Checkout *@" asp-controller="@* Order *@" class="btn btn-info">Process to Checkout</a>
+        <a asp-area="Customer" asp-action="Checkout" asp-controller="Order" class="btn btn-info">Process to Checkout</a>
     </div>
 </div>
 
