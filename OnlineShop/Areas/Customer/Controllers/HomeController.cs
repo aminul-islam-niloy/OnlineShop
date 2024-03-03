@@ -79,6 +79,9 @@ namespace OnlineShop.Areas.Customer.Controllers
             return View(product);
         }
 
+
+
+
         //POST product detail acation method
         [HttpPost]
         [ActionName("Detail")]
@@ -106,6 +109,19 @@ namespace OnlineShop.Areas.Customer.Controllers
             return RedirectToAction(nameof(Detail));
         }
 
+        //GET product Cart action method
+
+        public IActionResult Cart()
+        {
+            List<Products> products = HttpContext.Session.Get<List<Products>>("products");
+            if (products == null)
+            {
+                products = new List<Products>();
+            }
+            return View(products);
+        }
+
+
 
         //GET Remove action methdo
         [ActionName("Remove")]
@@ -121,7 +137,7 @@ namespace OnlineShop.Areas.Customer.Controllers
                     HttpContext.Session.Set("products", products);
                 }
             }
-            return RedirectToAction(nameof(Detail));
+            return RedirectToAction(nameof(Cart));
         }
 
 
