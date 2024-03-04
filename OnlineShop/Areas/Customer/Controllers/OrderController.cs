@@ -12,20 +12,19 @@ namespace OnlineShop.Areas.Customer.Controllers
     public class OrderController : Controller
     {
         private ApplicationDbContext _db;
+
         public OrderController(ApplicationDbContext db)
         {
-            _db = db; 
-        }
-        public IActionResult Index()
-        {
-            return View();
+            _db = db;
         }
 
         //GET Checkout actioin method
+
         public IActionResult Checkout()
         {
             return View();
         }
+
         //POST Checkout action method
 
         [HttpPost]
@@ -57,9 +56,6 @@ namespace OnlineShop.Areas.Customer.Controllers
             int rowCount = _db.Order.ToList().Count() + 1;
             return rowCount.ToString("000");
         }
-
-
-
-
     }
+
 }
