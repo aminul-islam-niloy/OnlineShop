@@ -76,6 +76,7 @@ namespace OnlineShop
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+           
 
             app.UseMvc(routes =>
             {

@@ -5,6 +5,7 @@ using OnlineShop.Models;
 using OnlineShop.Session;
 using System.Collections.Generic;
 using System.Linq;
+using X.PagedList;
 
 namespace OnlineShop.Areas.Customer.Controllers
 {
@@ -20,15 +21,29 @@ namespace OnlineShop.Areas.Customer.Controllers
 
 
 
-        public IActionResult Index()
+        public IActionResult Index(int? page)
         {
-            return View(_db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList());
+            return View(_db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList().ToPagedList(page ?? 1, 8));
         }
 
 
-        //POST Index action method
+        ////POST Index action method
+        //[HttpPost]
+        //public IActionResult Index( string searchString,int?page)
+        //{
+        //    var products = _db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList().ToPagedList(page ?? 1, 8); 
+
+        //    if (!string.IsNullOrEmpty(searchString))
+        //    {
+        //        // Filter products based on search string
+        //        products = products.Where(p => p.Name.Contains(searchString)).ToList().ToList().ToPagedList(page ?? 1, 8);
+        //    }
+
+        //    return View(products);
+        //}
+
         [HttpPost]
-        public IActionResult Index( string searchString)
+        public IActionResult Index(string searchString, int? page)
         {
             var products = _db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList();
 
@@ -38,15 +53,12 @@ namespace OnlineShop.Areas.Customer.Controllers
                 products = products.Where(p => p.Name.Contains(searchString)).ToList();
             }
 
-            if (string.IsNullOrEmpty(searchString))
-            {
-                // Filter products based on search string
-                products = _db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList();
-            }
+            // Convert the filtered products to a paged list using the current page number
+            var pagedProducts = products.ToPagedList(page ?? 1, 8);
 
-
-            return View(products);
+            return View(pagedProducts);
         }
+
 
 
         public IActionResult About()

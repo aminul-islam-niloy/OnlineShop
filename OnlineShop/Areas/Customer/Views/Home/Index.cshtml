@@ -1,5 +1,7 @@
 ﻿@using OnlineShop.Models;
-@model List<Products>
+@model X.PagedList.IPagedList<Products>
+@using X.PagedList.Mvc.Core
+
 
 
 
@@ -107,34 +109,14 @@
     }
 </div>
 
+<div>
+    @* @Html.PagedListPager(Model,
+        page => Url.Action("Index", new { page }),
+        PagedListRenderOptions.PageNumbersOnly) *@
 
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, foo1Param = "1", foo2Param = "2"}))
 
-<br />
-<br />
-
-
-
-   @*  <div class="col-md-3">
-       
-    </div>
-    <div class="col-md-3">
-       
-    </div>
-    <div class="col-md-3">
-        
-    </div>
-    <div class="col-md-3">
-        
-    </div> *@
-@* </div> *@
-
-
-
-
-<br />
-<br />
-
-
+</div>
 
 @section Scripts{
     @{
