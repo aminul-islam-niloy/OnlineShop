@@ -43,6 +43,17 @@
                             </div>
                             <span asp-validation-for="PasswordHash" class="text-danger"></span>
                         </div>
+
+                        <div class="form-group row">
+                            <div class="col-2">
+                                <label asp-for="PhoneNumber"></label>
+                            </div>
+                            <div class="col-5">
+                                <input asp-for="PhoneNumber" class="form-control"  />
+                            </div>
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+
                         <div class="form-group row">
                             <div class="col-lg-3">
                                 <label asp-for="FirstName">First Name</label>

@@ -24,9 +24,11 @@
             <th>
                 UserName
             </th>
+            <th>Email</th>
+            <th>Phone Number</th>
             <th></th>
-            <th></th>
-            <th></th>
+            <td></td>
+            <td></td>
            @*  <th>Status</th> *@
             <th></th>
         </tr>
@@ -35,6 +37,10 @@
             <tr>
                 <td>@item.FirstName @item.LastName</td>
                 <td>@item.UserName</td>
+                <td>@item.Email</td>
+                <td>@item.PhoneNumber</td>
+                <td></td>
+                <td></td>
                
                  <td>
                     <partial name="_PartialView" model="@item.Id" />
