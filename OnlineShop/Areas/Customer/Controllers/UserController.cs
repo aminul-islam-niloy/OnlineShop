@@ -61,8 +61,58 @@ namespace OnlineShop.Areas.Customer.Controllers
             return View(user);
         }
 
+        public async Task<IActionResult> Edit(string id)
+        {
+            var user = _db.ApplicationUser.FirstOrDefault(c => c.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(ApplicationUser user)
+        {
+            var userInfo = _db.ApplicationUser.FirstOrDefault(c => c.Id == user.Id);
+            if (userInfo == null)
+            {
+                return NotFound();
+            }
+            userInfo.FirstName = user.FirstName;
+            userInfo.LastName = user.LastName;
+            var result = await _userManager.UpdateAsync(userInfo);
+            if (result.Succeeded)
+            {
+                TempData["save"] = "User has been updated successfully";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(userInfo);
+        }
+
+        public async Task<IActionResult> Details(string id)
+        {
+            var user = _db.ApplicationUser.FirstOrDefault(c => c.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+
+
+        }
 
 
 
+
+
+
+
+
+
+
+
+
+
+        }
     }
-}
