@@ -27,27 +27,39 @@ namespace OnlineShop.Areas.Customer.Controllers
             return View();
         }
 
+
+
         [HttpPost]
         public async Task<IActionResult> Create(ApplicationUser user)
         {
-            //if (ModelState.IsValid)
-            //{
-                var result = await _userManager.CreateAsync(user);
-                if (result.Succeeded) { 
-                //{
-                //    var isSaveRole = await _userManager.AddToRoleAsync(user, "User");
-                //    TempData["save"] = "User has been created successfully";
-                //    return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                // Check if the username already exists
+                var existingUser = await _userManager.FindByNameAsync(user.UserName);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError(string.Empty, "Username already exists.");
+                    return View(user);
+                }
+
+                // Proceed with user creation if the username is unique
+                var result = await _userManager.CreateAsync(user, user.PasswordHash);
+
+                if (result.Succeeded)
+                {
+                    TempData["save"] = "User has been created successfully";
+                    return RedirectToAction(nameof(Index));
                 }
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
-            //}
+            }
 
-
-            return View();
+            return View(user);
         }
+
+
 
 
     }

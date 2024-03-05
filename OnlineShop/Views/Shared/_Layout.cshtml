@@ -47,6 +47,13 @@
 
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+
 </head>
 <body>
     @* <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -104,9 +111,8 @@
                     <li class="nav-item">
                         <a asp-area="" asp-controller="Home" asp-action="About" class="nav-link">About</a>
                     </li>
-                    <li class="nav-item">
-                        <a asp-area="" asp-controller="Home" asp-action="Contact" class="nav-link">Contact</a>
-                    </li>
+                    <li class="nav-item"><a asp-area="" asp-controller="Home" asp-action="Contact" class="nav-link">Contact</a></li>
+                    <li class="nav-item"><a asp-area="Customer" asp-controller="User" asp-action="Create" class="nav-link">Add User</a></li>
                 </ul>
                 <partial name="_LoginPartial" />
             </div>
