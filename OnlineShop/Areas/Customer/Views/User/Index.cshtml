@@ -1,39 +1,66 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿﻿@using OnlineShop.Models;
+@model IEnumerable<ApplicationUser>
 @{
+    ViewData["Title"] = "Index";
 }
 
-<h2>This is Index page </h2>
+<br />
+<br />
+<div class="row">
+    <div class="col-lg-6">
+        <h2 class="text-info">User List</h2>
+    </div>
+    <div class="col-lg-6 text-right">
+        <a asp-action="Create" class="btn btn-info"><i class="fas fa-plus"></i>&nbsp; New User</a>
+    </div>
+</div>
+<br />
+<div>
+    <table class="table table-striped border">
+        <tr class="table-info">
+            <th>
+                Name
+            </th>
+            <th>
+                UserName
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+           @*  <th>Status</th> *@
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.FirstName @item.LastName</td>
+                <td>@item.UserName</td>
+               
+                 <td>
+                    <partial name="_PartialView" model="@item.Id" />
+                 </td>
+
+            </tr> 
+        }
+    </table>
+</div>
 
 @section scripts{
     <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/alertify.min.js"></script>
-   
     <script type="text/javascript">
-
-
-        $(document).ready(function () {
-            $('#myTable').DataTable({
-                        dom: 'Bfrtip',
-                        buttons: [
-                            'pageLength', 'copy', 'csv', 'excel', 'pdf', 'print'
-                        ]
-
-            });
-
-            $(function () {
-                var save = '@TempData["save"]'
-                if (save != '') {
-                    alertify.success(save);
-                }
-                var edit = '@TempData["edit"]'
-                if (edit != '') {
-                    alertify.success(edit);
-                }
-                var del = '@TempData["delete"]'
-                if (del != '') {
-                    alertify.error(del);
-                }
-            })
+        $(function () {
+            var save = '@TempData["save"]'
+            if (save != '') {
+                alertify.success(save);
+            }
+            var edit = '@TempData["edit"]'
+            if (edit != '') {
+                alertify.success(edit);
+            }
+            var del = '@TempData["delete"]'
+            if (del != '') {
+                alertify.error(del);
+            }
+        })
     </script>
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Data;
 using OnlineShop.Models;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OnlineShop.Areas.Customer.Controllers
@@ -18,9 +19,10 @@ namespace OnlineShop.Areas.Customer.Controllers
         }
         public IActionResult Index()
         {
-            
-            return View();
+            var dd = _userManager.GetUserId(HttpContext.User);
+            return View(_db.ApplicationUser.ToList());
         }
+
 
         public async Task<IActionResult> Create()
         {
