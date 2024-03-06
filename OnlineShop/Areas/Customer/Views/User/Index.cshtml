@@ -26,10 +26,11 @@
             </th>
             <th>Email</th>
             <th>Phone Number</th>
+            <th>Status</th>
             <th></th>
             <td></td>
             <td></td>
-           @*  <th>Status</th> *@
+           
             <th></th>
         </tr>
         @foreach (var item in Model)
@@ -39,12 +40,36 @@
                 <td>@item.UserName</td>
                 <td>@item.Email</td>
                 <td>@item.PhoneNumber</td>
-                <td></td>
+                @if (item.LockoutEnd > DateTime.Now && item.LockoutEnd != null)
+                {
+                    <td >Inactive </td>
+                    <td></td>
+                  
+                    <td >
+                        <div class="btn-group">
+                            <a asp-action="Active" class="btn btn-primary" asp-route-id="@item.Id">
+                                <i class="far fa-edit"></i>
+                            </a>
+                            <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.Id">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </div>
+
+                    </td>
+
+                }
+                else
+                {
+                    <td>Active</td>
+                    <td style="width: 150px">
+                        <partial name="_PartialView" model="@item.Id" />
+                    </td>
+
+                }
+
                 <td></td>
                
-                 <td>
-                    <partial name="_PartialView" model="@item.Id" />
-                 </td>
+                
 
             </tr> 
         }
@@ -60,7 +85,7 @@
                 alertify.success(save);
             }
 
-            var lockout = '@TempData["lockout"]'
+            var locout = '@TempData["locout"]'
             if (save != '') {
                 alertify.success(lockout);
             } 

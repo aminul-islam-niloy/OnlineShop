@@ -160,23 +160,41 @@ namespace OnlineShop.Areas.Customer.Controllers
             int rowAffected = _db.SaveChanges();
             if (rowAffected > 0)
             {
-                TempData["lockout"] = "User has been lockout successfully";
+                TempData["locout"] = "User has been lockout successfully";
                 return RedirectToAction(nameof(Index));
             }
             return View(userInfo);
         }
 
+        public async Task<IActionResult> Active(string id)
+        {
+            var user = _db.ApplicationUser.FirstOrDefault(c => c.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> Active(ApplicationUser user)
+        {
+            var userInfo = _db.ApplicationUser.FirstOrDefault(c => c.Id == user.Id);
+            if (userInfo == null)
+            {
+                return NotFound();
 
-
-
-
-
-
-
-
-
-
+            }
+            //userInfo.LockoutEnd = DateTime.Now.AddDays(-1);
+            userInfo.LockoutEnd = null;
+            int rowAffected = _db.SaveChanges();
+            if (rowAffected > 0)
+            {
+                TempData["locout"] = "User has been active successfully";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(userInfo);
+        }
 
 
 
