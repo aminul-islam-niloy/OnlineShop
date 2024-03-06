@@ -3,8 +3,6 @@
 @using X.PagedList.Mvc.Core
 
 
-
-
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -111,8 +109,8 @@
 
 <div>
     @* @Html.PagedListPager(Model,
-        page => Url.Action("Index", new { page }),
-        PagedListRenderOptions.PageNumbersOnly) *@
+    page => Url.Action("Index", new { page }),
+    PagedListRenderOptions.PageNumbersOnly) *@
 
     @Html.PagedListPager(Model, page => Url.Action("Index", new { page, foo1Param = "1", foo2Param = "2"}))
 
