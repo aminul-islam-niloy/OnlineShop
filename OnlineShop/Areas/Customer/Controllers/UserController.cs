@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Data;
 using OnlineShop.Models;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -130,6 +131,41 @@ namespace OnlineShop.Areas.Customer.Controllers
             }
             return View(userInfo);
         }
+
+
+        public async Task<IActionResult> Locout(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var user = _db.ApplicationUser.FirstOrDefault(c => c.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Locout(ApplicationUser user)
+        {
+            var userInfo = _db.ApplicationUser.FirstOrDefault(c => c.Id == user.Id);
+            if (userInfo == null)
+            {
+                return NotFound();
+
+            }
+            userInfo.LockoutEnd = DateTime.Now.AddDays(3);
+            int rowAffected = _db.SaveChanges();
+            if (rowAffected > 0)
+            {
+                TempData["lockout"] = "User has been lockout successfully";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(userInfo);
+        }
+
 
 
 

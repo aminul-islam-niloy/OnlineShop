@@ -59,6 +59,11 @@
             if (save != '') {
                 alertify.success(save);
             }
+
+            var lockout = '@TempData["lockout"]'
+            if (save != '') {
+                alertify.success(lockout);
+            } 
             var edit = '@TempData["edit"]'
             if (edit != '') {
                 alertify.success(edit);
