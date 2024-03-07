@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using OnlineShop.Areas.Admin.Model;
 using OnlineShop.Data;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,12 +13,17 @@ namespace OnlineShop.Areas.Admin.Controllers
     public class RoleController : Controller
     {
         RoleManager<IdentityRole> _roleManager;
+        UserManager<IdentityUser> _userManager;
+        ApplicationDbContext _db;
 
-        public RoleController(RoleManager<IdentityRole> roleManager)
+
+        public RoleController(RoleManager<IdentityRole> roleManager, ApplicationDbContext db, UserManager<IdentityUser> userManager)
         {
             _roleManager = roleManager;
-          
+            _db = db;
+            _userManager = userManager;
         }
+
 
         public IActionResult Index()
         {
@@ -119,6 +127,42 @@ namespace OnlineShop.Areas.Admin.Controllers
             }
             return View();
         }
+
+
+        public async Task<IActionResult> Assign()
+        {
+
+            ViewData["UserId"] = new SelectList(_db.ApplicationUser.Where(f => f.LockoutEnd < DateTime.Now || f.LockoutEnd == null).ToList(), "Id", "UserName");
+            ViewData["RoleId"] = new SelectList(_roleManager.Roles.ToList(), "Name", "Name");
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Assign(RoleUserVm roleUser)
+        {
+            var user = _db.ApplicationUser.FirstOrDefault(c => c.Id == roleUser.UserId);
+            var isCheckRoleAssign = await _userManager.IsInRoleAsync(user, roleUser.RoleId);
+            if (isCheckRoleAssign)
+            {
+                ViewBag.mgs = "This user already assign this role.";
+                ViewData["UserId"] = new SelectList(_db.ApplicationUser.Where(f => f.LockoutEnd < DateTime.Now || f.LockoutEnd == null).ToList(), "Id", "UserName");
+                ViewData["RoleId"] = new SelectList(_roleManager.Roles.ToList(), "Name", "Name");
+                return View();
+            }
+            var role = await _userManager.AddToRoleAsync(user, roleUser.RoleId);
+            if (role.Succeeded)
+            {
+                TempData["save"] = "User Role assigned.";
+                return RedirectToAction(nameof(Index));
+            }
+            return View();
+        }
+
+
+
+
+
 
 
 
