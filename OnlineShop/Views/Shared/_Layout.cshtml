@@ -4,7 +4,7 @@
 
 @inject IHttpContextAccessor HttpContextAccessor
 @{
-    
+    var userRole = HttpContextAccessor.HttpContext.Session.GetString("roleName");
     int count = 0;
     List<Products> products = HttpContextAccessor.HttpContext.Session.Get<List<Products>>("products");
     if (products == null)
@@ -68,15 +68,24 @@
                     <li class="nav-item">
                         <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a asp-area="Admin" asp-controller="ProductTypes" asp-action="Index" class="nav-link">Product Type</a>
-                    </li>
-                    <li class="nav-item">
-                        <a asp-area="Admin" asp-controller="SpecialTag" asp-action="Index" class="nav-link">Tags</a>
-                    </li>
-                    <li class="nav-item">
-                        <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="nav-link">Products</a>
-                    </li>
+
+                   @*  @if (userRole == "Admin")
+                    {
+ *@
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-controller="ProductTypes" asp-action="Index" class="nav-link">Product Type</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-controller="SpecialTag" asp-action="Index" class="nav-link">Tags</a>
+                        </li>
+                    <li class="nav-item"><a asp-area="Customer" asp-controller="User" asp-action="Index" class="nav-link">Manage User</a></li>
+                        <li class="nav-item"><a asp-area="Admin" asp-controller="Role" asp-action="Index" class="nav-link">Role User</a></li>
+
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="nav-link">Products</a>
+                        </li>
+                    @* } *@
+
                     <li class="nav-item">
                         <a asp-area="Customer" asp-controller="Home" asp-action="Cart" class="nav-link">
                             <i class="fas fa-shopping-cart"></i> (@count) Cart
@@ -86,8 +95,7 @@
                         <a asp-area="" asp-controller="Home" asp-action="About" class="nav-link">About</a>
                     </li>
                     <li class="nav-item"><a asp-area="" asp-controller="Home" asp-action="Contact" class="nav-link">Contact</a></li>
-                    <li class="nav-item"><a asp-area="Customer" asp-controller="User" asp-action="Index" class="nav-link">Manage User</a></li>
-                    <li class="nav-item"><a asp-area="Admin" asp-controller="Role" asp-action="Index" class="nav-link">Role User</a></li>
+                    
                 </ul>
                 <partial name="_LoginPartial" />
             </div>
