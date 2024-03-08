@@ -70,9 +70,27 @@ namespace OnlineShop.Areas.Identity.Pages.Account
                 //replace Identity User by Application User
                 var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
                 if (result.Succeeded)
                 {
+
                     _logger.LogInformation("User created a new account with password.");
+                    // Assign the user to the "User" role
+                    //var roleResult = await _userManager.AddToRoleAsync(user, "User");
+
+                    // Assign roles based on checkbox selection
+                    foreach (var role in Request.Form["roles"])
+                    {
+                        var roleResult = await _userManager.AddToRoleAsync(user, role);
+                        if (!roleResult.Succeeded)
+                        {
+                            foreach (var error in roleResult.Errors)
+                            {
+                                ModelState.AddModelError(string.Empty, error.Description);
+                            }
+                            return Page();
+                        }
+                    }
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(
