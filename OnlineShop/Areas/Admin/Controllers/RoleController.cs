@@ -160,6 +160,21 @@ namespace OnlineShop.Areas.Admin.Controllers
         }
 
 
+        public ActionResult AssignUserRole()
+        {
+            var result = from ur in _db.UserRoles
+                         join r in _db.Roles on ur.RoleId equals r.Id
+                         join a in _db.ApplicationUser on ur.UserId equals a.Id
+                         select new UserRoleMaping()
+                         {
+                             UserId = ur.UserId,
+                             RoleId = ur.RoleId,
+                             UserName = a.UserName,
+                             RoleName = r.Name
+                         };
+            ViewBag.UserRoles = result;
+            return View();
+        }
 
 
 
