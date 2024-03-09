@@ -64,6 +64,10 @@ namespace OnlineShop.Areas.Customer.Controllers
             // Redirect the user to the order confirmation page
             return  View();
         }
+        public IActionResult OrderConfirmation()
+        {
+            return View();
+        }
 
 
 
@@ -138,14 +142,30 @@ namespace OnlineShop.Areas.Customer.Controllers
             return View(ordersWithProducts);
         }
 
+        //delete order
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var order = await _db.Orders.FindAsync(id);
 
+            if (order == null)
+            {
+                return NotFound();
+            }
 
+            _db.Orders.Remove(order);
+            await _db.SaveChangesAsync();
 
-
-
-
+            // Return a JSON response indicating success
+            return Json(new { success = true });
+        }
 
 
     }

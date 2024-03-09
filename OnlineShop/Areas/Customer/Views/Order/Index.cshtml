@@ -66,9 +66,19 @@
                     <th>Email</th>
                     <th>Phone</th>
                     <th>OrderDate</th>
-                    <th>  
-                        
-                        <a asp-action="Delete" class="btn btn-danger" asp-route-id="@Model"><i class="fa-solid fa-trash"></i></a>
+                    <th>
+                    <div class="btn-group">
+
+                            <form id="deleteForm" asp-action="Delete" method="post">
+                                <input type="hidden" name="id" value="@Model" />
+                                <button type="button" class="btn btn-danger" onclick="confirmDelete()">
+                                    Delete
+                                </button>
+                            </form>
+
+                    </div>
+
+                        @* <a asp-action="Delete" class="btn btn-danger" asp-route-id="@Model"><i class="fa-solid fa-trash"></i></a> *@
                        </th>
                     
              
@@ -111,4 +121,40 @@
         </table>
     </div>
     <hr />
+}
+
+@section Scripts {
+    <script>
+        function confirmDelete() {
+            if (confirm('Are you sure you want to delete this item?')) {
+                deleteOrder();
+            }
+        }
+
+        function deleteOrder() {
+            var form = document.getElementById('deleteForm');
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                body: JSON.stringify({ id: form.id.value })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    // Optionally, perform some action after successful deletion
+                    // For example, remove the item from the DOM
+                    form.closest('div').remove();
+                })
+                .catch(error => {
+                    console.error('There was a problem with your fetch operation:', error);
+                });
+        }
+    </script>
 }
