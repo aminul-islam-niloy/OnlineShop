@@ -119,7 +119,7 @@ namespace OnlineShop.Areas.Customer.Controllers
             HttpContext.Session.Set("products", new List<Products>());
 
             // Redirect the user to the order confirmation page
-            return RedirectToAction("OrderConfirmation", new { orderId = anOrder.Id });
+            return  View();
         }
 
 
