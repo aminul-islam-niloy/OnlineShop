@@ -34,6 +34,10 @@ namespace OnlineShop
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+           
+
+           
+
 
             // for session
             services.AddDistributedMemoryCache();
@@ -75,10 +79,10 @@ namespace OnlineShop
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-            app.UseSession();
+           
             app.UseCookiePolicy();
 
             app.UseAuthentication();

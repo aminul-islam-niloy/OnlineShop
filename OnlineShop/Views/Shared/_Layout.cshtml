@@ -69,22 +69,42 @@
                         <a asp-area="" asp-controller="Home" asp-action="Index" class="nav-link">Home</a>
                     </li>
 
-                   @*  @if (userRole == "Admin")
+                    @if (userRole == "Admin")
                     {
- *@
+
                         <li class="nav-item">
                             <a asp-area="Admin" asp-controller="ProductTypes" asp-action="Index" class="nav-link">Product Type</a>
                         </li>
                         <li class="nav-item">
                             <a asp-area="Admin" asp-controller="SpecialTag" asp-action="Index" class="nav-link">Tags</a>
                         </li>
-                    <li class="nav-item"><a asp-area="Customer" asp-controller="User" asp-action="Index" class="nav-link">Manage User</a></li>
-                        <li class="nav-item"><a asp-area="Admin" asp-controller="Role" asp-action="Index" class="nav-link">Role User</a></li>
+                       <li class="nav-item"><a asp-area="Customer" asp-controller="User" asp-action="Index" class="nav-link">Manage User</a></li>
+                      
 
                         <li class="nav-item">
                             <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="nav-link">Products</a>
                         </li>
-                    @* } *@
+                       @*  <li class="nav-item"><a asp-area="Admin" asp-controller="Role" asp-action="Index" class="nav-link">Role User</a></li> *@
+                       
+                    }
+                    @if(userRole=="SuperAdmin")
+                    {
+
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-controller="ProductTypes" asp-action="Index" class="nav-link">Product Type</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-controller="SpecialTag" asp-action="Index" class="nav-link">Tags</a>
+                        </li>
+                        <li class="nav-item"><a asp-area="Customer" asp-controller="User" asp-action="Index" class="nav-link">Manage User</a></li>
+
+
+                        <li class="nav-item">
+                            <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="nav-link">Products</a>
+                        </li>
+                        <li class="nav-item"><a asp-area="Admin" asp-controller="Role" asp-action="Index" class="nav-link">Role User</a></li>
+                    }
+
 
                     <li class="nav-item">
                         <a asp-area="Customer" asp-controller="Home" asp-action="Cart" class="nav-link">

@@ -69,6 +69,104 @@ namespace OnlineShop.Areas.Customer.Controllers
         }
 
 
+        //////GET product detail acation method
+
+        ////public ActionResult Detail(int? id)
+        ////{
+
+        ////    if (id == null)
+        ////    {
+        ////        return NotFound();
+        ////    }
+
+        ////    var product = _db.Products.Include(c => c.ProductTypes).FirstOrDefault(c => c.Id == id);
+        ////    if (product == null)
+        ////    {
+        ////        return NotFound();
+        ////    }
+        ////    return View(product);
+        ////}
+
+
+
+
+        //////POST product detail acation method
+        ////[HttpPost]
+        ////[ActionName("Detail")]
+        ////public ActionResult ProductDetail(int? id)
+        ////{
+        ////    List<Products> products = new List<Products>();
+        ////    if (id == null)
+        ////    {
+        ////        return NotFound();
+        ////    }
+
+        ////    var product = _db.Products.Include(c => c.ProductTypes).FirstOrDefault(c => c.Id == id);
+        ////    if (product == null)
+        ////    {
+        ////        return NotFound();
+        ////    }
+
+        ////    products = HttpContext.Session.Get<List<Products>>("products");
+        ////    if (products == null)
+        ////    {
+        ////        products = new List<Products>();
+        ////    }
+        ////    products.Add(product);
+        ////    HttpContext.Session.Set("products", products);
+        ////    return RedirectToAction(nameof(Detail));
+        ////}
+
+        //////GET product Cart action method
+
+        ////public IActionResult Cart()
+        ////{
+        ////    List<Products> products = HttpContext.Session.Get<List<Products>>("products");
+        ////    if (products == null)
+        ////    {
+        ////        products = new List<Products>();
+        ////    }
+        ////    return View(products);
+        ////}
+
+
+
+        //////GET Remove action methdo
+        ////[ActionName("Remove")]
+        ////public IActionResult RemoveToCart(int? id)
+        ////{
+        ////    List<Products> products = HttpContext.Session.Get<List<Products>>("products");
+        ////    if (products != null)
+        ////    {
+        ////        var product = products.FirstOrDefault(c => c.Id == id);
+        ////        if (product != null)
+        ////        {
+        ////            products.Remove(product);
+        ////            HttpContext.Session.Set("products", products);
+        ////        }
+        ////    }
+        ////    return RedirectToAction(nameof(Index));
+        ////}
+
+
+
+
+        ////[HttpPost]
+        ////public IActionResult Remove(int? id)
+        ////{
+        ////    List<Products> products = HttpContext.Session.Get<List<Products>>("products");
+        ////    if (products != null)
+        ////    {
+        ////        var product = products.FirstOrDefault(c => c.Id == id);
+        ////        if (product != null)
+        ////        {
+        ////            products.Remove(product);
+        ////            HttpContext.Session.Set("products", products);
+        ////        }
+        ////    }
+        ////    return RedirectToAction(nameof(Index));
+
+
         //GET product detail acation method
 
         public ActionResult Detail(int? id)
@@ -86,9 +184,6 @@ namespace OnlineShop.Areas.Customer.Controllers
             }
             return View(product);
         }
-
-
-
 
         //POST product detail acation method
         [HttpPost]
@@ -114,23 +209,8 @@ namespace OnlineShop.Areas.Customer.Controllers
             }
             products.Add(product);
             HttpContext.Session.Set("products", products);
-            return RedirectToAction(nameof(Detail));
+            return RedirectToAction(nameof(Index));
         }
-
-        //GET product Cart action method
-
-        public IActionResult Cart()
-        {
-            List<Products> products = HttpContext.Session.Get<List<Products>>("products");
-            if (products == null)
-            {
-                products = new List<Products>();
-            }
-            return View(products);
-        }
-
-
-
         //GET Remove action methdo
         [ActionName("Remove")]
         public IActionResult RemoveToCart(int? id)
@@ -148,10 +228,8 @@ namespace OnlineShop.Areas.Customer.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
-
-
         [HttpPost]
+
         public IActionResult Remove(int? id)
         {
             List<Products> products = HttpContext.Session.Get<List<Products>>("products");
@@ -166,6 +244,20 @@ namespace OnlineShop.Areas.Customer.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        //GET product Cart action method
+
+        public IActionResult Cart()
+        {
+            List<Products> products = HttpContext.Session.Get<List<Products>>("products");
+            if (products == null)
+            {
+                products = new List<Products>();
+            }
+            return View(products);
+        }
+
+
 
 
 
