@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
@@ -7,7 +8,9 @@ using OnlineShop.Session;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
 
 namespace OnlineShop.Areas.Customer.Controllers
 {
@@ -16,10 +19,12 @@ namespace OnlineShop.Areas.Customer.Controllers
     public class OrderController : Controller
     {
         private ApplicationDbContext _db;
+        UserManager<IdentityUser> _userManager;
 
-        public OrderController(ApplicationDbContext db)
+        public OrderController(ApplicationDbContext db, UserManager<IdentityUser> userManager)
         {
             _db = db;
+            _userManager = userManager;
         }
 
 
@@ -37,6 +42,11 @@ namespace OnlineShop.Areas.Customer.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Checkout(Order anOrder)
         {
+            // Retrieve the user ID of the current authenticated user
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Associate the order with the user ID
+            anOrder.UserId = userId;
             // Set the order date to the current date and time
             anOrder.OrderDate = DateTime.Now;
 
@@ -78,6 +88,45 @@ namespace OnlineShop.Areas.Customer.Controllers
             int rowCount = _db.Orders.ToList().Count() + 1;
             return rowCount.ToString("000");
         }
+
+        //public async Task<IActionResult> UserOrders()
+        //{
+        //    // Retrieve the user ID of the current authenticated user
+        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        //    // Retrieve orders associated with the user's ID
+        //    var userOrders = await _db.Orders
+        //        .Where(o => o.UserId == userId)
+        //        .ToListAsync();
+
+        //    return View(userOrders);
+        //}
+
+    
+        public async Task<IActionResult> UserOrders()
+        {
+            // Retrieve the user ID of the current authenticated user
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Retrieve user details
+            var user = await _userManager.FindByIdAsync(userId);
+
+            // Retrieve orders associated with the user's ID
+            var userOrders = await _db.Orders
+                .Include(o => o.User)
+                .Where(o => o.UserId == userId)
+                .ToListAsync();
+
+            // Create a view model to hold user information and orders
+            var viewModel = new UserOrdersViewModel
+            {
+                User = (ApplicationUser)user,
+                Orders = userOrders
+            };
+
+            return View(viewModel);
+        }
+
 
         public IActionResult Index()
         {

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace OnlineShop.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Customer")]
     public class UserController : Controller
     {
         UserManager<IdentityUser> _userManager;
@@ -33,7 +33,7 @@ namespace OnlineShop.Areas.Customer.Controllers
         }
 
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(ApplicationUser user)
         {

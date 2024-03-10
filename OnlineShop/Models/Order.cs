@@ -26,7 +26,8 @@ namespace OnlineShop.Models
         public string Address { get; set; }
 
         public DateTime OrderDate { get; set; }
-
+        public string UserId { get; set; } // Representing the user who placed the order
+        public virtual ApplicationUser User { get; set; }
         public virtual List<OrderDetails> OrderDetails { get; set; }
 
     }

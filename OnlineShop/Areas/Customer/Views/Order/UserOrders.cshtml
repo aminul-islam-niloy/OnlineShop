@@ -1,0 +1,33 @@
+﻿@model UserOrdersViewModel
+
+<h2>User Orders</h2>
+
+<div>
+    <h4>User Information</h4>
+    <p><strong>Name:</strong> @Model.User.FirstName</p>
+    <p><strong>Email:</strong> @Model.User.Email</p>
+    <p><strong>Phone:</strong> @Model.User.PhoneNumber</p>
+   
+</div>
+
+<hr />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order No</th>
+            <th>Order Date</th>
+            <!-- Add more order details if needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model.Orders)
+        {
+            <tr>
+                <td>@order.OrderNo</td>
+                <td>@order.OrderDate.ToShortDateString()</td>
+                <!-- Add more order details if needed -->
+            </tr>
+        }
+    </tbody>
+</table>

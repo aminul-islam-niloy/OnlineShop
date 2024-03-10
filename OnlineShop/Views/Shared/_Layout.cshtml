@@ -96,7 +96,7 @@
                         <li class="nav-item">
                             <a asp-area="Admin" asp-controller="SpecialTag" asp-action="Index" class="nav-link">Tags</a>
                         </li>
-                        <li class="nav-item"><a asp-area="Customer" asp-controller="User" asp-action="Index" class="nav-link">Manage User</a></li>
+
 
 
                         <li class="nav-item">
@@ -113,10 +113,15 @@
 
                     <li>
                         <a asp-area="Customer" asp-controller="Order" asp-action="Index" class="nav-link"><i class="fa-solid fa-bag-shopping"></i> My Orders</a>
+                       
+                    </li>
+                    <li>
+                        <a asp-area="Customer" asp-controller="Order" asp-action="UserOrders" class="nav-link"><i class="fa-solid fa-bag-shopping"></i> My Orders</a>
                     </li>
                     <li class="nav-item">
                         <a asp-area="" asp-controller="Home" asp-action="About" class="nav-link">About</a>
                     </li>
+                    <li class="nav-item"><a asp-area="Customer" asp-controller="User" asp-action="Index" class="nav-link">Manage User</a></li>
                     <li class="nav-item"><a asp-area="" asp-controller="Home" asp-action="Contact" class="nav-link">Contact</a></li>
                     
                 </ul>
