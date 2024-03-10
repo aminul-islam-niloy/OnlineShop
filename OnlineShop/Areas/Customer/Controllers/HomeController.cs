@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
 using OnlineShop.Models;
@@ -10,6 +11,7 @@ using X.PagedList;
 namespace OnlineShop.Areas.Customer.Controllers
 {
     [Area("Customer")]
+  
     public class HomeController : Controller
     {
         private ApplicationDbContext _db;
@@ -88,7 +90,7 @@ namespace OnlineShop.Areas.Customer.Controllers
             }
             return View(product);
         }
-
+        [Authorize(Roles = "Customer")]
         //POST product detail acation method
         [HttpPost]
         [ActionName("Detail")]
@@ -116,8 +118,7 @@ namespace OnlineShop.Areas.Customer.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
-
+        [Authorize(Roles = "Customer")]
         //GET Remove action methdo
         [ActionName("Remove")]
         public IActionResult RemoveToCart(int? id)
@@ -136,7 +137,7 @@ namespace OnlineShop.Areas.Customer.Controllers
         }
 
         [HttpPost]
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Remove(int? id)
         {
             List<Products> products = HttpContext.Session.Get<List<Products>>("products");
@@ -154,6 +155,7 @@ namespace OnlineShop.Areas.Customer.Controllers
 
         //GET product Cart action method
 
+        [Authorize(Roles = "Customer")]
         public IActionResult Cart()
         {
             List<Products> products = HttpContext.Session.Get<List<Products>>("products");

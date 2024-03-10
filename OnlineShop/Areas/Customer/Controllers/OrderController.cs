@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
 using OnlineShop.Models;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 namespace OnlineShop.Areas.Customer.Controllers
 {
     [Area("Customer")]
+    [Authorize(Roles = "Customer")]
     public class OrderController : Controller
     {
         private ApplicationDbContext _db;
@@ -76,39 +78,6 @@ namespace OnlineShop.Areas.Customer.Controllers
             int rowCount = _db.Orders.ToList().Count() + 1;
             return rowCount.ToString("000");
         }
-
-        //public IActionResult Index()
-        //{
-        //    // Retrieve all orders from the database
-        //    var orders = _db.Orders.ToList();
-        //    return View(orders);
-        //}
-
-        //public IActionResult OrdersWithProducts()
-        //{
-        //    var ordersWithProducts = _db.OrderDetails
-        //        .Include(od => od.Product)
-        //        .Where(od => od.Order != null && od.Product != null)
-        //        .GroupBy(od => new { od.OrderId, od.Order.OrderNo })
-        //        .Select(g => new OrderDetailsViewModel
-        //        {
-        //            OrderId = g.Key.OrderId,
-        //            OrderNo = g.Key.OrderNo,
-        //            Products = g.Select(od => new ProductViewModel
-        //            {
-        //                ProductId = od.PorductId,
-        //                ProductName = od.Product.Name,
-        //                Price = od.Product.Price,
-        //                Image = od.Product.Image,
-        //                ProductColor = od.Product.ProductColor,
-        //                Quantity = od.Product.Quantity
-        //            }).ToList()
-        //        })
-        //        .ToList();
-
-        //    return View(ordersWithProducts);
-        //}
-
 
         public IActionResult Index()
         {
