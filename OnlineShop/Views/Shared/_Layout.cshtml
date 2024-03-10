@@ -84,6 +84,11 @@
                         <li class="nav-item">
                             <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="nav-link">Products</a>
                         </li>
+
+                        <li>
+                            <a asp-area="Customer" asp-controller="Order" asp-action="Index" class="nav-link"><i class="fa-solid fa-bag-shopping"></i>Manage Orders</a>
+
+                        </li>
                        @*  <li class="nav-item"><a asp-area="Admin" asp-controller="Role" asp-action="Index" class="nav-link">Role User</a></li> *@
                        
                     }
@@ -97,31 +102,30 @@
                             <a asp-area="Admin" asp-controller="SpecialTag" asp-action="Index" class="nav-link">Tags</a>
                         </li>
 
+                        <li>
+                            <a asp-area="Customer" asp-controller="Order" asp-action="Index" class="nav-link"><i class="fa-solid fa-bag-shopping"></i>Manage Orders</a>
 
+                        </li>
 
                         <li class="nav-item">
                             <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="nav-link">Products</a>
                         </li>
                         <li class="nav-item"><a asp-area="Admin" asp-controller="Role" asp-action="Index" class="nav-link">Role User</a></li>
                     }
+                    @if (userRole == "Customer")
+                    {
+                        <li class="nav-item"><a asp-area="Customer" asp-controller="User" asp-action="Index" class="nav-link">Manage Prfile</a></li>
+                        <li class="nav-item">
+                            <a asp-area="Customer" asp-controller="Home" asp-action="Cart" class="nav-link"><i class="fas fa-shopping-cart"></i> (@count) Cart</a>
+                        </li>
 
-
-                    <li class="nav-item">
-                        <a asp-area="Customer" asp-controller="Home" asp-action="Cart" class="nav-link"><i class="fas fa-shopping-cart"></i> (@count) Cart</a>
-                        
-                    </li>
-
-                    <li>
-                        <a asp-area="Customer" asp-controller="Order" asp-action="Index" class="nav-link"><i class="fa-solid fa-bag-shopping"></i> Orders</a>
-                       
-                    </li>
-                    <li>
-                        <a asp-area="Customer" asp-controller="Order" asp-action="UserOrders" class="nav-link"><i class="fa-solid fa-bag-shopping"></i> My Orders</a>
-                    </li>
+                        <li> <a asp-area="Customer" asp-controller="Order" asp-action="UserOrders" class="nav-link"><i class="fa-solid fa-suitcase"></i> My Orders</a>
+                        </li>
+                    }
                     <li class="nav-item">
                         <a asp-area="" asp-controller="Home" asp-action="About" class="nav-link">About</a>
                     </li>
-                    <li class="nav-item"><a asp-area="Customer" asp-controller="User" asp-action="Index" class="nav-link">Manage User</a></li>
+                  
                     <li class="nav-item"><a asp-area="" asp-controller="Home" asp-action="Contact" class="nav-link">Contact</a></li>
                     
                 </ul>

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace OnlineShop.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    [Authorize(Roles = "Customer")]
+    [Authorize]
     public class UserController : Controller
     {
         UserManager<IdentityUser> _userManager;
@@ -84,6 +84,8 @@ namespace OnlineShop.Areas.Customer.Controllers
             }
             userInfo.FirstName = user.FirstName;
             userInfo.LastName = user.LastName;
+            userInfo.Email = user.Email;
+            userInfo.PhoneNumber = user.PhoneNumber;
             var result = await _userManager.UpdateAsync(userInfo);
             if (result.Succeeded)
             {

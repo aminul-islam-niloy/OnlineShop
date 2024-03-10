@@ -15,7 +15,7 @@ using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
 namespace OnlineShop.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    [Authorize(Roles = "Customer")]
+  
     public class OrderController : Controller
     {
         private ApplicationDbContext _db;
@@ -37,7 +37,7 @@ namespace OnlineShop.Areas.Customer.Controllers
 
         //POST Checkout action method
 
-
+        [Authorize(Roles = "Customer")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Checkout(Order anOrder)
@@ -113,6 +113,7 @@ namespace OnlineShop.Areas.Customer.Controllers
         //    return View(viewModel);
         //}
 
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> UserOrders()
         {
             // Retrieve the user ID of the current authenticated user
@@ -140,7 +141,7 @@ namespace OnlineShop.Areas.Customer.Controllers
         }
 
 
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             var ordersWithProductsAndUsers = _db.OrderDetails
@@ -190,7 +191,7 @@ namespace OnlineShop.Areas.Customer.Controllers
         }
 
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -207,6 +208,7 @@ namespace OnlineShop.Areas.Customer.Controllers
             return RedirectToAction("Index"); // Redirect to the index page after deletion
         }
 
+        [Authorize(Roles = "Customer")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteUserOrder(int id)
