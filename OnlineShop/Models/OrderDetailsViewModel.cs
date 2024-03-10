@@ -13,5 +13,8 @@ namespace OnlineShop.Models
         public string CustomerEmail { get; set; } // Customer email property
         public DateTime OrderDate { get; set; }
         public List<ProductViewModel> Products { get; set; }
+        public string UserId { get; set; } // Include UserId property
+        public string UserName { get; set; }
+
     }
 }

@@ -74,7 +74,7 @@ namespace OnlineShop.Areas.Customer.Controllers
             HttpContext.Session.Set("products", new List<Products>());
 
             // Redirect the user to the order confirmation page
-            return  View();
+            return View();
         }
         public IActionResult OrderConfirmation()
         {
@@ -94,15 +94,25 @@ namespace OnlineShop.Areas.Customer.Controllers
         //    // Retrieve the user ID of the current authenticated user
         //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+        //    // Retrieve user details
+        //    var user = await _userManager.FindByIdAsync(userId);
+
         //    // Retrieve orders associated with the user's ID
         //    var userOrders = await _db.Orders
+        //        .Include(o => o.User)
         //        .Where(o => o.UserId == userId)
         //        .ToListAsync();
 
-        //    return View(userOrders);
+        //    // Create a view model to hold user information and orders
+        //    var viewModel = new UserOrdersViewModel
+        //    {
+        //        User = (ApplicationUser)user,
+        //        Orders = userOrders
+        //    };
+
+        //    return View(viewModel);
         //}
 
-    
         public async Task<IActionResult> UserOrders()
         {
             // Retrieve the user ID of the current authenticated user
@@ -111,9 +121,11 @@ namespace OnlineShop.Areas.Customer.Controllers
             // Retrieve user details
             var user = await _userManager.FindByIdAsync(userId);
 
-            // Retrieve orders associated with the user's ID
-            var userOrders = await _db.Orders
+            // Retrieve orders associated with the user's ID including order details and products
+            var userOrdersWithProducts = await _db.Orders
                 .Include(o => o.User)
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
                 .Where(o => o.UserId == userId)
                 .ToListAsync();
 
@@ -121,58 +133,85 @@ namespace OnlineShop.Areas.Customer.Controllers
             var viewModel = new UserOrdersViewModel
             {
                 User = (ApplicationUser)user,
-                Orders = userOrders
+                Orders = userOrdersWithProducts
             };
 
             return View(viewModel);
         }
 
 
+
         public IActionResult Index()
         {
-            var ordersWithProducts = _db.OrderDetails
-                .Include(od => od.Product)
-                .Include(od => od.Order) // Include customer details
-                .Where(od => od.Order != null && od.Product != null)
-                .GroupBy(od => new { od.OrderId, od.Order.OrderNo, od.Order.Name, od.Order.Address,od.Order.Email,od.Order.PhoneNo,od.Order.OrderDate }) // Include customer details in the grouping
-                .Select(g => new OrderDetailsViewModel
-                {
-                    OrderId = g.Key.OrderId,
-                    OrderNo = g.Key.OrderNo,
-                    CustomerName = g.Key.Name, // Customer name from grouping
-                    CustomerAddress = g.Key.Address, // Customer address from grouping
-                    CustomerPhone = g.Key.PhoneNo, // Customer phone from grouping
-                    CustomerEmail = g.Key.Email, // Customer email from grouping
-                    OrderDate = g.Key.OrderDate,
-                    
-                    Products = g.Select(od => new ProductViewModel
-                    {
-                        ProductId = od.PorductId,
-                        ProductName = od.Product.Name,
-                        Price = od.Product.Price,
-                        Image = od.Product.Image,
-                        ProductColor = od.Product.ProductColor,
-                        Quantity = od.Product.Quantity
-                    }).ToList()
-                })
-                .ToList();
+            var ordersWithProductsAndUsers = _db.OrderDetails
+            .Include(od => od.Product)
+            .Include(od => od.Order)
+            .ThenInclude(o => o.User) // Include user details
+            .Where(od => od.Order != null && od.Product != null)
+            .GroupBy(od => new
+            {
+                od.OrderId,
+                od.Order.OrderNo,
+                od.Order.Name,
+                od.Order.Address,
+                od.Order.Email,
+                od.Order.PhoneNo,
+                od.Order.OrderDate,
+                od.Order.UserId, // Include user ID in grouping
+                od.Order.User
 
-            return View(ordersWithProducts);
+            })
+            .Select(g => new OrderDetailsViewModel
+            {
+                OrderId = g.Key.OrderId,
+                OrderNo = g.Key.OrderNo,
+                CustomerName = g.Key.Name,
+                CustomerAddress = g.Key.Address,
+                CustomerPhone = g.Key.PhoneNo,
+                CustomerEmail = g.Key.Email,
+                OrderDate = g.Key.OrderDate,
+                UserId = g.Key.UserId, // Add user ID to the view model
+                UserName = g.Key.Name,
+
+                Products = g.Select(od => new ProductViewModel
+                {
+                    ProductId = od.PorductId,
+                    ProductName = od.Product.Name,
+                    Price = od.Product.Price,
+                    Image = od.Product.Image,
+                    ProductColor = od.Product.ProductColor,
+                    Quantity = od.Product.Quantity
+                }).ToList()
+            }).ToList();
+
+            return View(ordersWithProductsAndUsers);
+
+
         }
 
-        //delete order
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
+            var order = await _db.OrderDetails.FindAsync(id);
+            if (order == null)
             {
                 return NotFound();
             }
 
-            var order = await _db.Orders.FindAsync(id);
+            _db.OrderDetails.Remove(order);
+            await _db.SaveChangesAsync();
 
+            return RedirectToAction("Index"); // Redirect to the index page after deletion
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteUserOrder(int id)
+        {
+            var order = await _db.Orders.FindAsync(id);
             if (order == null)
             {
                 return NotFound();
@@ -181,8 +220,7 @@ namespace OnlineShop.Areas.Customer.Controllers
             _db.Orders.Remove(order);
             await _db.SaveChangesAsync();
 
-            // Return a JSON response indicating success
-            return Json(new { success = true });
+            return RedirectToAction(nameof(UserOrders));
         }
 
 
