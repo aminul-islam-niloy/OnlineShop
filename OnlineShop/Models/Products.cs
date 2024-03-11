@@ -33,6 +33,7 @@ namespace OnlineShop.Models
         [Required]
         [DisplayName("Quantity")]
         public int Quantity { get; set; }
+        public int QuantityInCart { get; set; } // Quantity of the product in the cart
         public string Description { get; set; }
 
     }
