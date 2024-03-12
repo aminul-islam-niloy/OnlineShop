@@ -95,6 +95,79 @@ namespace OnlineShop.Areas.Customer.Controllers
 
       
 
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult Index()
+        {
+            var ordersWithProductsAndUsers = _db.OrderDetails
+                .Include(od => od.Product)
+                .Include(od => od.Order)
+                    .ThenInclude(o => o.User) // Include user details
+                .Where(od => od.Order != null && od.Product != null)
+                .GroupBy(od => new
+                {
+                    od.OrderId,
+                    od.Order.OrderNo,
+                    od.Order.Name,
+                    od.Order.Address,
+                    od.Order.Email,
+                    od.Order.PhoneNo,
+                    od.Order.OrderDate,
+                    od.Order.UserId, // Include user ID in grouping
+                    od.Order.User.UserName // Include username
+                    // Include email
+                })
+                .Select(g => new OrderDetailsViewModel
+                {
+                    OrderId = g.Key.OrderId,
+                    OrderNo = g.Key.OrderNo,
+                    CustomerName = g.Key.Name,
+                    CustomerAddress = g.Key.Address,
+                    CustomerPhone = g.Key.PhoneNo,
+                    CustomerEmail = g.Key.Email,
+                    OrderDate = g.Key.OrderDate,
+                    UserId = g.Key.UserId, // Add user ID to the view model
+                    UserName = g.Key.UserName,
+
+                    Products = g.Select(od => new ProductViewModel
+                    {
+                        ProductId = od.PorductId,
+                        ProductName = od.Product.Name,
+                        Price = od.Product.Price,
+                        Image = od.Product.Image,
+                        ProductColor = od.Product.ProductColor,
+                        Quantity = od.Quantity // Get quantity from OrderDetails
+                    }).ToList(),
+
+                    // Calculate the total price by summing the prices of all products in the order
+                    TotalPrice = g.Sum(od => od.Product.Price * od.Quantity)
+                }).ToList();
+
+            return View(ordersWithProductsAndUsers);
+        }
+
+
+
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var order = await _db.OrderDetails.FindAsync(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            _db.OrderDetails.Remove(order);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("Index"); // Redirect to the index page after deletion
+        }
+
+
+
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> UserOrders()
         {
@@ -115,8 +188,8 @@ namespace OnlineShop.Areas.Customer.Controllers
             // Map the data to view model
             var viewModel = userOrdersWithProducts.Select(order => new UserOrdersViewModel
             {
-                UserName = user.UserName, // Assuming user has a Name property
-                UserPhone = user.PhoneNumber, // Assuming user has a Phone property
+                UserName = user.UserName, 
+                UserPhone = user.PhoneNumber, 
                 OrderNo = order.OrderNo,
                 OrderDate = order.OrderDate,
                 TotalPrice = order.OrderDetails.Sum(od => od.Quantity * od.Price),
@@ -135,82 +208,12 @@ namespace OnlineShop.Areas.Customer.Controllers
         }
 
 
-
-        [Authorize(Roles = "Admin")]
-        public IActionResult Index()
-        {
-            var ordersWithProductsAndUsers = _db.OrderDetails
-            .Include(od => od.Product)
-            .Include(od => od.Order)
-            .ThenInclude(o => o.User) // Include user details
-            .Where(od => od.Order != null && od.Product != null)
-            .GroupBy(od => new
-            {
-                od.OrderId,
-                od.Order.OrderNo,
-                od.Order.Name,
-                od.Order.Address,
-                od.Order.Email,
-                od.Order.PhoneNo,
-                od.Order.OrderDate,
-                od.Order.UserId, // Include user ID in grouping
-                od.Order.User
-
-            })
-            .Select(g => new OrderDetailsViewModel
-            {
-                OrderId = g.Key.OrderId,
-                OrderNo = g.Key.OrderNo,
-                CustomerName = g.Key.Name,
-                CustomerAddress = g.Key.Address,
-                CustomerPhone = g.Key.PhoneNo,
-                CustomerEmail = g.Key.Email,
-                OrderDate = g.Key.OrderDate,
-                UserId = g.Key.UserId, // Add user ID to the view model
-                UserName = g.Key.Name,
-
-                Products = g.Select(od => new ProductViewModel
-                {
-                    ProductId = od.PorductId,
-                    ProductName = od.Product.Name,
-                    Price = od.Product.Price,
-                    Image = od.Product.Image,
-                    ProductColor = od.Product.ProductColor,
-                    Quantity = od.Product.Quantity
-                }).ToList()
-            }).ToList();
-
-            return View(ordersWithProductsAndUsers);
-
-
-        }
-
-
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var order = await _db.OrderDetails.FindAsync(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            _db.OrderDetails.Remove(order);
-            await _db.SaveChangesAsync();
-
-            return RedirectToAction("Index"); // Redirect to the index page after deletion
-        }
-
-   
-
         [Authorize(Roles = "Customer")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteUserOrder(string id)
         {
-            // Convert the id to int if necessary
+           
             int orderId;
             if (!int.TryParse(id, out orderId))
             {
@@ -229,10 +232,6 @@ namespace OnlineShop.Areas.Customer.Controllers
 
             return RedirectToAction(nameof(UserOrders));
         }
-
-
-
-
 
     }
 

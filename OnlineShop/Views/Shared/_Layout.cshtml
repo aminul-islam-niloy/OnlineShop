@@ -37,7 +37,6 @@
     <environment exclude="Development">
         <link rel="stylesheet" href="https://cdn.datatables.net/2.0.1/css/dataTables.dataTables.css" />
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
@@ -47,7 +46,7 @@
 
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    
+
     <style>
         .error {
             color: red;
@@ -78,79 +77,41 @@
                         <li class="nav-item">
                             <a asp-area="Admin" asp-controller="SpecialTag" asp-action="Index" class="nav-link">Tags</a>
                         </li>
-                       <li class="nav-item"><a asp-area="Customer" asp-controller="User" asp-action="Index" class="nav-link">Manage User</a></li>
-                      
+                        <li class="nav-item"><a asp-area="Customer" asp-controller="User" asp-action="Index" class="nav-link">Manage User</a></li>
+
 
                         <li class="nav-item">
                             <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="nav-link">Products</a>
                         </li>
 
-                        <li>
-                            <a asp-area="Customer" asp-controller="Order" asp-action="Index" class="nav-link"><i class="fa-solid fa-bag-shopping"></i>Manage Orders</a>
+                        <li><a asp-area="Customer" asp-controller="Order" asp-action="Index" class="nav-link"><i class="fa-solid fa-bag-shopping"></i>Manage Orders</a></li>
 
-                        </li>
-                       @*  <li class="nav-item"><a asp-area="Admin" asp-controller="Role" asp-action="Index" class="nav-link">Role User</a></li> *@
-                       
+
                     }
-                    @if(userRole=="SuperAdmin")
+                    @if (userRole == "SuperAdmin")
                     {
 
-                        <li class="nav-item">
-                            <a asp-area="Admin" asp-controller="ProductTypes" asp-action="Index" class="nav-link">Product Type</a>
-                        </li>
-                        <li class="nav-item">
-                            <a asp-area="Admin" asp-controller="SpecialTag" asp-action="Index" class="nav-link">Tags</a>
-                        </li>
-
-                        <li>
-                            <a asp-area="Customer" asp-controller="Order" asp-action="Index" class="nav-link"><i class="fa-solid fa-bag-shopping"></i>Manage Orders</a>
-
-                        </li>
-
-                        <li class="nav-item">
-                            <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="nav-link">Products</a>
-                        </li>
+                        <li class="nav-item"> <a asp-area="Admin" asp-controller="ProductTypes" asp-action="Index" class="nav-link">Product Type</a></li>
+                        <li class="nav-item"><a asp-area="Admin" asp-controller="SpecialTag" asp-action="Index" class="nav-link">Tags</a></li>
+                        <li><a asp-area="Customer" asp-controller="Order" asp-action="Index" class="nav-link"><i class="fa-solid fa-bag-shopping"></i>Manage Orders</a> </li>
+                        <li class="nav-item"><a asp-area="Admin" asp-controller="Products" asp-action="Index" class="nav-link">Products</a></li>
                         <li class="nav-item"><a asp-area="Admin" asp-controller="Role" asp-action="Index" class="nav-link">Role User</a></li>
                     }
                     @if (userRole == "Customer")
                     {
                         <li class="nav-item"><a asp-area="Customer" asp-controller="User" asp-action="Index" class="nav-link">Manage Prfile</a></li>
-                        <li class="nav-item">
-                            <a asp-area="Customer" asp-controller="Home" asp-action="Cart" class="nav-link"><i class="fas fa-shopping-cart"></i> (@count) Cart</a>
-                        </li>
+                        <li class="nav-item"> <a asp-area="Customer" asp-controller="Home" asp-action="Cart" class="nav-link"><i class="fas fa-shopping-cart"></i> (@count) Cart</a></li>
 
-                        <li> <a asp-area="Customer" asp-controller="Order" asp-action="UserOrders" class="nav-link"><i class="fa-solid fa-suitcase"></i> My Orders</a>
-                        </li>
+                        <li><a asp-area="Customer" asp-controller="Order" asp-action="UserOrders" class="nav-link"><i class="fa-solid fa-suitcase"></i> My Orders</a></li>
 
-                        <li>
-                            <a asp-area="Customer" asp-controller="Order" asp-action="Index" class="nav-link"><i class="fa-solid fa-bag-shopping"></i>Manage Orders</a>
-
-                        </li>
-
-
-
-                        <li class="nav-item">
-                            <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="nav-link">Products</a>
-                        </li>
                     }
-                    <li class="nav-item">
-                        <a asp-area="Customer" asp-controller="Home" asp-action="Cart" class="nav-link"><i class="fas fa-shopping-cart"></i> (@count) Cart</a>
-                    </li>
-
-                    <li>
-                        <a asp-area="Customer" asp-controller="Order" asp-action="UserOrders" class="nav-link"><i class="fa-solid fa-suitcase"></i> My Orders</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="nav-link">Products</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a asp-area="" asp-controller="Home" asp-action="About" class="nav-link">About</a>
-                    </li>
                   
+
+
+                    <li class="nav-item"><a asp-area="" asp-controller="Home" asp-action="About" class="nav-link">About</a></li>
+
                     <li class="nav-item"><a asp-area="" asp-controller="Home" asp-action="Contact" class="nav-link">Contact</a></li>
-                    
+
                 </ul>
                 <partial name="_LoginPartial" />
             </div>

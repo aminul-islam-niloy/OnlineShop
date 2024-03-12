@@ -19,9 +19,10 @@
                 <div class="mt-4 ml-4">
                     <h4>Order ID :  @orderDetails.OrderId</h4>
                     <h4>Order No : @orderDetails.OrderNo</h4>
-                    <h4>User ID: @orderDetails.UserId</h4>
+                    <h4>User ID: @orderDetails.UserName</h4>
                 </div>
-               
+
+
 
 
             </div>
@@ -39,7 +40,7 @@
 
             <div class="col-lg-4">
 
-                <div class="mt-4" >
+                <div class="mt-4">
                     <h4>Order Status</h4>
                     <button type="submit" class="btn btn-primary">Processing </button>
                     <button type="submit" class="btn btn-primary">Tracking </button>
@@ -57,13 +58,15 @@
                     <th>Email</th>
                     <th>Phone</th>
                     <th>OrderDate</th>
+                    <th>Total Price</th>
+
                     <th>
                         <form method="post" asp-action="Delete" onsubmit="return confirm('Are you sure you want to delete this item?');">
                             <input type="hidden" name="id" value="@orderDetails.OrderId" />
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
-
-
+                    </th>
+                   
 
 
                 </tr>
@@ -73,8 +76,10 @@
                     <td>@orderDetails.CustomerName</td>
                     <td>@orderDetails.CustomerAddress</td>
                     <td>@orderDetails.CustomerEmail</td>
+
                     <td>@orderDetails.CustomerPhone</td>
                     <td>@orderDetails.OrderDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td> @orderDetails.TotalPrice</td>
                 </tr>
             </tbody>
 
@@ -87,6 +92,8 @@
                     <th>Color</th>
                     <th>Quantity</th>
                     <th>Payment Status</th>
+
+
                 </tr>
             </thead>
             <tbody>
@@ -100,7 +107,7 @@
                         <td>@product.ProductColor</td>
                         <td>@product.Quantity</td>
                         <td>Cash On Delivary</td>
-                       
+
 
                     </tr>
                 }

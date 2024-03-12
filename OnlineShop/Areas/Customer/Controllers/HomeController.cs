@@ -90,80 +90,9 @@ namespace OnlineShop.Areas.Customer.Controllers
             }
             return View(product);
         }
-        //   [Authorize(Roles = "Customer")]
-        //POST product detail acation method
-        //[HttpPost]
-        //[ActionName("Detail")]
-        //public ActionResult ProductDetail(int? id,int quantityInCart)
-        //{
-        //    List<Products> products = new List<Products>();
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var product = _db.Products.Include(c => c.ProductTypes).FirstOrDefault(c => c.Id == id);
-        //    if (product == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    products = HttpContext.Session.Get<List<Products>>("products");
-        //    if (products == null)
-        //    {
-        //        products = new List<Products>();
-        //    }
-
-        //    if (product.Quantity >= product.QuantityInCart + quantityInCart)
-        //    {
-        //        // Increase the quantity in the cart
-        //        product.QuantityInCart += quantityInCart;
-        //        // Decrease the available quantity
-        //        product.Quantity -= quantityInCart;
-        //        _db.SaveChanges(); // Save changes to the database
-
-        //    }
-
-        //    products.Add(product);
-        //    HttpContext.Session.Set("products", products);
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-        ////  [Authorize(Roles = "Customer")]
-        ////GET Remove action methdo
 
 
-        ////   [ActionName("Remove")]
-
-        //[HttpPost]
-        //public IActionResult RemoveToCart(int? id)
-        //{
-        //    List<Products> products = HttpContext.Session.Get<List<Products>>("products");
-        //    if (products != null)
-        //    {
-        //        var productToRemove = products.FirstOrDefault(p => p.Id == id);
-        //        if (productToRemove != null)
-        //        {
-        //            // Increase the available quantity of the product
-        //            productToRemove.Quantity += productToRemove.QuantityInCart;
-
-        //            // Update the product quantity in the database
-        //            _db.Entry(productToRemove).State = EntityState.Modified;
-
-        //            // Remove the product from the cart
-        //            products.Remove(productToRemove);
-
-        //            // Update the session cart
-        //            HttpContext.Session.Set("products", products);
-
-        //            _db.SaveChanges(); // Save changes to the database
-        //        }
-        //    }
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-
-
+        [Authorize(Roles = "Customer")]
         [HttpPost]
         [ActionName("Detail")]
         public ActionResult ProductDetail(int? id, int quantityInCart)
@@ -212,14 +141,13 @@ namespace OnlineShop.Areas.Customer.Controllers
             else
             {
                 return NotFound();
-                // Handle the case where requested quantity exceeds available quantity
-                // You can redirect with a message indicating insufficient stock
+               
             }
 
             return RedirectToAction(nameof(Index));
         }
 
-        
+        [Authorize(Roles = "Customer")]
         public IActionResult RemoveToCart(int? id)
         {
             List<Products> products = HttpContext.Session.Get<List<Products>>("products");
@@ -248,8 +176,8 @@ namespace OnlineShop.Areas.Customer.Controllers
 
         [HttpPost]
 
-        [HttpPost]
 
+        [Authorize(Roles = "Customer")]
         public IActionResult Remove(int? id)
         {
             List<Products> products = HttpContext.Session.Get<List<Products>>("products");
@@ -266,53 +194,12 @@ namespace OnlineShop.Areas.Customer.Controllers
         }
 
 
-        //[HttpPost]
-        //[Authorize(Roles = "Customer")]
-        //public IActionResult Remove(int? id)
-        //{
-        //    List<Products> products = HttpContext.Session.Get<List<Products>>("products");
-        //    if (products != null)
-        //    {
-        //        var product = products.FirstOrDefault(c => c.Id == id);
-        //        if (product != null)
-        //        {
-        //            products.Remove(product);
-        //            HttpContext.Session.Set("products", products);
-        //        }
-        //    }
-        //    return RedirectToAction(nameof(Index));
-        //}
-
-        //   [HttpPost]
-        //public IActionResult Remove(int? id)
-        //{
-        //    List<Products> products = HttpContext.Session.Get<List<Products>>("products");
-        //    if (products != null)
-        //    {
-        //        var productToRemove = products.FirstOrDefault(c => c.Id == id);
-        //        if (productToRemove != null)
-        //        {
-        //            // Increase the product quantity in the total products
-        //            var totalProduct = _db.Products.FirstOrDefault(p => p.Id == id);
-        //            if (totalProduct != null)
-        //            {
-        //                totalProduct.Quantity += productToRemove.QuantityInCart;
-        //                _db.SaveChanges(); // Save changes to the database
-        //            }
-
-        //            products.Remove(productToRemove);
-        //            HttpContext.Session.Set("products", products);
-        //            _db.SaveChanges(); // Save changes to the database
-        //        }
-        //    }
-        //    return RedirectToAction(nameof(Index));
-        //}
-
+  
 
 
         //GET product Cart action method
 
-        //    [Authorize(Roles = "Customer")]
+            [Authorize(Roles = "Customer")]
         public IActionResult Cart()
         {
             List<Products> products = HttpContext.Session.Get<List<Products>>("products");
@@ -337,7 +224,7 @@ namespace OnlineShop.Areas.Customer.Controllers
         {
             return View();
         }
-
+        
         public IActionResult Order(int id)
         {
             var order = _db.Orders.Include(o => o.OrderDetails)
