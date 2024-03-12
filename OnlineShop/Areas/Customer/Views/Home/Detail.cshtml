@@ -26,6 +26,7 @@
 
 <h2 class="text-info">Product Details</h2>
 <form asp-action="Detail" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="Id" />
     <div class="p-4 rounded border row">
         <div asp-validation-summary="ModelOnly" class="text-danger">
         </div>
@@ -35,7 +36,7 @@
                     <label asp-for="Name"></label>
                 </div>
                 <div class="col-lg-8">
-                    <input type="hidden" asp-for="Id" />
+                  
                     <input asp-for="Name" readonly="readonly" class="form-control" />
                 </div>
                 <span asp-validation-for="Name" class="text-danger"></span>
@@ -49,7 +50,18 @@
                 </div>
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-           
+
+            <div class="form-group row">
+                <div class="col-lg-4">
+                    <label asp-for="Quantity"></label>
+                </div>
+                <div class="col-lg-8">
+                    <input asp-for="Quantity" readonly="readonly" class="form-control" />
+                </div>
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+
+
 
 
             <div class="form-group row">
@@ -74,6 +86,18 @@
                 <span asp-validation-for="ProductTypeId" class="text-danger"></span>
             </div>
 
+            <!-- Quantity selection -->
+            <div class="form-group">
+                <div class="col-lg-4">
+                <label asp-for="QuantityInCart" class="control-label">Quantity</label>
+                </div>
+                <div class="col-lg-8">
+                <input asp-for="QuantityInCart" class="form-control" type="number" min="1" max="@Model.Quantity" value="1" />
+                </div>
+                <span asp-validation-for="QuantityInCart" class="text-danger"></span>
+            </div>
+
+
             <div class="form-group row">
                 <div class="col-lg-4">
                 </div>
@@ -82,7 +106,7 @@
                     {
                         @if (product != null)
                         {
-                            <button type="submit" class="btn btn-danger form-control" asp-action="Remove" asp-route-id="@Model.Id">Remove to Cart</button>
+                            <button type="submit" class="btn btn-danger form-control" asp-action="RemoveToCart" asp-route-id="@Model.Id">Remove to Cart</button>
                         }
                         else
                         {
