@@ -108,7 +108,7 @@
                 </tbody>
             </table>
             <div class="text-right">
-                <h3>Total Price : @products.Sum(c=>c.Price)</h3>
+                <h3>Total Price : @products.Sum(c => c.Price * c.QuantityInCart)</h3>
             </div>
             <div class="form-group text-right">
                 <input type="submit" value="Place Order" class="btn btn-success"/>
@@ -121,7 +121,7 @@
 
 
 
-@* @section Scripts{
+@section Scripts{
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         $(document).ready(function() {
@@ -142,6 +142,6 @@
     </script>
   
 }
- *@
+
 
 
