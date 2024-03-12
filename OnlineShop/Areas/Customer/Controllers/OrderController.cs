@@ -55,8 +55,12 @@ namespace OnlineShop.Areas.Customer.Controllers
             {
                 foreach (var product in products)
                 {
-                    OrderDetails orderDetails = new OrderDetails();
-                    orderDetails.PorductId = product.Id;
+                    OrderDetails orderDetails = new OrderDetails
+                    {
+                        PorductId = product.Id,
+                        Price = product.Price,  // Assuming product.Price represents the unit price
+                        Quantity = product.QuantityInCart
+                    };
                     anOrder.OrderDetails.Add(orderDetails);
                 }
             }
@@ -89,29 +93,7 @@ namespace OnlineShop.Areas.Customer.Controllers
             return rowCount.ToString("000");
         }
 
-        //public async Task<IActionResult> UserOrders()
-        //{
-        //    // Retrieve the user ID of the current authenticated user
-        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        //    // Retrieve user details
-        //    var user = await _userManager.FindByIdAsync(userId);
-
-        //    // Retrieve orders associated with the user's ID
-        //    var userOrders = await _db.Orders
-        //        .Include(o => o.User)
-        //        .Where(o => o.UserId == userId)
-        //        .ToListAsync();
-
-        //    // Create a view model to hold user information and orders
-        //    var viewModel = new UserOrdersViewModel
-        //    {
-        //        User = (ApplicationUser)user,
-        //        Orders = userOrders
-        //    };
-
-        //    return View(viewModel);
-        //}
+      
 
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> UserOrders()
@@ -130,15 +112,28 @@ namespace OnlineShop.Areas.Customer.Controllers
                 .Where(o => o.UserId == userId)
                 .ToListAsync();
 
-            // Create a view model to hold user information and orders
-            var viewModel = new UserOrdersViewModel
+            // Map the data to view model
+            var viewModel = userOrdersWithProducts.Select(order => new UserOrdersViewModel
             {
-                User = (ApplicationUser)user,
-                Orders = userOrdersWithProducts
-            };
+                UserName = user.UserName, // Assuming user has a Name property
+                UserPhone = user.PhoneNumber, // Assuming user has a Phone property
+                OrderNo = order.OrderNo,
+                OrderDate = order.OrderDate,
+                TotalPrice = order.OrderDetails.Sum(od => od.Quantity * od.Price),
+                OrderDetails = order.OrderDetails.Select(od => new OrderDetailsViewModel
+                {
+                    ProductId = od.PorductId,
+                    ProductName = od.Product.Name,
+                    ProductImage = od.Product.Image,
+                    ProductColor = od.Product.ProductColor,
+                    Quantity = od.Quantity,
+                    Price = od.Price
+                }).ToList()
+            }).ToList();
 
             return View(viewModel);
         }
+
 
 
         [Authorize(Roles = "Admin")]
@@ -208,12 +203,22 @@ namespace OnlineShop.Areas.Customer.Controllers
             return RedirectToAction("Index"); // Redirect to the index page after deletion
         }
 
+   
+
         [Authorize(Roles = "Customer")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteUserOrder(int id)
+        public async Task<IActionResult> DeleteUserOrder(string id)
         {
-            var order = await _db.Orders.FindAsync(id);
+            // Convert the id to int if necessary
+            int orderId;
+            if (!int.TryParse(id, out orderId))
+            {
+                // Handle invalid id format
+                return BadRequest();
+            }
+
+            var order = await _db.Orders.FirstOrDefaultAsync(o => o.OrderNo == id);
             if (order == null)
             {
                 return NotFound();
@@ -224,6 +229,9 @@ namespace OnlineShop.Areas.Customer.Controllers
 
             return RedirectToAction(nameof(UserOrders));
         }
+
+
+
 
 
     }

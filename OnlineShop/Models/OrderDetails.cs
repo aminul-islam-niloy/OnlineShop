@@ -16,5 +16,10 @@ namespace OnlineShop.Models
         [ForeignKey("PorductId")]
         public Products Product { get; set; }
 
+        // Quantity of the product in this order detail
+        public int Quantity { get; set; }
+
+        // Price of the product in this order detail
+        public decimal Price { get; set; }
     }
 }

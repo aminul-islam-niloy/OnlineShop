@@ -1,4 +1,9 @@
-﻿@model UserOrdersViewModel
+﻿@model List<UserOrdersViewModel>
+
+@* @model List<UserOrdersViewModel> *@
+
+
+@* @model UserOrdersViewModel
 <br />
 <h4>User Orders</h4>
 <br />
@@ -88,5 +93,90 @@
         </table>
     </div>
 
+    <hr />
+}
+ *@
+
+
+
+<br />
+<h4>User Orders</h4>
+<br />
+
+<div>
+    <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+            <div style="display: flex; align-items: center;">
+                <p><strong>Name:</strong> @Model.First().UserName</p>
+                <p style="margin-left: 20px; "><strong>Email:</strong> @Model.First().UserName</p>
+                <p style="margin-left: 20px; "><strong>Phone:</strong> @Model.First().UserPhone</p>
+            </div>
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+</div>
+
+<hr />
+
+@foreach (var order in Model)
+{
+    <div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div>
+                    <h4>Order Status</h4>
+                    <button type="submit" class="btn btn-primary">Processing </button>
+                    <button type="submit" class="btn btn-primary">Tracking </button>
+                    <button type="submit" class="btn btn-primary">Delivered </button>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div style="display: flex; align-items: center;">
+                    <p><strong>Order No:</strong> @order.OrderNo</p>
+                    <p style="margin-left: 30px;font:xx-large "><strong>Order Date:</strong> @order.OrderDate.ToShortDateString()</p>
+                    <p style="margin-left: 30px;"> Total Price : @order.TotalPrice</p>
+                
+                </div>
+                
+
+            </div>
+            <div class="col-lg-4">
+                <div style="display: flex; align-items: center;">
+                    <h4>Order Manage:</h4>
+                    <button type="submit" class="btn btn-primary ml-4 mr-4">Return </button>
+                    <form method="post" asp-action="DeleteUserOrder" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        <input type="hidden" name="id" value="@order.OrderNo" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Image</th>
+                    <th>Quantity</th>
+                    <th>Payment Method</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var orderDetail in order.OrderDetails)
+                {
+                    <tr>
+                        <td>@orderDetail.ProductId</td>
+                        <td>@orderDetail.ProductName</td>
+                        <td>@orderDetail.Price</td>
+                        <td><img src="~/@orderDetail.ProductImage" alt="Product Image" width="70" height="70" /></td>
+                        <td>@orderDetail.Quantity</td>
+                        <td>Cash On Delivery</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
     <hr />
 }
