@@ -18,7 +18,7 @@ using static System.Net.Mime.MediaTypeNames;
 namespace OnlineShop.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    // [Authorize(Roles = "Admin")]
+     [Authorize(Roles = "Admin")]
     public class ProductsController : Controller
     {
 
@@ -184,57 +184,6 @@ namespace OnlineShop.Areas.Admin.Controllers
 
 
 
-
-
-
-
-
-        ////POST Edit Action Method
-        //[HttpPost]
-        //public async Task<IActionResult> Edit(Products products, IFormFile image)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (image != null)
-        //        {
-        //            var name = Path.Combine(_he.WebRootPath + "/Images", Path.GetFileName(image.FileName));
-        //            await image.CopyToAsync(new FileStream(name, FileMode.Create));
-        //            products.Image = "Images/" + image.FileName;
-        //        }
-
-        //        if (image == null)
-        //        {
-        //            products.Image = "Images/noimage.PNG";
-        //        }
-        //        _db.Products.Update(products);
-        //        await _db.SaveChangesAsync();
-        //        TempData["save"] = "Product has been updated";
-        //        return RedirectToAction(nameof(Index));
-        //    }
-
-        //    return View(products);
-        //}
-
-
-        ////GET Details Action Method
-        //public ActionResult Details(int? id)
-        //{
-        //    ViewData["productTypeId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
-        //    ViewData["TagId"] = new SelectList(_db.SpecialTag.ToList(), "Id", "Name");
-
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var product = _db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag)
-        //        .FirstOrDefault(c => c.Id == id);
-        //    if (product == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(product);
-        //}
 
 
         //GET Details Action Method
