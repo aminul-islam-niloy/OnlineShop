@@ -253,7 +253,7 @@ namespace OnlineShop.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImage");
+                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("OnlineShop.Models.Products", b =>

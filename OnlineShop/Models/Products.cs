@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
 
 namespace OnlineShop.Models
 {
@@ -36,8 +37,6 @@ namespace OnlineShop.Models
         public int Quantity { get; set; }
         public int QuantityInCart { get; set; } // Quantity of the product in the cart
         public string Description { get; set; }
-
-
 
         public ICollection<ProductImage> ImagesSmall { get; set; }
 
