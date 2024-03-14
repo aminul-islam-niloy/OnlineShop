@@ -49,11 +49,11 @@
                     <h4 class="card-title">@UserManager.GetUserName(User)</h4>
                     <p class="card-text">@Model.Email</p>
 
-                    <a asp-area="Customer" style="margin-left:10px" asp-controller="UserProfile" class="btn btn-warning" asp-action="Edit" asp-route-id="@userId">Edit Profile</a>
+                    <a asp-area="Customer" style="margin-left:10px" asp-controller="UserProfile" class="btn btn-info" asp-action="Edit" asp-route-id="@userId">Edit Profile</a>
                     <br />
                 </div>
 
-                <a asp-area="Customer" style="margin-left:10px" asp-controller="UserProfile" class="btn btn-warning" asp-action="Locout" asp-route-id="@userId">Lock Profile</a>
+                <a asp-area="Customer" style="margin-left:10px" asp-controller="UserProfile" class="btn btn-warning" asp-action="Lockout" asp-route-id="@userId">Lock Profile</a>
                  <a asp-area="Customer" style="margin-left:10px" asp-controller="UserProfile" class="btn btn-danger" asp-action="Delete" asp-route-id="@userId">Delete Profile</a>
                  <a asp-area="Customer" style="margin-left:10px" asp-controller="UserProfile" class="btn btn-success" asp-action="Active" asp-route-id="@userId">Active Profile</a>
             </div>
@@ -96,6 +96,8 @@
                             <dd class="col-sm-8"> <a asp-area="Customer" style="margin-left:10px" asp-controller="Order" asp-action="Index" class="btn btn-success"><i class="fa-solid fa-bag-shopping"></i>Manage Orders</a></dd>
                             <dt class="col-sm-4">Manage Users:</dt>
                             <dd class="col-sm-8"> <a asp-area="Customer" style="margin-left:10px" class="btn btn-info" asp-controller="User" asp-action="Index" class="nav-link">Manage User</a> </dd>
+                            <dt class="col-sm-4">Other Setting:</dt>
+                            <dd class="col-sm-8">   <a asp-area="Identity" class="btn btn-danger" style="margin-left:10px" asp-page="/Account/Manage/ChangePassword" title="Manage"> Password Section</a> </dd>
                         }
                         @if (User.IsInRole("SuperAdmin"))
                         {
@@ -103,13 +105,19 @@
                             <dd class="col-sm-8"> <a asp-area="Customer" style="margin-left:10px" asp-controller="Order" asp-action="Index" class="btn btn-success"><i class="fa-solid fa-bag-shopping"></i>Manage Orders</a></dd>
                             <dt class="col-sm-4">Manage Users:</dt>
                             <dd class="col-sm-8"> <a asp-area="Customer" style="margin-left:10px" class="btn btn-info" asp-controller="User" asp-action="Index" class="nav-link">Manage User</a> </dd>
+                            <dt class="col-sm-4">Other Setting:</dt>
+                            <dd class="col-sm-8">   <a asp-area="Identity" class="btn btn-danger" style="margin-left:10px" asp-page="/Account/Manage/ChangePassword" title="Manage"> Password Section</a> </dd>
                         }
                         else if (User.IsInRole("Customer"))
                         {
                             <dt class="col-sm-4">Go to Cart:</dt>
-                            <dd class="col-sm-8"> <a asp-area="Customer" style="margin-left:10px" asp-controller="Home" class="btn btn-success" asp-action="Cart" class="nav-link"><i class="fas fa-shopping-cart"></i> (@count) Cart</a></dd>
+                            <dd class="col-sm-8">
+                                <a asp-area="Customer" style="margin-left:10px" asp-controller="Home" class="btn btn-success width:20px;padding:2px;" asp-action="Cart" class="nav-link"><i class="fas fa-shopping-cart"></i> (@count) Cart</a>
+                            </dd>
                             <dt class="col-sm-4">Order History:</dt>
-                            <dd class="col-sm-8"> <a asp-area="Customer" style="margin-left:10px" asp-controller="Order" class="btn btn-info" asp-action="UserOrders" class="nav-link"><i class="fa-solid fa-suitcase"></i> My Orders</a></dd>
+                            <dd class="col-sm-8"> <a asp-area="Customer" style="margin-left:10px" asp-controller="Order" class="btn btn-info width:20px;padding:2px;" asp-action="UserOrders" class="nav-link"><i class="fa-solid fa-suitcase"></i> My Orders</a></dd>
+                            <dt class="col-sm-4">Other Setting:</dt>
+                            <dd class="col-sm-8">   <a asp-area="Identity" class="btn btn-danger width:20px;padding:2px;" style="margin-left:10px" asp-page="/Account/Manage/ChangePassword" title="Manage"> Password Section</a> </dd>
                         }
                     </dl>
 
