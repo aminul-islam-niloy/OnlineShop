@@ -1,16 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Data;
 using OnlineShop.Models;
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace OnlineShop.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         UserManager<IdentityUser> _userManager;
@@ -64,36 +66,49 @@ namespace OnlineShop.Areas.Customer.Controllers
             return View(user);
         }
 
-        public async Task<IActionResult> Edit(string id)
-        {
-            var user = _db.ApplicationUser.FirstOrDefault(c => c.Id == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return View(user);
-        }
+        //public async Task<IActionResult> Edit(string id)
+        //{
+        //    var user = _db.ApplicationUser.FirstOrDefault(c => c.Id == id);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(user);
+        //}
 
-        [HttpPost]
-        public async Task<IActionResult> Edit(ApplicationUser user)
-        {
-            var userInfo = _db.ApplicationUser.FirstOrDefault(c => c.Id == user.Id);
-            if (userInfo == null)
-            {
-                return NotFound();
-            }
-            userInfo.FirstName = user.FirstName;
-            userInfo.LastName = user.LastName;
-            userInfo.Email = user.Email;
-            userInfo.PhoneNumber = user.PhoneNumber;
-            var result = await _userManager.UpdateAsync(userInfo);
-            if (result.Succeeded)
-            {
-                TempData["save"] = "User has been updated successfully";
-                return RedirectToAction(nameof(Index));
-            }
-            return View(userInfo);
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> Edit(ApplicationUser user, IFormFile profilePicture)
+        //{
+        //    var userInfo = _db.ApplicationUser.FirstOrDefault(c => c.Id == user.Id);
+        //    if (userInfo == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    userInfo.FirstName = user.FirstName;
+        //    userInfo.LastName = user.LastName;
+        //    userInfo.PhoneNumber = user.PhoneNumber;
+        //    userInfo.Address = user.Address;
+        //    userInfo.DateOfBirth = user.DateOfBirth;
+
+        //    // Handle profile picture upload
+        //    if (profilePicture != null && profilePicture.Length > 0)
+        //    {
+        //        using (var memoryStream = new MemoryStream())
+        //        {
+        //            await profilePicture.CopyToAsync(memoryStream);
+        //            userInfo.ProfilePicture = memoryStream.ToArray();
+        //        }
+        //    }
+
+
+        //    var result = await _userManager.UpdateAsync(userInfo);
+        //    if (result.Succeeded)
+        //    {
+        //        TempData["save"] = "User has been updated successfully";
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(userInfo);
+        //}
 
         public async Task<IActionResult> Details(string id)
         {

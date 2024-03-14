@@ -4,8 +4,15 @@
 }
 <br />
 
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    string userId = UserManager.GetUserId(User);
+}
+
 <div class="row">
-   
+
     <div class="col-lg-12">
 
         <div class="card">
@@ -18,10 +25,10 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" asp-for="Id" value="@Model.Id" />
                         <h3>@ViewBag.message</h3>
-                        
+
                         <div class="row">
                             <div class="col-lg-8">
-                               
+
 
                                 <div class="form-group row">
                                     <div class="col-3">
@@ -65,20 +72,20 @@
 
                                 <div class="form-group row">
                                     <div class="col-3">
-                                    <label asp-for="DateOfBirth">Date of Birth</label>
-                                       </div>
+                                        <label asp-for="DateOfBirth">Date of Birth</label>
+                                    </div>
                                     <div class="col-5">
-                                    <input asp-for="DateOfBirth" type="date" class="form-control" />
+                                        <input asp-for="DateOfBirth" type="date" class="form-control" />
                                     </div>
                                     <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-group row">
                                     <div class="col-3">
-                                    <label asp-for="Address"> Address </label>
+                                        <label asp-for="Address"> Address </label>
                                     </div>
                                     <div class="col-5 ">
-                                    <input asp-for="Address" class="form-control" />
+                                        <input asp-for="Address" class="form-control" />
                                     </div>
                                     <span asp-validation-for="Address" class="text-danger"></span>
                                 </div>
@@ -112,7 +119,7 @@
 
                         <div class="form-group">
                             <input type="submit" class="btn btn-primary" value="Update" />
-                            <a asp-action="Index" class="btn btn-success">Back to List</a>
+                            <a asp-area="Customer" asp-controller="UserProfile" asp-action="Details" asp-route-id="@userId" class="btn btn-primary">user Information</a> <!-- Add this button -->
                         </div>
                     </div>
                 </form>

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineShop.Data;
 
 namespace OnlineShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240313195137_UserProfileIdentity")]
+    partial class UserProfileIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -327,7 +329,7 @@ namespace OnlineShop.Data.Migrations
 
                     b.Property<string>("Address");
 
-                    b.Property<DateTime?>("DateOfBirth");
+                    b.Property<DateTime>("DateOfBirth");
 
                     b.Property<string>("FirstName")
                         .IsRequired();
@@ -337,7 +339,7 @@ namespace OnlineShop.Data.Migrations
 
                     b.Property<byte[]>("ProfilePicture");
 
-                    b.Property<int?>("UsernameChangeLimit");
+                    b.Property<int>("UsernameChangeLimit");
 
                     b.ToTable("ApplicationUser");
 

@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using OnlineShop.Models;
 
 namespace OnlineShop.Areas.Identity.Pages.Account.Manage
 {
@@ -39,6 +42,11 @@ namespace OnlineShop.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
             [Required]
             [EmailAddress]
             public string Email { get; set; }
@@ -46,6 +54,38 @@ namespace OnlineShop.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "Profile Picture")]
+            public byte[] ProfilePicture { get; set; }
+
+            [Display(Name = "Date of Birth")]
+            [DataType(DataType.Date)]
+            public DateTime DateOfBirth { get; set; }
+
+            [Display(Name = "Address")]
+            public string Address { get; set; }
+        }
+
+        private async Task LoadAsync(ApplicationUser user)
+        {
+            var userName = await _userManager.GetUserNameAsync(user);
+            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var firstName = user.FirstName;
+            var lastName = user.LastName;
+            var profilePicture = user.ProfilePicture;
+            var dateOfBirth = user.DateOfBirth;
+            var address = user.Address;
+            Username = userName;
+            Input = new InputModel
+            {
+                PhoneNumber = phoneNumber,
+                FirstName = firstName,
+                LastName = lastName,
+                ProfilePicture = profilePicture,
+                DateOfBirth = (DateTime)dateOfBirth,
+                Address = address
+
+            };
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -55,6 +95,8 @@ namespace OnlineShop.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+
+           
 
             var userName = await _userManager.GetUserNameAsync(user);
             var email = await _userManager.GetEmailAsync(user);
@@ -81,10 +123,13 @@ namespace OnlineShop.Areas.Identity.Pages.Account.Manage
             }
 
             var user = await _userManager.GetUserAsync(User);
+
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+
+           
 
             var email = await _userManager.GetEmailAsync(user);
             if (Input.Email != email)
@@ -107,6 +152,51 @@ namespace OnlineShop.Areas.Identity.Pages.Account.Manage
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
                 }
             }
+
+            //// Update first name if it's changed
+            //var firstName = user.FirstName;
+            //if (Input.FirstName != firstName)
+            //{
+            //    user.FirstName = Input.FirstName;
+            //    await _userManager.UpdateAsync(user);
+            //}
+
+            //// Update last name if it's changed
+            //var lastName = user.LastName;
+            //if (Input.LastName != lastName)
+            //{
+            //    user.LastName = Input.LastName;
+            //    await _userManager.UpdateAsync(user);
+            //}
+
+            //// Update date of birth if it's changed
+            //var dateOfBirth = user.DateOfBirth;
+            //if (Input.DateOfBirth != dateOfBirth)
+            //{
+            //    user.DateOfBirth = Input.DateOfBirth;
+            //    await _userManager.UpdateAsync(user);
+            //}
+
+            //// Update address if it's changed
+            //var address = user.Address;
+            //if (Input.Address != address)
+            //{
+            //    user.Address = Input.Address;
+            //    await _userManager.UpdateAsync(user);
+            //}
+
+            //if (Request.Form.Files.Count > 0)
+            //{
+            //    IFormFile file = Request.Form.Files.FirstOrDefault();
+            //    using (var dataStream = new MemoryStream())
+            //    {
+            //        await file.CopyToAsync(dataStream);
+            //        user.ProfilePicture = dataStream.ToArray();
+            //    }
+            //    await _userManager.UpdateAsync(user);
+            //}
+
+
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";

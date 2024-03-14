@@ -12,6 +12,18 @@
             <h4>Create a new account.</h4>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
+           
+            <div class="form-group">
+                <label asp-for="Input.FirstName"></label>
+                <input asp-for="Input.FirstName" class="form-control" />
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.LastName"></label>
+                <input asp-for="Input.LastName" class="form-control" />
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+            
             <div class="form-group">
                 <label asp-for="Input.Email"></label>
                 <input asp-for="Input.Email" class="form-control" />
@@ -33,8 +45,8 @@
                 <input type="checkbox" name="roles" value="Customer" /> Customer<br />
                 <input type="checkbox" name="roles" value="Farmer" /> Farmer<br />
                 <input type="checkbox" name="roles" value="Rider" /> Rider<br />
-                <input type="checkbox" name="roles" value="Admin" /> Admin<br />
-                <input type="checkbox" name="roles" value="SuperAdmin" />Super Admin<br />
+                @* <input type="checkbox" name="roles" value="Admin" /> Admin<br />
+                <input type="checkbox" name="roles" value="SuperAdmin" />Super Admin<br /> *@
             </div>
 
             <button type="submit" class="btn btn-default">Register</button>

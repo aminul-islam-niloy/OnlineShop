@@ -1,34 +1,61 @@
 ﻿@model OnlineShop.Models.ApplicationUser
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Details";
 }
 <br />
 
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    string userId = UserManager.GetUserId(User);
+}
+
 <div class="row">
-   
+
     <div class="col-lg-12">
 
         <div class="card">
             <div class="card-header">
-                <h2 class="card-title text-info">Edit User</h2>
+                <h2 class="card-title text-info"> User Information</h2>
             </div>
             <div class="card-body">
-                <form asp-action="Edit" method="post" id="user-form" enctype="multipart/form-data">
+                <form asp-action="Details" method="post" id="user-form" enctype="multipart/form-data">
                     <div>
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <input type="hidden" asp-for="Id" value="@Model.Id" />
                         <h3>@ViewBag.message</h3>
-                        
+
                         <div class="row">
                             <div class="col-lg-8">
-                               
+
+                                <div class="form-group row">
+                                    <div class="col-3">
+                                        <label asp-for="UserName"></label>
+                                    </div>
+                                    <div class="col-5">
+                                        <input asp-for="UserName" class="form-control" readonly="readonly" />
+                                    </div>
+                                    <span asp-validation-for="UserName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-3">
+                                        <label asp-for="Email"></label>
+                                    </div>
+                                    <div class="col-5">
+                                        <input asp-for="Email" class="form-control" readonly="readonly" />
+                                    </div>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+
 
                                 <div class="form-group row">
                                     <div class="col-3">
                                         <label asp-for="FirstName"></label>
                                     </div>
                                     <div class="col-5">
-                                        <input asp-for="FirstName" class="form-control" />
+                                        <input asp-for="FirstName" class="form-control" readonly="readonly" />
                                     </div>
                                     <span asp-validation-for="FirstName" class="text-danger"></span>
                                 </div>
@@ -37,19 +64,9 @@
                                         <label asp-for="LastName"></label>
                                     </div>
                                     <div class="col-5">
-                                        <input asp-for="LastName" class="form-control" />
+                                        <input asp-for="LastName" class="form-control" readonly="readonly" />
                                     </div>
                                     <span asp-validation-for="LastName" class="text-danger"></span>
-                                </div>
-
-                                <div class="form-group row">
-                                    <div class="col-3">
-                                        <label asp-for="Email"></label>
-                                    </div>
-                                    <div class="col-5">
-                                        <input asp-for="Email" class="form-control" />
-                                    </div>
-                                    <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
 
                                 <div class="form-group row">
@@ -57,33 +74,31 @@
                                         <label asp-for="PhoneNumber"></label>
                                     </div>
                                     <div class="col-5">
-                                        <input asp-for="PhoneNumber" class="form-control" />
+                                        <input asp-for="PhoneNumber" class="form-control" readonly="readonly" />
                                     </div>
                                     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                 </div>
 
-
                                 <div class="form-group row">
                                     <div class="col-3">
-                                    <label asp-for="DateOfBirth">Date of Birth</label>
-                                       </div>
+                                        <label asp-for="DateOfBirth">Date of Birth</label>
+                                    </div>
                                     <div class="col-5">
-                                    <input asp-for="DateOfBirth" type="date" class="form-control" />
+                                        <input asp-for="DateOfBirth" type="date" class="form-control" readonly="readonly" />
                                     </div>
                                     <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                                 </div>
-
                                 <div class="form-group row">
                                     <div class="col-3">
-                                    <label asp-for="Address"> Address </label>
+                                        <label asp-for="Address">Address</label>
                                     </div>
-                                    <div class="col-5 ">
-                                    <input asp-for="Address" class="form-control" />
+                                    <div class="col-5">
+                                        <input asp-for="Address" class="form-control" readonly="readonly" />
                                     </div>
                                     <span asp-validation-for="Address" class="text-danger"></span>
                                 </div>
-                            </div>
 
+                            </div>
                             <div class="col-lg-4">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <div class="form-group">
@@ -96,13 +111,6 @@
                                     {
                                         <img id="profilePicture" style="width:200px;height:200px; object-fit:cover" src="">
                                     }
-                                    <input type="file"
-                                           accept=".png,.jpg,.jpeg,.gif,.tif"
-                                           asp-for="ProfilePicture"
-                                           class="form-control"
-                                           style="border:0px!important;padding: 0px;padding-top: 5px;padding-bottom: 30px;"
-                                           onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
-                                    <span asp-validation-for="ProfilePicture" class="text-danger"></span>
                                 </div>
 
                             </div>
@@ -112,7 +120,7 @@
 
                         <div class="form-group">
                             <input type="submit" class="btn btn-primary" value="Update" />
-                            <a asp-action="Index" class="btn btn-success">Back to List</a>
+                            <a asp-area="Customer" asp-controller="UserProfile" asp-action="Edit" asp-route-id="@userId" class="btn btn-primary">Edit Information</a>
                         </div>
                     </div>
                 </form>
@@ -149,5 +157,4 @@
         });
     </script>
 }
-
 
