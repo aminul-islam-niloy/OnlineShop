@@ -1,12 +1,15 @@
 ﻿@{
     Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+
+    // Layout = "/Areas/Customer/Views/UserProfile/Deshboard.cshtml";
+
 }
 
+﻿@using OnlineShop.Models;
+@* @model IEnumerable<ApplicationUser> *@
 @using Microsoft.AspNetCore.Identity
-@using OnlineShop.Models;
 @inject UserManager<IdentityUser> UserManager
 @using Microsoft.AspNetCore.Identity
-
 
 @{
     ViewData["Title"] = "Dashboard";
@@ -16,109 +19,124 @@
     var curren = await UserManager.GetUserAsync(User);
 }
 
+@* 
+        <body>
+            <section class="vh-100" style="background-color: #f4f5f7;">
+                <div class="container py-5 h-100">
+                    <div class="row d-flex justify-content-center align-items-center h-100">
+                        <div class="col col-lg-12 mb-4 mb-lg-0">
+                            <div class="card mb-3" style="border-radius: .5rem;">
+                                <div class="row g-0">
+                                    <div class="col-lg-6 gradient-custom text-center text-white">
+                                        <hr class="mt-0 mb-4">
 
-@if (User.Identity.IsAuthenticated)
-{
-
-
-
-    <h4>User Dashboard</h4>
-
-    <p>Welcome to your dashboard! Here you can manage your profile:</p>
-
-
-    <br />
-
-    <body>
-        <section class="vh-100" style="background-color: #f4f5f7;">
-            <div class="container py-5 h-100">
-                <div class="row d-flex justify-content-center align-items-center h-100">
-                    <div class="col col-lg-12 mb-4 mb-lg-0">
-                        <div class="card mb-3" style="border-radius: .5rem;">
-                            <div class="row g-0">
-                                <div class="col-lg-6 gradient-custom text-center text-white">
-                                    <hr class="mt-0 mb-4">
-
-
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                                         alt="Avatar" class="img-fluid my-6" style="width: 160px;" />
-
-                                    <h4>@currentUser.UserName</h4>
-
-
-                                    <i class="mb-6"></i>
-                                    <a asp-area="Customer" asp-controller="UserProfile" asp-action="Edit" asp-route-id="@userId" class="btn btn-primary">Edit Information</a> <!-- Add this button -->
-                                    <i class="mb-6"></i>
-                                    <br />
-                                    <br />
-                                    <br />
-                                    <br />
-
-                                </div>
-
-                                <div class="col-lg-6">
-                                    <div class="row">
-                                        <h3>User Information</h3>
-
-                                        <div class="d-flex justify-content-start">
-                                            <a href="#!"><i class="fa-brands fa-facebook"></i></a>
-                                            <a href="#!"><i class="fa-brands fa-github"></i></a>
-                                            <a href="#!"><i class="fa-brands fa-linkedin"></i></a>
+                                        iv class="col-lg-4">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="form-group">
+                                            
+                                         
+                                                <img src="~/item.Image" width="100%" height="250px" style="border-radius: 5px;border: 1px solid #efefef" />
+                                             
+                                            
+                                                <img src="~/Images/user-profile-icon-free-vector.jpg" width="50px" height="50px" />
+                                           
                                         </div>
+                                       
 
-                                        <div class="col-lg-3">
+                                        <h4>@currentUser.UserName</h4>
 
-                                            <hr class="mt-4 mb-4">
-                                            <div class="row pt-1">
-                                                <div class="col-6 mb-3">
-                                                    <h4>Email</h4>
-                                                    <p class="text-muted">@currentUser.Email>
-                                                </div>
-                                                <div class="col-6 mb-3">
-                                                    <h6>Phone</h6>
-                                                    <p class="text-muted">@currentUser.PhoneNumber</p>
-                                                </div>
+
+                                        <i class="mb-6"></i>
+                                        <a asp-area="Customer" asp-controller="UserProfile" asp-action="Edit" asp-route-id="@userId" class="btn btn-primary">Edit Information</a> <!-- Add this button -->
+                                        <i class="mb-6"></i>
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <br />
+
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div class="row">
+                                            <h3>User Information</h3>
+
+                                            <div class="d-flex justify-content-start">
+                                                <a href="#!"><i class="fa-brands fa-facebook"></i></a>
+                                                <a href="#!"><i class="fa-brands fa-github"></i></a>
+                                                <a href="#!"><i class="fa-brands fa-linkedin"></i></a>
                                             </div>
 
-                                        </div>
-                                        <div class="col-lg-3">
+                                            <div class="col-lg-3">
 
-                                            <hr class="mt-0 mb-4">
-                                            <div class="row pt-1">
-                                                <div class="col-6 mb-3">
-                                                    <h4>Address</h4>
-                                                    <p class="text-muted">Bangladesh</p>
+                                                <hr class="mt-4 mb-4">
+                                                <div class="row pt-1">
+                                                    <div class="col-6 mb-3">
+                                                        <h4>Email</h4>
+                                                        <p class="text-muted">@currentUser.Email>
+                                                    </div>
+                                                    <div class="col-6 mb-3">
+                                                        <h6>Phone</h6>
+                                                        <p class="text-muted">@currentUser.PhoneNumber</p>
+                                                    </div>
                                                 </div>
-                                                <div class="col-6 mb-3">
-                                                    <h6>Most Viewed</h6>
-                                                    <p class="text-muted">100</p>
+
+                                            </div>
+                                            <div class="col-lg-3">
+
+                                                <hr class="mt-0 mb-4">
+                                                <div class="row pt-1">
+                                                    <div class="col-6 mb-3">
+                                                        <h4>Address</h4>
+                                                        <p class="text-muted">Bangladesh</p>
+                                                    </div>
+                                                    <div class="col-6 mb-3">
+                                                        <h6>Most Viewed</h6>
+                                                        <p class="text-muted">100</p>
+                                                    </div>
                                                 </div>
+
                                             </div>
 
-                                        </div>
+                                 @if (item.LockoutEnd > DateTime.Now && item.LockoutEnd != null)
+                                           
+                                      
+                                                <h3>Inactive </h3>
 
 
 
-                                        <a asp-area="Customer" asp-controller="UserProfile" asp-action="Details" class="btn btn-info" asp-route-id="@userId">View Profile</a>
-                                        <a asp-area="Customer" asp-controller="UserProfile" asp-action="Deshboard" class="btn btn-warning" asp-route-id="@userId">Deshboard</a>
-                                        <a asp-area="Customer" asp-controller="UserProfile" asp-action="Edit" class="btn btn-success" asp-route-id="@userId">Edit</a>
-                                        <a asp-area="Customer" asp-controller="UserProfile" asp-action="Locout" class="btn btn-primary" asp-route-id="@userId">Locout</a>
-                                        <a asp-area="Customer" asp-controller="UserProfile" asp-action="Delete" class="btn btn-danger" asp-route-id="@userId">View Profile</a>
+                                                <div class="btn-group">
+                                                    <a asp-area="Customer" asp-controller="UserProfile" asp-action="Active" class="btn btn-primary" asp-route-id="@userId">Active</a>
+                                                    <a asp-area="Customer" asp-controller="UserProfile" asp-action="Delete" class="btn btn-danger" asp-route-id="@userId">Delete</a>
+                                                </div>
+
+
 
                                       
+                                              <h3>Active</h3>
+                                                <a asp-area="Customer" asp-controller="UserProfile" asp-action="Edit" class="btn btn-success" asp-route-id="@userId">Edit</a>
+                                                <a asp-area="Customer" asp-controller="UserProfile" asp-action="Lockout" class="btn btn-primary" asp-route-id="@userId">Locout</a>
+
+
+                                     
+
+                                            <a asp-area="Customer" asp-controller="UserProfile" asp-action="Details" class="btn btn-info" asp-route-id="@userId">View Profile</a>
+                                            <a asp-area="Customer" asp-controller="UserProfile" asp-action="Deshboard" class="btn btn-warning" asp-route-id="@userId">Deshboard</a>
+                                            <a asp-area="Customer" asp-controller="UserProfile" asp-action="Edit" class="btn btn-success" asp-route-id="@userId">Edit</a>
+                                            <a asp-area="Customer" asp-controller="UserProfile" asp-action="Lockout" class="btn btn-primary" asp-route-id="@userId">Locout</a>
+                                            <a asp-area="Customer" asp-controller="UserProfile" asp-action="Delete" class="btn btn-danger" asp-route-id="@userId">Delete</a>
+
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </body>
+            </section>
+        </body>
 
-
-
-
+*@
     <div>
 
         <hr />
@@ -134,11 +152,6 @@
 
 
     </div>
-}
-else
-{
-    < p > Please log in to access your dashboard.</ p >
-}
 
 
 @section Scripts {

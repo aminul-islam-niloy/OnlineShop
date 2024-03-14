@@ -42,7 +42,7 @@ namespace OnlineShop.Areas.Customer.Controllers
             // Check if the current user is authorized to view the details
             if (currentUser.Id != user.Id)
             {
-                return Forbid(); // Or return some other appropriate action like a view with an error message
+                return Forbid(); 
             }
 
             return View(user);
@@ -54,7 +54,7 @@ namespace OnlineShop.Areas.Customer.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser.Id != id)
             {
-                // If the user is trying to edit another user's information, deny access
+           
                 return Forbid();
             }
 
@@ -73,7 +73,7 @@ namespace OnlineShop.Areas.Customer.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser.Id != user.Id)
             {
-                // If the user is trying to edit another user's information, deny access
+             
                 return Forbid();
             }
 
@@ -104,7 +104,8 @@ namespace OnlineShop.Areas.Customer.Controllers
             if (result.Succeeded)
             {
                 TempData["save"] = "User has been updated successfully";
-                return RedirectToAction(nameof(Index));
+                // Redirect to the dashboard with userId
+                return RedirectToAction("Deshboard", new { id = user.Id });
             }
             return View(userInfo);
          
@@ -115,7 +116,7 @@ namespace OnlineShop.Areas.Customer.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser.Id != id)
             {
-                // If the user is trying to delete another user's account, deny access
+               
                 return Forbid();
             }
 
@@ -134,7 +135,7 @@ namespace OnlineShop.Areas.Customer.Controllers
             var currentUser = await _userManager.GetUserAsync(User);
             if (currentUser.Id != user.Id)
             {
-                // If the user is trying to delete another user's account, deny access
+               
                 return Forbid();
             }
 
@@ -186,9 +187,19 @@ namespace OnlineShop.Areas.Customer.Controllers
                 return NotFound();
             }
 
-            userInfo.LockoutEnd = DateTime.Now.AddDays(3);
+            userInfo.LockoutEnd = DateTime.Now.AddDays(1);
             await _userManager.UpdateAsync(userInfo);
-            TempData["lockout"] = "User has been locked out successfully";
+          
+
+
+            var result = await _userManager.UpdateAsync(userInfo);
+            if (result.Succeeded)
+            {
+                TempData["lockout"] = "User has been locked out successfully";
+                // Redirect to the dashboard with userId
+                return RedirectToAction("Deshboard", new { id = user.Id });
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -205,6 +216,8 @@ namespace OnlineShop.Areas.Customer.Controllers
             {
                 return NotFound();
             }
+
+
 
             return View(user);
         }
@@ -226,13 +239,41 @@ namespace OnlineShop.Areas.Customer.Controllers
 
             userInfo.LockoutEnd = null;
             await _userManager.UpdateAsync(userInfo);
-            TempData["lockout"] = "User has been activated successfully";
+           
+            var result = await _userManager.UpdateAsync(userInfo);
+            if (result.Succeeded)
+            {
+                TempData["lockout"] = "User has been Active successfully";
+                // Redirect to the dashboard with userId
+                return RedirectToAction("Deshboard", new { id = user.Id });
+            }
+
+
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Deshboard()
+        public async Task<IActionResult> Deshboard(string id) 
         {
-            return View();
+
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _db.ApplicationUser.FirstOrDefaultAsync(c => c.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+           
+            if (currentUser.Id != user.Id)
+            {
+                return Forbid();  
+            }
+
+            return View(user);
         }
 
 

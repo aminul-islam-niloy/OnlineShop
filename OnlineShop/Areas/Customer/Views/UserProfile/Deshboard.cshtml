@@ -1,87 +1,132 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject UserManager<IdentityUser> UserManager
+@model OnlineShop.Models.ApplicationUser
+﻿@using System.Net.Http
+@using OnlineShop.Session
+@using Microsoft.AspNetCore.Http
+
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var userRole = HttpContextAccessor.HttpContext.Session.GetString("roleName");
+    int count = 0;
+    List<Products> products = HttpContextAccessor.HttpContext.Session.Get<List<Products>>("products");
+    if (products == null)
+    {
+        products = new List<Products>();
+    }
+    count = products.Count();
+}
 
 @{
-    ViewData["Title"] = "Dashboard";
     string userId = UserManager.GetUserId(User);
 }
 
-<h2>User Dashboard</h2>
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<h3>User Dashboard</h3>
 
 <p>Welcome to your dashboard! Here you can manage your profile:</p>
 
-
 <br />
 
-<body>
-    <section class="vh-100" style="background-color: #f4f5f7;">
-        <div class="container py-5 h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col col-lg-12 mb-4 mb-lg-0">
-                    <div class="card mb-3" style="border-radius: .5rem;">
-                        <div class="row g-0">
-                            <div class="col-lg-6 gradient-custom text-center text-white">
-                                <hr class="mt-0 mb-4">
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
-                                     alt="Avatar" class="img-fluid my-6" style="width: 160px;" />
-                                <h5>Marie Horwitz</h5>
-                                <p>Application User</p>
+<div class="container">
+ 
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    @if (Model.ProfilePicture != null)
+                    {
+                        <img src="data:image/jpeg;base64,@(Convert.ToBase64String(Model.ProfilePicture))" class="img-fluid rounded-circle mb-3" alt="Profile Picture" style="width: 200px; height: 200px;">
+                    }
+                    else
+                    {
+                        <img src="~/images/default-profile.jpg" class="img-fluid rounded-circle mb-3" alt="Default Profile Picture" style="width: 200px; height: 200px;">
+                    }
+                    <br />
+                    <br />
+                    <h4 class="card-title">@UserManager.GetUserName(User)</h4>
+                    <p class="card-text">@Model.Email</p>
 
-                                <i class="mb-6"></i>
-                                <a asp-area="Customer" asp-controller="UserProfile" asp-action="Edit" asp-route-id="@userId" class="btn btn-primary">Edit Information</a> <!-- Add this button -->
-                                <i class="mb-6"></i>
-                                <br />
-                                <br />
-                                <br />
-                                <br />
-
-                            </div>
-
-                            <div class="col-lg-6">
-                                <div class="row">
-                                    <h3>User Information</h3>
-                                    <div class="col-lg-3">
-
-                                        <hr class="mt-4 mb-4">
-                                        <div class="row pt-1">
-                                            <div class="col-6 mb-3">
-                                                <h6>Email</h6>
-                                                <p class="text-muted">info@example.com</p>
-                                            </div>
-                                            <div class="col-6 mb-3">
-                                                <h6>Phone</h6>
-                                                <p class="text-muted">123 456 789</p>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="col-lg-3">
-
-
-                                    </div>
-
-
-
-
-                                    <div class="d-flex justify-content-start">
-                                        <a href="#!"><i class="fab fa-fac fa-lg me-3"></i></a>
-                                        <a href="#!"><i class="fab fa-twitter fa-lg me-3"></i></a>
-                                        <a href="#!"><i class="fab fa-instagram fa-lg"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <a asp-area="Customer" style="margin-left:10px" asp-controller="UserProfile" class="btn btn-warning" asp-action="Edit" asp-route-id="@userId">Edit Profile</a>
+                    <br />
                 </div>
+
+                <a asp-area="Customer" style="margin-left:10px" asp-controller="UserProfile" class="btn btn-warning" asp-action="Locout" asp-route-id="@userId">Lock Profile</a>
+                 <a asp-area="Customer" style="margin-left:10px" asp-controller="UserProfile" class="btn btn-danger" asp-action="Delete" asp-route-id="@userId">Delete Profile</a>
+                 <a asp-area="Customer" style="margin-left:10px" asp-controller="UserProfile" class="btn btn-success" asp-action="Active" asp-route-id="@userId">Active Profile</a>
             </div>
         </div>
-    </section>
-</body>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">User Information</h3>
+                    <hr>
+                    <dl class="row">
+                        <dt class="col-sm-4">Name:</dt>
+                        <dd class="col-sm-8">@Model.FirstName    @Model.LastName</dd>
+
+                        <dt class="col-sm-4">Email:</dt>
+                        <dd class="col-sm-8">@Model.Email</dd>
+
+                        <dt class="col-sm-4">Phone Number:</dt>
+                        <dd class="col-sm-8">@Model.PhoneNumber</dd>
+
+                        <dt class="col-sm-4">Address:</dt>
+                        <dd class="col-sm-8">@Model.Address</dd>
+
+                        <dt class="col-sm-4">Date of Birth:</dt>
+                        <dd class="col-sm-8">@Model.DateOfBirth?.ToString("dd-MM-yyyy")</dd>
+                    </dl>
+                </div>
+            </div>
 
 
-<a asp-area="Customer" asp-controller="UserProfile" asp-action="Details" asp-route-id="@userId">View Profile</a>
-<a asp-area="Customer" asp-controller="UserProfile" asp-action="Deshboard" asp-route-id="@userId">Deshboard</a>
-<a asp-area="Customer" asp-controller="UserProfile" asp-action="Edit" asp-route-id="@userId">Edit</a>
-<a asp-area="Customer" asp-controller="UserProfile" asp-action="Locout" asp-route-id="@userId">Locout</a>
-<a asp-area="Customer" asp-controller="UserProfile" asp-action="Delete" asp-route-id="@userId">View Profile</a>
+   
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Manage Information</h3>
+                    <hr>
+                    <dl class="row">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <dt class="col-sm-4">Manage Orders:</dt>
+                            <dd class="col-sm-8"> <a asp-area="Customer" style="margin-left:10px" asp-controller="Order" asp-action="Index" class="btn btn-success"><i class="fa-solid fa-bag-shopping"></i>Manage Orders</a></dd>
+                            <dt class="col-sm-4">Manage Users:</dt>
+                            <dd class="col-sm-8"> <a asp-area="Customer" style="margin-left:10px" class="btn btn-info" asp-controller="User" asp-action="Index" class="nav-link">Manage User</a> </dd>
+                        }
+                        @if (User.IsInRole("SuperAdmin"))
+                        {
+                            <dt class="col-sm-4">Manage Orders:</dt>
+                            <dd class="col-sm-8"> <a asp-area="Customer" style="margin-left:10px" asp-controller="Order" asp-action="Index" class="btn btn-success"><i class="fa-solid fa-bag-shopping"></i>Manage Orders</a></dd>
+                            <dt class="col-sm-4">Manage Users:</dt>
+                            <dd class="col-sm-8"> <a asp-area="Customer" style="margin-left:10px" class="btn btn-info" asp-controller="User" asp-action="Index" class="nav-link">Manage User</a> </dd>
+                        }
+                        else if (User.IsInRole("Customer"))
+                        {
+                            <dt class="col-sm-4">Go to Cart:</dt>
+                            <dd class="col-sm-8"> <a asp-area="Customer" style="margin-left:10px" asp-controller="Home" class="btn btn-success" asp-action="Cart" class="nav-link"><i class="fas fa-shopping-cart"></i> (@count) Cart</a></dd>
+                            <dt class="col-sm-4">Order History:</dt>
+                            <dd class="col-sm-8"> <a asp-area="Customer" style="margin-left:10px" asp-controller="Order" class="btn btn-info" asp-action="UserOrders" class="nav-link"><i class="fa-solid fa-suitcase"></i> My Orders</a></dd>
+                        }
+                    </dl>
 
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+  
+</div>
+
+<br />
+<br />
+<br />

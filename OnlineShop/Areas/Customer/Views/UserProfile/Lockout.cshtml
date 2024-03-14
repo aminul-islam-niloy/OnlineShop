@@ -2,7 +2,7 @@
 
 
 @{
-    ViewData["Title"] = "Locout";
+    ViewData["Title"] = "Lockout";
 }
 <br />
 
@@ -13,8 +13,8 @@
     string userId = UserManager.GetUserId(User);
 }
 
-<h2 class="text-info">Locout user</h2>
-<form asp-action="Locout" method="post" id="user-form" enctype="multipart/form-data">
+<h2 class="text-info">Lockout user</h2>
+<form asp-action="Lockout" method="post" id="user-form" enctype="multipart/form-data">
     <div class="p-4 rounded border">
         <div asp-validation-summary="ModelOnly" class="text-danger">
         </div>

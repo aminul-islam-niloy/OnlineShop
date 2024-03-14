@@ -99,7 +99,6 @@
                     }
                     @if (userRole == "Customer")
                     {
-                        <li class="nav-item"><a asp-area="Customer" asp-controller="UserProfile" asp-action="Deshboard" class="nav-link"> Deshboard</a></li>
                         <li class="nav-item"> <a asp-area="Customer" asp-controller="Home" asp-action="Cart" class="nav-link"><i class="fas fa-shopping-cart"></i> (@count) Cart</a></li>
 
                         <li><a asp-area="Customer" asp-controller="Order" asp-action="UserOrders" class="nav-link"><i class="fa-solid fa-suitcase"></i> My Orders</a></li>
