@@ -70,34 +70,92 @@ namespace OnlineShop.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
+        //public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        //{
+        //    returnUrl = returnUrl ?? Url.Content("~/");
+        //    if (ModelState.IsValid)
+        //    {
+
+        //        //replace Identity User by Application User
+        //        var user = new ApplicationUser
+
+
+
+        //        {
+        //            UserName = Input.Email,
+        //            Email = Input.Email,
+        //            FirstName = Input.FirstName,
+        //            LastName = Input.LastName
+
+        //        };
+        //        var result = await _userManager.CreateAsync(user, Input.Password);
+
+        //        if (result.Succeeded)
+        //        {
+
+        //            _logger.LogInformation("User created a new account with password.");
+        //            // Assign the user to the "User" role
+        //            //var roleResult = await _userManager.AddToRoleAsync(user, "User");
+
+        //            // Assign roles based on checkbox selection
+        //            foreach (var role in Request.Form["roles"])
+        //            {
+        //                var roleResult = await _userManager.AddToRoleAsync(user, role);
+        //                if (!roleResult.Succeeded)
+        //                {
+        //                    foreach (var error in roleResult.Errors)
+        //                    {
+        //                        ModelState.AddModelError(string.Empty, error.Description);
+        //                    }
+        //                    return Page();
+        //                }
+        //            }
+
+        //            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        //            var callbackUrl = Url.Page(
+        //                "/Account/ConfirmEmail",
+        //                pageHandler: null,
+        //                values: new { userId = user.Id, code = code },
+        //                protocol: Request.Scheme);
+
+        //            await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+        //                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+        //            //await _signInManager.SignInAsync(user, isPersistent: false);
+        //            //return LocalRedirect(returnUrl);
+
+        //            return RedirectToPage("/Account/Login", new { area = "Identity" });
+        //        }
+        //        foreach (var error in result.Errors)
+        //        {
+        //            ModelState.AddModelError(string.Empty, error.Description);
+        //        }
+        //    }
+
+        //    // If we got this far, something failed, redisplay form
+        //    return Page();
+        //}
+
+
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-
-                //replace Identity User by Application User
                 var user = new ApplicationUser
-
-
-
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
                     FirstName = Input.FirstName,
                     LastName = Input.LastName
-
                 };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
-
                     _logger.LogInformation("User created a new account with password.");
-                    // Assign the user to the "User" role
-                    //var roleResult = await _userManager.AddToRoleAsync(user, "User");
 
-                    // Assign roles based on checkbox selection
                     foreach (var role in Request.Form["roles"])
                     {
                         var roleResult = await _userManager.AddToRoleAsync(user, role);
@@ -111,21 +169,24 @@ namespace OnlineShop.Areas.Identity.Pages.Account
                         }
                     }
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userId = user.Id, code = code },
-                        protocol: Request.Scheme);
+                    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var confirmationLink = Url.Action("ConfirmEmail", "Account", new { token, email = user.Email }, Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    try
+                    {
+                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(confirmationLink)}'>clicking here</a>.");
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Failed to send confirmation email.");
+                        ModelState.AddModelError(string.Empty, "Failed to send confirmation email. Please try again later.");
+                        return Page();
+                    }
 
-                    //await _signInManager.SignInAsync(user, isPersistent: false);
-                    //return LocalRedirect(returnUrl);
-
-                    return RedirectToPage("/Account/Login", new { area = "Identity" });
+                    return RedirectToPage("/Customer/Account/RegisterConfirmation");
                 }
+
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
@@ -135,5 +196,11 @@ namespace OnlineShop.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
+
+
+
+
+
     }
 }

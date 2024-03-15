@@ -45,6 +45,7 @@ namespace OnlineShop
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
               
+
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -52,8 +53,12 @@ namespace OnlineShop
                     Configuration.GetConnectionString("DefaultConnection")));
             //services.AddIdentity<IdentityUser, IdentityRole>()
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddIdentity<IdentityUser, IdentityRole>()
-            .AddDefaultUI()
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                // Set this to true to require email confirmation before allowing user sign-in
+                options.SignIn.RequireConfirmedEmail = true;
+            })
+           .AddDefaultUI()
             .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
