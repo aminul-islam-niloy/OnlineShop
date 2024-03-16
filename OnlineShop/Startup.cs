@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineShop.Data;
+using OnlineShop.Models;
+using OnlineShop.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +36,8 @@ namespace OnlineShop
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-           
 
+            services.AddScoped<IEmailService, EmailService>();
             // for session
             services.AddDistributedMemoryCache();
 
@@ -47,6 +49,8 @@ namespace OnlineShop
               
 
             });
+
+            services.Configure<SMTPConfigModel>(Configuration.GetSection("SMTPConfig"));
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
@@ -61,8 +65,6 @@ namespace OnlineShop
            .AddDefaultUI()
             .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<ApplicationDbContext>();
-
-
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

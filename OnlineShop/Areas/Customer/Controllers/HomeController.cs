@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
 using OnlineShop.Models;
+using OnlineShop.Service;
 using OnlineShop.Session;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using X.PagedList;
 
 namespace OnlineShop.Areas.Customer.Controllers
@@ -15,15 +17,31 @@ namespace OnlineShop.Areas.Customer.Controllers
     public class HomeController : Controller
     {
         private ApplicationDbContext _db;
+        private readonly IEmailService _emailService;
 
-        public HomeController(ApplicationDbContext db)
+        public HomeController(ApplicationDbContext db, IEmailService emailService)
         {
             _db = db;
+            _emailService = emailService;
         }
 
 
+        //public async Task<ViewResult> Index(int? page)
+        //{
 
-        public IActionResult Index(int? page)
+            //UserEmailOptions options = new UserEmailOptions
+            //{
+            //    ToEmails = new List<string>() { "heyalex4@gmail.com" },
+            //    PlaceHolders = new List<KeyValuePair<string, string>>()
+            //    {
+            //        new KeyValuePair<string, string>("{{UserName}}", "Alex")
+            //    }
+            //};
+
+            //await _emailService.SendTestEmail(options);
+        //}
+
+           public IActionResult Index(int? page)
         {
             return View(_db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList().ToPagedList(page ?? 1, 8));
         }

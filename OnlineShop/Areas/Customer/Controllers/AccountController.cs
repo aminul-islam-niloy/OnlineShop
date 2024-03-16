@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OnlineShop.Models;
 using System.Threading.Tasks;
 
@@ -17,29 +18,28 @@ namespace OnlineShop.Areas.Customer.Controllers
             _userManager = userManager;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        [HttpGet("confirm-email")]
+        public async Task<IActionResult> ConfirmEmail(string uid, string token)
         {
-            if (userId == null || token == null)
+
+            var user = await _userManager.FindByIdAsync(uid);
+            if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(token))
             {
-                return RedirectToAction("Error", "Home"); // or handle the error appropriately
+                token = token.Replace(' ', '+');
+                var result = await _userManager.ConfirmEmailAsync(user, token);
+                if (result.Succeeded)
+                {
+                    // Set EmailConfirmed to true
+                    user.EmailConfirmed = true;
+                    await _userManager.UpdateAsync(user);
+                    ViewBag.IsSuccess = true;
+                }
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
-            {
-                return RedirectToAction("Error", "Home"); // or handle the error appropriately
-            }
+            return View();
 
-            var result = await _userManager.ConfirmEmailAsync(user, token);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("SuccessRegistration", "Account"); // or any other action upon successful email confirmation
-            }
-            else
-            {
-                return RedirectToAction("Error", "Home"); // or handle the error appropriately
-            }
+
+           // return RedirectToAction("SuccessRegistration", "Account"); // or any other 
         }
 
         public IActionResult Index()
@@ -58,6 +58,21 @@ namespace OnlineShop.Areas.Customer.Controllers
         {
             return View();
         }
+
+        //don't run it
+        //public async  Task <IActionResult>SetAllEmailsConfirmedAsync()
+        //{
+        //    // Retrieve all users from the database
+        //    var users = await _userManager.Users.ToListAsync();
+
+        //    // Iterate through each user and set EmailConfirmed to true
+        //    foreach (var user in users)
+        //    {
+        //        user.EmailConfirmed = true;
+        //        await _userManager.UpdateAsync(user);
+        //    }
+        //    return View();
+        //}
     }
 }
 

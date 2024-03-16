@@ -9,8 +9,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OnlineShop.Models;
+using OnlineShop.Service;
 
 namespace OnlineShop.Areas.Identity.Pages.Account
 {
@@ -21,17 +23,23 @@ namespace OnlineShop.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IEmailService _emailService;
+        private readonly IConfiguration _configuration;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IEmailService emailService,
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _emailService = emailService;
+            _configuration = configuration;
         }
 
         [BindProperty]
@@ -169,22 +177,19 @@ namespace OnlineShop.Areas.Identity.Pages.Account
                         }
                     }
 
+
                     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var confirmationLink = Url.Action("ConfirmEmail", "Account", new { token, email = user.Email }, Request.Scheme);
 
-                    try
+                    if(!string.IsNullOrEmpty(token))
                     {
-                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(confirmationLink)}'>clicking here</a>.");
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, "Failed to send confirmation email.");
-                        ModelState.AddModelError(string.Empty, "Failed to send confirmation email. Please try again later.");
-                        return Page();
+                        await SendEmailConfirmationEmail(user, token);
                     }
 
-                    return RedirectToPage("/Customer/Account/RegisterConfirmation");
+
+                    //var confirmationLink = Url.Action("ConfirmEmail", "Account", new { token, email = user.Email }, Request.Scheme);
+
+
+                    return RedirectToPage("/Account/RegisterConfirmation", new { area = "Identity" });
                 }
 
                 foreach (var error in result.Errors)
@@ -197,10 +202,23 @@ namespace OnlineShop.Areas.Identity.Pages.Account
             return Page();
         }
 
+        private async Task SendEmailConfirmationEmail(ApplicationUser user, string token)
+        {
+            string appDomain = _configuration.GetSection("Application:AppDomain").Value;
+            string confirmationLink = _configuration.GetSection("Application:EmailConfirmation").Value;
 
+            UserEmailOptions options = new UserEmailOptions
+            {
+                ToEmails = new List<string>() { user.Email },
+                PlaceHolders = new List<KeyValuePair<string, string>>()
+                {
+                    new KeyValuePair<string, string>("{{UserName}}", user.FirstName),
+                    new KeyValuePair<string, string>("{{Link}}",
+                        string.Format(appDomain + confirmationLink, user.Id, token))
+                }
+            };
 
-
-
-
+            await _emailService.SendEmailForEmailConfirmation(options);
+        }
     }
 }

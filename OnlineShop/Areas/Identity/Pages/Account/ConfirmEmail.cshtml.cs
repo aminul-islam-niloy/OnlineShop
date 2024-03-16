@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json.Linq;
 
 namespace OnlineShop.Areas.Identity.Pages.Account
 {
@@ -19,23 +21,30 @@ namespace OnlineShop.Areas.Identity.Pages.Account
             _userManager = userManager;
         }
 
-        public async Task<IActionResult> OnGetAsync(string userId, string code)
+        public async Task<IActionResult> OnGetAsync(string uid, string code)
         {
-            if (userId == null || code == null)
+            if (uid == null || code == null)
             {
                 return RedirectToPage("/Index");
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(uid);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{userId}'.");
+                return NotFound($"Unable to load user with ID '{uid}'.");
             }
 
-            var result = await _userManager.ConfirmEmailAsync(user, code);
-            if (!result.Succeeded)
+
+            if (!string.IsNullOrEmpty(uid) && !string.IsNullOrEmpty(code))
             {
-                throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");
+                code = code.Replace(' ', '+');
+                var result = await _userManager.ConfirmEmailAsync(user, code);
+                if (result.Succeeded)
+                {
+                    // Set EmailConfirmed to true
+                    user.EmailConfirmed = true;
+                    await _userManager.UpdateAsync(user);
+                }
             }
 
             return Page();

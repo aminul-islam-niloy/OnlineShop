@@ -1,7 +1,17 @@
 ﻿<h1>ConfirmEmail</h1>
 
-<div>
-    <p>
-        Thank you for confirming your email.
-    </p>
-</div>
+@if (Model.EmailVerified == true)
+{
+    <div class="alert alert-success" role="alert">
+        <p>Your email has been verified successfully.</p>
+    </div>
+}
+else
+{
+
+    <p>Something went wrong or link expaired.</p>
+}
+
+                }
+
+
