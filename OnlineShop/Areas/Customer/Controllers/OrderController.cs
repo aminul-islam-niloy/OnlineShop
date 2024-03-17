@@ -97,7 +97,7 @@ namespace OnlineShop.Areas.Customer.Controllers
             return View();
         }
 
-
+        //Success?orderId={orderId}"
 
         public string GetOrderNo()
         {
@@ -340,7 +340,7 @@ namespace OnlineShop.Areas.Customer.Controllers
             }
         },
                 Mode = "payment",
-                SuccessUrl = "https://localhost:44343/Customer/Order/OrderConfirmation",
+                SuccessUrl = "https://localhost:44343/Customer/Order/UserOrders",
                 CancelUrl = "https://localhost:44343/Customer/Order/PaymentPage"
             };
 

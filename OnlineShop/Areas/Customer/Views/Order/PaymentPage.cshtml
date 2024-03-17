@@ -1,30 +1,90 @@
 ﻿@model OnlineShop.Models.Order
+﻿@using OnlineShop.Models
+@using OnlineShop.Session
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ViewData["Title"] = "Order Details";
+}
+@{
 
-<!-- Display order details here -->
-<!-- Your existing HTML code goes here -->
+    List<Products> products = HttpContextAccessor.HttpContext.Session.Get<List<Products>>("products");
 
-<form method="post" action="CreatePayment">
+    if (products == null)
+    {
+        products = new List<Products>();
+    }
+
+}
+<br />
+<br />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* CSS to style the div */
+        .background-div {
+            width: 100%; /* Adjust width as needed */
+            height: 180px; /* Adjust height as needed */
+            background-image: url('https://cdn.shopify.com/s/files/1/0552/6909/7643/files/image.png?v=1681296196');
+            background-size: cover; /* Ensure the image covers the entire div */
+            background-position: center; /* Center the image within the div */
+            border: 10px solid solid; /* Optional border for better visualization */
+        }
+    </style>
+</head>
+<body>
+    <!-- HTML div with the image as background -->
+    <div class="background-div"></div>
+</body>
+</html>
+
+<br />
+<br />
+
+
+<form id="paymentForm" method="post" action="CreatePayment">
     <!-- Add a hidden input field to include the orderId -->
-@*     <input type="hidden" name="orderId" value="@Model.Id" /> *@
-
-    <!-- Add a hidden input field to include the userId -->
     <input type="hidden" name="orderId" value="@ViewBag.orderId" />
 
-    <!-- Form fields for payment -->
-    <div>
-        <!-- Payment method selection -->
-        <label for="paymentMethod">Payment Method</label>
-        <select id="paymentMethod" class="form-control" onchange="handlePaymentMethodChange()">
-            <option value="CashOnDelivery" selected>Cash on Delivery</option>
-            <option value="Card">Card</option>
-            <option value="MobileBanking">Mobile Banking</option>
-        </select>
-    </div>
 
-    <!-- Other payment-related elements can be added here -->
-    <!-- Submit button for creating payment -->
-    <button type="submit">Payment Stripe</button>
+    <div class="row">
+        <div class="col-lg-2"> </div>
+        <div class="col-lg-2">
+            <label for="paymentMethod">Payment Method</label>
+        </div>
+        <div class="col-lg-4">
+            <div>
+                <!-- Payment method selection -->
+           
+                <select id="paymentMethod" class="form-control" onchange="handlePaymentMethodChange()">
+                    <option value="CashOnDelivery" selected>Cash on Delivery</option>
+                    <option value="Card">Card</option>
+                    <option value="MobileBanking">Mobile Banking</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <!-- Payment fields section - will be displayed for Card and MobileBanking -->
+            <div id="paymentFields" style="display: none;">
+                <!-- Add payment fields here if needed -->
+            </div>
+
+            <!-- Payment button -->
+            <button id="paymentButton" type="submit" class="btn btn-success" >Payment with Stripe</button>
+            <a asp-area="Customer" id="confirmButton" onclick="confirmCashOnDelivery()" asp-controller="Order" asp-action="UserOrders" class="btn btn-success">Confirm Order</a>
+           @*  <button id="confirmButton" type="button" onclick="confirmCashOnDelivery()" style="display: none;">Confirm Cash on Delivery</button> *@
+        </div>
+    </div>
+  
+
+   
 </form>
+
+<br />
+<br />
 
 @section Scripts{
     @{
@@ -36,17 +96,25 @@
             var paymentMethod = document.getElementById("paymentMethod").value;
             var paymentFields = document.getElementById("paymentFields");
             var paymentButton = document.getElementById("paymentButton");
+            var confirmButton = document.getElementById("confirmButton");
 
             if (paymentMethod === "Card" || paymentMethod === "MobileBanking") {
                 paymentFields.style.display = "block";
                 paymentButton.style.display = "block";
+                confirmButton.style.display = "none";
             } else {
                 paymentFields.style.display = "none";
                 paymentButton.style.display = "none";
+                confirmButton.style.display = "block";
             }
         }
 
         // Call the function initially to ensure proper display
         handlePaymentMethodChange();
+
+        // Function to handle confirm cash on delivery
+        function confirmCashOnDelivery() {
+            document.getElementById("paymentForm").submit();
+        }
     </script>
 }
