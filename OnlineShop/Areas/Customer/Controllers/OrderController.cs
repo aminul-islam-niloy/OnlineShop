@@ -2,9 +2,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using OnlineShop.Data;
 using OnlineShop.Models;
+using OnlineShop.Payment;
 using OnlineShop.Session;
+using Stripe.Checkout;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,14 +21,22 @@ namespace OnlineShop.Areas.Customer.Controllers
     [Area("Customer")]
   
     public class OrderController : Controller
+
+
     {
+
+        private readonly StripeSettings _stripeSettings;
+
+        public string SessionId { get; set; }
+    
         private ApplicationDbContext _db;
         UserManager<IdentityUser> _userManager;
 
-        public OrderController(ApplicationDbContext db, UserManager<IdentityUser> userManager)
+        public OrderController(ApplicationDbContext db, UserManager<IdentityUser> userManager, IOptions<StripeSettings> stripeSettings)
         {
             _db = db;
             _userManager = userManager;
+            _stripeSettings = stripeSettings.Value;
         }
 
 
@@ -78,7 +90,7 @@ namespace OnlineShop.Areas.Customer.Controllers
             HttpContext.Session.Set("products", new List<Products>());
 
             // Redirect the user to the order confirmation page
-            return View();
+            return RedirectToAction("PaymentPage", new { orderId = anOrder.Id });
         }
         public IActionResult OrderConfirmation()
         {
@@ -233,6 +245,137 @@ namespace OnlineShop.Areas.Customer.Controllers
             return RedirectToAction(nameof(UserOrders));
         }
 
+    
+
+        //public IActionResult CreatePayment(string amount)
+        //{
+
+        //    var currency = "usd"; // Currency code
+        //    var successUrl = "https://localhost:44343/Customer/Order";
+        //    var cancelUrl = "https://localhost:44343/Customer/Order/Checkout";
+        //    StripeConfiguration.ApiKey = _stripeSettings.SecretKey;
+
+        //    var options = new SessionCreateOptions
+        //    {
+        //        PaymentMethodTypes = new List<string>
+        //        {
+        //            "card"
+        //        },
+        //        LineItems = new List<SessionLineItemOptions>
+        //        {
+        //            new SessionLineItemOptions
+        //            {
+        //                PriceData = new SessionLineItemPriceDataOptions
+        //                {
+        //                    Currency = currency,
+        //                    UnitAmount = Convert.ToInt32(amount) * 100,  // Amount in smallest currency unit (e.g., cents)
+        //                    ProductData = new SessionLineItemPriceDataProductDataOptions
+        //                    {
+        //                        Name = "Product Name",
+        //                        Description = "Product Description"
+        //                    }
+        //                },
+        //                Quantity = 1
+        //            }
+        //        },
+        //        Mode = "payment",
+        //        SuccessUrl = successUrl,
+        //        CancelUrl = cancelUrl
+        //    };
+
+        //    var service = new SessionService();
+        //    var session = service.Create(options);
+        //    SessionId = session.Id;
+
+        //    return Redirect(session.Url);
+        //}
+
+        //public async Task<IActionResult> success()
+        //{
+
+        //    return View("Index");
+        //}
+
+        //public IActionResult cancel()
+        //{
+        //    return View();
+        //}
+
+
+        [HttpPost]
+        public IActionResult CreatePayment(int orderId)
+        {
+            // Retrieve the order from the database
+            var order = _db.Orders.Include(o => o.OrderDetails)
+                                  .FirstOrDefault(o => o.Id == orderId);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var totalAmount = order.OrderDetails.Sum(od => od.Price * od.Quantity);
+
+            StripeConfiguration.ApiKey = _stripeSettings.SecretKey;
+            // Create the Stripe session
+            var sessionService = new SessionService();
+            var options = new SessionCreateOptions
+            {
+                PaymentMethodTypes = new List<string> { "card" },
+                LineItems = new List<SessionLineItemOptions>
+        {
+            new SessionLineItemOptions
+            {
+                PriceData = new SessionLineItemPriceDataOptions
+                {
+                    Currency = "usd",
+                    UnitAmount = (long)(totalAmount), 
+                    ProductData = new SessionLineItemPriceDataProductDataOptions
+                    {
+                        Name = "Order Payment"
+                    }
+                },
+                Quantity = 1
+            }
+        },
+                Mode = "payment",
+                SuccessUrl = "https://localhost:44343/Customer/Order/OrderConfirmation",
+                CancelUrl = "https://localhost:44343/Customer/Order/PaymentPage"
+            };
+
+
+            var session = sessionService.Create(options);
+
+            // Store the session ID in the order details
+            order.OrderDetails.ForEach(od =>
+            {
+                od.StripeSessionId = session.Id;
+                od.PaymentMethods = PaymentMethods.Card; 
+            });
+
+ 
+            _db.SaveChanges();
+
+
+            return Redirect(session.Url);
+        }
+
+
+        //  PaymentPage
+
+        public IActionResult PaymentPage(int orderId)
+        {
+            // Pass orderId to the view
+            ViewBag.OrderId = orderId;
+            return View();
+        }
+
+
+
+
     }
 
 }
+
+

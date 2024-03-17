@@ -1,0 +1,52 @@
+﻿@model OnlineShop.Models.Order
+
+<!-- Display order details here -->
+<!-- Your existing HTML code goes here -->
+
+<form method="post" action="CreatePayment">
+    <!-- Add a hidden input field to include the orderId -->
+@*     <input type="hidden" name="orderId" value="@Model.Id" /> *@
+
+    <!-- Add a hidden input field to include the userId -->
+    <input type="hidden" name="orderId" value="@ViewBag.orderId" />
+
+    <!-- Form fields for payment -->
+    <div>
+        <!-- Payment method selection -->
+        <label for="paymentMethod">Payment Method</label>
+        <select id="paymentMethod" class="form-control" onchange="handlePaymentMethodChange()">
+            <option value="CashOnDelivery" selected>Cash on Delivery</option>
+            <option value="Card">Card</option>
+            <option value="MobileBanking">Mobile Banking</option>
+        </select>
+    </div>
+
+    <!-- Other payment-related elements can be added here -->
+    <!-- Submit button for creating payment -->
+    <button type="submit">Payment Stripe</button>
+</form>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        // JavaScript function to handle changes in payment method
+        function handlePaymentMethodChange() {
+            var paymentMethod = document.getElementById("paymentMethod").value;
+            var paymentFields = document.getElementById("paymentFields");
+            var paymentButton = document.getElementById("paymentButton");
+
+            if (paymentMethod === "Card" || paymentMethod === "MobileBanking") {
+                paymentFields.style.display = "block";
+                paymentButton.style.display = "block";
+            } else {
+                paymentFields.style.display = "none";
+                paymentButton.style.display = "none";
+            }
+        }
+
+        // Call the function initially to ensure proper display
+        handlePaymentMethodChange();
+    </script>
+}

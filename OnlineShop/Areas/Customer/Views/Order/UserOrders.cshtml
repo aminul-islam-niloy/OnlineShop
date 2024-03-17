@@ -1,5 +1,6 @@
 ﻿@model List<UserOrdersViewModel>
 
+
 @* @model List<UserOrdersViewModel> *@
 
 
@@ -108,9 +109,14 @@
         <div class="col-lg-3"></div>
         <div class="col-lg-6">
             <div style="display: flex; align-items: center;">
-                <p><strong>Name:</strong> @Model.First().UserName</p>
-                <p style="margin-left: 20px; "><strong>Email:</strong> @Model.First().UserName</p>
-                <p style="margin-left: 20px; "><strong>Phone:</strong> @Model.First().UserPhone</p>
+
+            @*  @foreach (var orderDetails in Model)
+                {
+                    <p><strong>Name:</strong> @Model.First().UserName</p>
+                    <p style="margin-left: 20px; "><strong>Email:</strong> @Model.First().UserName</p>
+                 <p style="margin-left: 20px; "><strong>Phone:</strong> @Model.First().UserPhone</p>
+                } *@
+               
             </div>
         </div>
         <div class="col-lg-3"></div>

@@ -9,7 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OnlineShop.Data;
 using OnlineShop.Models;
+using OnlineShop.Payment;
 using OnlineShop.Service;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,14 +68,24 @@ namespace OnlineShop
             .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));
+
+
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        [Obsolete]
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            //StripeConfiguration.SetApiKey(Configuration["Stripe:SecretKey"]);
+
+            StripeConfiguration.SetApiKey(Configuration.GetSection("Stripe")["SecretKey"]);
+
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
