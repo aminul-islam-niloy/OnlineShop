@@ -6,1206 +6,1216 @@
     ViewData["Title"] = "Home Page";
 }
 
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    string userId = UserManager.GetUserId(User);
+}
+﻿@using System.Net.Http
+@using OnlineShop.Session
+@using Microsoft.AspNetCore.Http
+
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var userRole = HttpContextAccessor.HttpContext.Session.GetString("roleName");
+    int count = 0;
+    List<Products> products = HttpContextAccessor.HttpContext.Session.Get<List<Products>>("products");
+    if (products == null)
+    {
+        products = new List<Products>();
+    }
+    count = products.Count();
+
+}
+
 
 <!--header top start-->
 <!--header center area start-->
 <div class="header_middle">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-3">
-                <div class="logo">
-
-                   
-                    <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/logo/online-shoping.png" style="height: 80px; width: 100%;" alt=""></a>
-                </div>
+   <div class="container">
+      <div class="row align-items-center">
+         <div class="col-lg-3">
+            <div class="logo">
+               <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/logo/online-shoping.png" style="height: 80px; width: 100%;" alt=""></a>
             </div>
-            <div class="col-lg-9">
-                <div class="header_middle_inner">
-                    <div class="search-container">
-                        <form method="post"  action="#">
-                            <div class="hover_category">
-                                <select class="select_option" name="select" id="categori">
-                                    <option selected value="1">All Categories</option>
-                                    <option value="2">Accessories</option>
-                                    <option value="3">Accessories & More</option>
-                                    <option value="4">Butters & Eggs</option>
-                                    <option value="5">Camera & Video </option>
-                                    <option value="6">Mornitors</option>
-                                    <option value="7">Tablets</option>
-                                    <option value="8">Laptops</option>
-                                    <option value="9">Handbags</option>
-                                    <option value="10">Headphone & Speaker</option>
-                                    <option value="11">Herbs & botanicals</option>
-                                    <option value="12">Vegetables</option>
-                                    <option value="13">Shop</option>
-                                    <option value="14">Laptops & Desktops</option>
-                                    <option value="15">Watchs</option>
-                                    <option value="16">Electronic</option>
-                                </select>
-                            </div>
-                            <div class="search_box">
-                                <input placeholder="Search product..." name="SearchString" type="text" aria-label="Search">
-                                <button type="submit"><i class="zmdi zmdi-search"></i></button>
-                            </div>
-                        </form>
-                    </div>
-
-                   
-
-             
-                </div>
+         </div>
+         <div class="col-lg-9">
+            <div class="header_middle_inner">
+               <div class="search-container">
+                  <form method="post"  action="#">
+                            <select class="select_option" name="select" id="categori">
+                                <option selected value="1">All Categories</option>
+                              
+                                <option value="1">Laptops</option>
+                               
+                                <option value="2">Vegetables</option>
+                               
+                                <option value="3">Laptops & Desktops</option>
+                             
+                            </select>
+                     <div class="search_box">
+                        <input placeholder="Search product..." name="SearchString" type="text" aria-label="Search">
+                        <button type="submit"><i class="zmdi zmdi-search"></i></button>
+                     </div>
+                  </form>
+               </div>
             </div>
-        </div>
-    </div>
+         </div>
+      </div>
+   </div>
 </div>
-
-
 <!--header center area end-->
 <!--header middel start-->
 <div class="header_bottom">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-3">
-                <div class="categories_menu categori_two">
-                    <div class="categories_title">
-                        <h2 class="categori_toggle">Categories</h2>
-                    </div>
-                      <div class="categories_menu_toggle">
-                    <ul>
-                    <li class="menu_item_children categorie_list">
-                    <a href="#"><span><i class="zmdi zmdi-desktop-mac"></i></span> Electronic <i class="fa fa-angle-right"></i></a>
-                    <ul class="categories_mega_menu">
-                    <li class="menu_item_children">
-                    <a href="#">Wheel Bearings</a>
-                    <ul class="categorie_sub_menu">
-                    <li><a href="#">Bower</a></li>
-                    <li><a href="#">Flipbac</a></li>
-                    <li><a href="#">Gary Fong</a></li>
-                    <li><a href="#">GigaPan</a></li>
-                    </ul>
-                    </li>
-                    <li class="menu_item_children">
-                    <a href="#">Wheel Rim Screws</a>
-                    <ul class="categorie_sub_menu">
-                    <li><a href="#">Accessories</a></li>
-                    <li><a href="#">2-Stroke</a></li>
-                    <li><a href="#">Handbag</a></li>
-                    <li><a href="#">Clothing</a></li>
-                    </ul>
-                    </li>
-                    <li class="menu_item_children last_child">
-                    <a href="#">Wheel Simulators</a>
-                    <ul class="categorie_sub_menu">
-                    <li><a href="#">Bags & Cases</a></li>
-                    <li><a href="#">Binoculars & Scopes</a></li>
-                    <li><a href="#">Film Photography</a></li>
-                    <li><a href="#">Lighting & Studio</a></li>
-                    </ul>
-                    </li>
-
-                    </ul>
-                    </li>
-                    <li class="menu_item_children">
-                    <a href="#"><span><i class="zmdi zmdi-image"></i></span>  Fashion & Beauty <i class="fa fa-angle-right"></i></a>
-                    <ul class="categories_mega_menu column_3">
-                    <li class="menu_item_children">
-                    <a href="#">Chair</a>
-                    <div class="categorie_sub_menu">
-                    <ul>
-                    <li><a href="#">Dining room</a></li>
-                    <li><a href="#">bedroom</a></li>
-                    <li><a href="#"> Home & Office</a></li>
-                    <li><a href="#">living room</a></li>
-                    </ul>
-                    </div>
-                    </li>
-                    <li class="menu_item_children">
-                    <a href="#">Lighting</a>
-                    <div class="categorie_sub_menu">
-                    <ul>
-                    <li><a href="#">Ceiling Lighting</a></li>
-                    <li><a href="#">Wall Lighting</a></li>
-                    <li><a href="#">Outdoor Lighting</a></li>
-                    <li><a href="#">Smart Lighting</a></li>
-                    </ul>
-                    </div>
-                    </li>
-                    <li class="menu_item_children">
-                    <a href="#">Sofa</a>
-                    <div class="categorie_sub_menu">
-                    <ul>
-                    <li><a href="#">Fabric Sofas</a></li>
-                    <li><a href="#">Leather Sofas</a></li>
-                    <li><a href="#">Corner Sofas</a></li>
-                    <li><a href="#">Sofa Beds</a></li>
-                    </ul>
-                    </div>
-                    </li>
-                    </ul>
-                    </li>
-                    <li class="menu_item_children">
-                    <a href="#"><span><i class="zmdi zmdi-camera"></i></span> Camera & Photo <i class="fa fa-angle-right"></i></a>
-                    <ul class="categories_mega_menu column_2">
-                    <li class="menu_item_children">
-                    <a href="#">Brake Tools</a>
-                    <div class="categorie_sub_menu">
-                    <ul>
-                    <li><a href="#">Driveshafts</a></li>
-                    <li><a href="#">Spools</a></li>
-                    <li><a href="#">Diesel </a></li>
-                    <li><a href="#">Gasoline</a></li>
-                    </ul>
-                    </div>
-                    </li>
-                    <li class="menu_item_children">
-                    <a href="#">Emergency Brake</a>
-                    <div class="categorie_sub_menu">
-                    <ul>
-                    <li><a href="#">Dolls for Girls</a></li>
-                    <li><a href="#">Girls' Learning Toys</a></li>
-                    <li><a href="#">Arts and Crafts for Girls</a></li>
-                    <li><a href="#">Video Games for Girls</a></li>
-                    </ul>
-                    </div>
-                    </li>
-
-                    </ul>
-                    </li>
-                    <li class="menu_item_children">
-                    <a href="#"><span><i class="zmdi zmdi-dribbble"></i></span> Sport & Outdoor <i class="fa fa-angle-right"></i></a>
-                    <ul class="categories_mega_menu column_2">
-                    <li class="menu_item_children">
-                    <a href="#">Check Trousers</a>
-                    <div class="categorie_sub_menu">
-                    <ul>
-                    <li><a href="#">Building</a></li>
-                    <li><a href="#">Electronics</a></li>
-                    <li><a href="#">action figures </a></li>
-                    <li><a href="#">specialty & boutique toy</a></li>
-                    </ul>
-                    </div>
-                    </li>
-                    <li class="menu_item_children">
-                    <a href="#">Calculators</a>
-                    <div class="categorie_sub_menu">
-                    <ul>
-                    <li><a href="#">Dolls for Girls</a></li>
-                    <li><a href="#">Girls' Learning Toys</a></li>
-                    <li><a href="#">Arts and Crafts for Girls</a></li>
-                    <li><a href="#">Video Games for Girls</a></li>
-                    </ul>
-                    </div>
-                    </li>
-
-                    </ul>
-                    </li>
-                    <li><a href="#"><span><i class="zmdi zmdi-tv"></i></span> TV & Audio</a></li>
-                    <li><a href="#"><span><i class="zmdi zmdi-tv-list"></i></span> home funiture</a></li>
-                    <li><a href="#"><span><i class="zmdi zmdi-cake"></i></span> toys for kids</a></li>
-                    <li><a href="#"><span><i class="zmdi zmdi-memory"></i></span> Memory Cards</a></li>
-                    <li><a href="#"><span><i class="zmdi zmdi-case-download"></i></span> Living Room</a></li>
-                    <li class="hidden"><a href="shop-left-sidebar.html">New Sofas</a></li>
-                    <li class="hidden"><a href="shop-left-sidebar.html">Sleight Sofas</a></li>
-                    <li><a href="#" id="more-btn"><i class="fa fa-plus" aria-hidden="true"></i> More Categories</a></li>
-                    </ul>
-                    </div> 
-                </div>
-            </div>
-            <div class="col-lg-9">
-                <div class="main_menu menu_two header_position">
-                    <nav>
-                        <ul>
-
-                            <li class="mega_items">
-                                <a href="shop.html"><i class="zmdi zmdi-shopping-basket"></i> shop <i class="zmdi zmdi-caret-down"></i></a>
-                                <div class="mega_menu">
-                                    <ul class="mega_menu_inner">
-                                        <li>
-                                            <a href="#">Shop Layouts</a>
-                                            <ul>
-                                                <li><a href="shop-fullwidth.html">Full Width</a></li>
-                                                <li><a href="shop-fullwidth-list.html">Full Width list</a></li>
-                                                <li><a href="shop-right-sidebar.html">Right Sidebar </a></li>
-                                                <li><a href="shop-right-sidebar-list.html"> Right Sidebar list</a></li>
-                                                <li><a href="shop-list.html">List View</a></li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <a href="#">other Pages</a>
-                                            <ul>
-                                                <li><a href="cart.html">cart</a></li>
-                                                <li><a href="wishlist.html">Wishlist</a></li>
-                                                <li><a href="checkout.html">Checkout</a></li>
-                                                <li><a href="my-account.html">my account</a></li>
-                                                <li><a href="404.html">Error 404</a></li>
-                                            </ul>
-                                        </li>
-                                        <li>
-                                            <a href="#">Product Types</a>
-                                            <ul>
-                                                <li><a href="product-details.html">product details</a></li>
-                                                <li><a href="product-sidebar.html">product sidebar</a></li>
-                                                <li><a href="product-grouped.html">product grouped</a></li>
-                                                <li><a href="variable-product.html">product variable</a></li>
-
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li>
-                                <a href="blog.html"><i class="zmdi zmdi-collection-music"></i> blog <i class="zmdi zmdi-caret-down"></i></a>
-                                <ul class="sub_menu pages">
-                                    <li><a href="blog-details.html">blog details</a></li>
-                                    <li><a href="blog-fullwidth.html">blog fullwidth</a></li>
-                                    <li><a href="blog-sidebar.html">blog sidebar</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#"><i class="zmdi zmdi-star"></i> pages <i class="zmdi zmdi-caret-down"></i></a>
-                                <ul class="sub_menu pages">
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="services.html">services</a></li>
-                                    <li><a href="portfolio.html">portfolio</a></li>
-                                    <li><a href="faq.html">Frequently Questions</a></li>
-                                    <li><a href="contact.html">contact</a></li>
-                                    <li><a href="login.html">login</a></li>
-                                    <li><a href="wishlist.html">Wishlist</a></li>
-                                    <li><a href="404.html">Error 404</a></li>
-                                </ul>
-                            </li>
-
-                            <li><a href="about.html"><i class="zmdi zmdi-comments"></i> about Us</a></li>
-                            <li><a href="contact.html"><i class="zmdi zmdi-account-box-mail"></i>  Contact Us</a></li>
+   <div class="container">
+      <div class="row align-items-center">
+         <div class="col-lg-3">
+            <div class="categories_menu categori_two">
+               <div class="categories_title">
+                  <h2 class="categori_toggle">Categories</h2>
+               </div>
+               <div class="categories_menu_toggle">
+                  <ul>
+                     <li class="menu_item_children categorie_list">
+                        <a href="#"><span><i class="zmdi zmdi-desktop-mac"></i></span> Electronic <i class="fa fa-angle-right"></i></a>
+                        <ul class="categories_mega_menu">
+                           <li class="menu_item_children">
+                              <a href="#">Wheel Bearings</a>
+                              <ul class="categorie_sub_menu">
+                                 <li><a href="#">Bower</a></li>
+                                 <li><a href="#">Flipbac</a></li>
+                                 <li><a href="#">Gary Fong</a></li>
+                                 <li><a href="#">GigaPan</a></li>
+                              </ul>
+                           </li>
+                           <li class="menu_item_children">
+                              <a href="#">Wheel Rim Screws</a>
+                              <ul class="categorie_sub_menu">
+                                 <li><a href="#">Accessories</a></li>
+                                 <li><a href="#">2-Stroke</a></li>
+                                 <li><a href="#">Handbag</a></li>
+                                 <li><a href="#">Clothing</a></li>
+                              </ul>
+                           </li>
+                           <li class="menu_item_children last_child">
+                              <a href="#">Wheel Simulators</a>
+                              <ul class="categorie_sub_menu">
+                                 <li><a href="#">Bags & Cases</a></li>
+                                 <li><a href="#">Binoculars & Scopes</a></li>
+                                 <li><a href="#">Film Photography</a></li>
+                                 <li><a href="#">Lighting & Studio</a></li>
+                              </ul>
+                           </li>
                         </ul>
-                    </nav>
-                </div>
+                     </li>
+                     <li class="menu_item_children">
+                        <a href="#"><span><i class="zmdi zmdi-image"></i></span>  Fashion & Beauty <i class="fa fa-angle-right"></i></a>
+                        <ul class="categories_mega_menu column_3">
+                           <li class="menu_item_children">
+                              <a href="#">Chair</a>
+                              <div class="categorie_sub_menu">
+                                 <ul>
+                                    <li><a href="#">Dining room</a></li>
+                                    <li><a href="#">bedroom</a></li>
+                                    <li><a href="#"> Home & Office</a></li>
+                                    <li><a href="#">living room</a></li>
+                                 </ul>
+                              </div>
+                           </li>
+                           <li class="menu_item_children">
+                              <a href="#">Lighting</a>
+                              <div class="categorie_sub_menu">
+                                 <ul>
+                                    <li><a href="#">Ceiling Lighting</a></li>
+                                    <li><a href="#">Wall Lighting</a></li>
+                                    <li><a href="#">Outdoor Lighting</a></li>
+                                    <li><a href="#">Smart Lighting</a></li>
+                                 </ul>
+                              </div>
+                           </li>
+                           <li class="menu_item_children">
+                              <a href="#">Sofa</a>
+                              <div class="categorie_sub_menu">
+                                 <ul>
+                                    <li><a href="#">Fabric Sofas</a></li>
+                                    <li><a href="#">Leather Sofas</a></li>
+                                    <li><a href="#">Corner Sofas</a></li>
+                                    <li><a href="#">Sofa Beds</a></li>
+                                 </ul>
+                              </div>
+                           </li>
+                        </ul>
+                     </li>
+                     <li class="menu_item_children">
+                        <a href="#"><span><i class="zmdi zmdi-camera"></i></span> Camera & Photo <i class="fa fa-angle-right"></i></a>
+                        <ul class="categories_mega_menu column_2">
+                           <li class="menu_item_children">
+                              <a href="#">Brake Tools</a>
+                              <div class="categorie_sub_menu">
+                                 <ul>
+                                    <li><a href="#">Driveshafts</a></li>
+                                    <li><a href="#">Spools</a></li>
+                                    <li><a href="#">Diesel </a></li>
+                                    <li><a href="#">Gasoline</a></li>
+                                 </ul>
+                              </div>
+                           </li>
+                           <li class="menu_item_children">
+                              <a href="#">Emergency Brake</a>
+                              <div class="categorie_sub_menu">
+                                 <ul>
+                                    <li><a href="#">Dolls for Girls</a></li>
+                                    <li><a href="#">Girls' Learning Toys</a></li>
+                                    <li><a href="#">Arts and Crafts for Girls</a></li>
+                                    <li><a href="#">Video Games for Girls</a></li>
+                                 </ul>
+                              </div>
+                           </li>
+                        </ul>
+                     </li>
+                     <li class="menu_item_children">
+                        <a href="#"><span><i class="zmdi zmdi-dribbble"></i></span> Sport & Outdoor <i class="fa fa-angle-right"></i></a>
+                        <ul class="categories_mega_menu column_2">
+                           <li class="menu_item_children">
+                              <a href="#">Check Trousers</a>
+                              <div class="categorie_sub_menu">
+                                 <ul>
+                                    <li><a href="#">Building</a></li>
+                                    <li><a href="#">Electronics</a></li>
+                                    <li><a href="#">action figures </a></li>
+                                    <li><a href="#">specialty & boutique toy</a></li>
+                                 </ul>
+                              </div>
+                           </li>
+                           <li class="menu_item_children">
+                              <a href="#">Calculators</a>
+                              <div class="categorie_sub_menu">
+                                 <ul>
+                                    <li><a href="#">Dolls for Girls</a></li>
+                                    <li><a href="#">Girls' Learning Toys</a></li>
+                                    <li><a href="#">Arts and Crafts for Girls</a></li>
+                                    <li><a href="#">Video Games for Girls</a></li>
+                                 </ul>
+                              </div>
+                           </li>
+                        </ul>
+                     </li>
+                     <li><a href="#"><span><i class="zmdi zmdi-tv"></i></span> TV & Audio</a></li>
+                     <li><a href="#"><span><i class="zmdi zmdi-tv-list"></i></span> home funiture</a></li>
+                     <li><a href="#"><span><i class="zmdi zmdi-cake"></i></span> toys for kids</a></li>
+                     <li><a href="#"><span><i class="zmdi zmdi-memory"></i></span> Memory Cards</a></li>
+                     <li><a href="#"><span><i class="zmdi zmdi-case-download"></i></span> Living Room</a></li>
+                     <li class="hidden"><a href="shop-left-sidebar.html">New Sofas</a></li>
+                     <li class="hidden"><a href="shop-left-sidebar.html">Sleight Sofas</a></li>
+                  </ul>
+               </div>
             </div>
-        </div>
-    </div>
+         </div>
+         <div class="col-lg-9">
+            <div class="main_menu menu_two header_position">
+               <nav>
+                  <ul>
+                     <li class="mega_items">
+                        <a href="shop.html"><i class="zmdi zmdi-shopping-basket"></i> shop <i class="zmdi zmdi-caret-down"></i></a>
+                        <div class="mega_menu">
+                           <ul class="mega_menu_inner">
+                              <li>
+                                 <a href="#">Shop Layouts</a>
+                                 <ul>
+                                    <li><a href="shop-fullwidth.html">Full Width</a></li>
+                                    <li><a href="shop-fullwidth-list.html">Full Width list</a></li>
+                                    <li><a href="shop-right-sidebar.html">Right Sidebar </a></li>
+                                    <li><a href="shop-right-sidebar-list.html"> Right Sidebar list</a></li>
+                                    <li><a href="shop-list.html">List View</a></li>
+                                 </ul>
+                              </li>
+                              <li>
+                                 <a href="#">other Pages</a>
+                                 <ul>
+                                    <li><a href="cart.html">cart</a></li>
+                                    <li><a href="wishlist.html">Wishlist</a></li>
+                                    <li><a href="checkout.html">Checkout</a></li>
+                                    <li><a href="my-account.html">my account</a></li>
+                                    <li><a href="404.html">Error 404</a></li>
+                                 </ul>
+                              </li>
+                              <li>
+                                 <a href="#">Product Types</a>
+                                 <ul>
+                                    <li><a href="product-details.html">product details</a></li>
+                                    <li><a href="product-sidebar.html">product sidebar</a></li>
+                                    <li><a href="product-grouped.html">product grouped</a></li>
+                                    <li><a href="variable-product.html">product variable</a></li>
+                                 </ul>
+                              </li>
+                           </ul>
+                        </div>
+                     </li>
+                     <li>
+                        <a href="blog.html"><i class="zmdi zmdi-collection-music"></i> blog <i class="zmdi zmdi-caret-down"></i></a>
+                        <ul class="sub_menu pages">
+                           <li><a href="blog-details.html">blog details</a></li>
+                           <li><a href="blog-fullwidth.html">blog fullwidth</a></li>
+                           <li><a href="blog-sidebar.html">blog sidebar</a></li>
+                        </ul>
+                     </li>
+                     <li>
+                        <a href="#"><i class="zmdi zmdi-star"></i> pages <i class="zmdi zmdi-caret-down"></i></a>
+                        <ul class="sub_menu pages">
+                           <li><a href="about.html">About Us</a></li>
+                           <li><a href="services.html">services</a></li>
+                           <li><a href="portfolio.html">portfolio</a></li>
+                           <li><a href="faq.html">Frequently Questions</a></li>
+                           <li><a href="contact.html">contact</a></li>
+                           <li><a href="login.html">login</a></li>
+                           <li><a href="wishlist.html">Wishlist</a></li>
+                           <li><a href="404.html">Error 404</a></li>
+                        </ul>
+                     </li>
+                     <li><a href="about.html"><i class="zmdi zmdi-comments"></i> about Us</a></li>
+                     <li><a href="contact.html"><i class="zmdi zmdi-account-box-mail"></i>  Contact Us</a></li>
+                  </ul>
+               </nav>
+            </div>
+         </div>
+      </div>
+   </div>
 </div>
-
-   <!--Offcanvas menu area start-->
-
-    <div class="off_canvars_overlay"></div>
-    <div class="Offcanvas_menu">
-      <div class="container">
-        <div class="row">
-          <div class="col-12">
+<!--Offcanvas menu area start-->
+<div class="off_canvars_overlay"></div>
+<div class="Offcanvas_menu">
+   <div class="container">
+      <div class="row">
+         <div class="col-12">
             <div class="canvas_open">
-              <span>MENU</span>
-              <a href="javascript:void(0)"><i class="ion-navicon"></i></a>
+               <span>MENU</span>
+               <a href="javascript:void(0)"><i class="ion-navicon"></i></a>
             </div>
             <div class="Offcanvas_menu_wrapper">
-              <div class="canvas_close">
-                <a href="javascript:void(0)"
-                  ><i class="ion-android-close"></i
-                ></a>
-              </div>
-              <div class="welcome_text">
-                <p>Welcome to <span>Electronics Store</span></p>
-              </div>
-
-              <div class="top_right">
-                <ul>
-                  <li class="currency">
-                    <a href="#"
-                      ><i class="fa fa-dollar"></i> US Dollar
-                      <i class="zmdi zmdi-caret-down"></i
-                    ></a>
-                    <ul class="dropdown_currency">
-                      <li><a href="#">EUR – Euro</a></li>
-                      <li><a href="#">GBP – British Pound</a></li>
-                      <li><a href="#">INR – India Rupee</a></li>
-                    </ul>
-                  </li>
-                  <li class="language">
-                    <a href="#"
-                      ><i class="zmdi zmdi-dribbble"></i> English1
-                      <i class="zmdi zmdi-caret-down"></i
-                    ></a>
-                    <ul class="dropdown_language">
-                      <li><a href="#">English</a></li>
-                      <li><a href="#">Germany</a></li>
-                    </ul>
-                  </li>
-                  <li class="top_links">
-                    <a href="#"
-                      ><i class="zmdi zmdi-account"></i> My account
-                      <i class="zmdi zmdi-caret-down"></i
-                    ></a>
-                    <ul class="dropdown_links">
-                      <li><a href="checkout.html">Checkout </a></li>
-                      <li><a href="my-account.html">My Account </a></li>
-                      <li><a href="cart.html">Shopping Cart</a></li>
-                      <li><a href="wishlist.html">Wishlist</a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-              <div class="search-container">
-                <form action="#">
-                  <div class="hover_category">
-                    <select class="select_option" name="select" id="categori2">
-                      <option selected value="1">All Categories</option>
-                      <option value="2">Accessories</option>
-                      <option value="3">Accessories & More</option>
-                      <option value="4">Butters & Eggs</option>
-                      <option value="5">Camera & Video</option>
-                      <option value="6">Mornitors</option>
-                      <option value="7">Tablets</option>
-                      <option value="8">Laptops</option>
-                      <option value="9">Handbags</option>
-                      <option value="10">Headphone & Speaker</option>
-                      <option value="11">Herbs & botanicals</option>
-                      <option value="12">Vegetables</option>
-                      <option value="13">Shop</option>
-                      <option value="14">Laptops & Desktops</option>
-                      <option value="15">Watchs</option>
-                      <option value="16">Electronic</option>
-                    </select>
-                  </div>
-
-                  <div class="search_box">
-                    <input placeholder="Search product..." type="text" />
-                    <button type="submit">
-                      <i class="zmdi zmdi-search"></i>
-                    </button>
-
-                  </div>
-                </form>
-              </div>
-              <div class="mini_cart_wrapper">
-                <a href="javascript:void(0)"
-                  ><i class="zmdi zmdi-shopping-basket"></i>
-                  <span>2items - $213.00</span>
-                </a>
-
-              </div>
-              <div id="menu" class="text-left">
-                <ul class="offcanvas_main_menu">
-                 
-                  <li class="menu-item-has-children">
-                    <a href="#">Shop</a>
-                    <ul class="sub-menu">
-                      <li class="menu-item-has-children">
-                        <a href="#">Shop Layouts</a>
-                        <ul class="sub-menu">
-                          <li><a href="shop-fullwidth.html">Full Width</a></li>
-                          <li>
-                            <a href="shop-fullwidth-list.html"
-                              >Full Width list</a
-                            >
-                          </li>
-                          <li>
-                            <a href="shop-right-sidebar.html">Right Sidebar </a>
-                          </li>
-                          <li>
-                            <a href="shop-right-sidebar-list.html">
-                              Right Sidebar list</a
-                            >
-                          </li>
-                          <li><a href="shop-list.html">List View</a></li>
+               <div class="canvas_close">
+                  <a href="javascript:void(0)"
+                     ><i class="ion-android-close"></i
+                     ></a>
+               </div>
+               <div class="welcome_text">
+                  <p>Welcome to <span>Electronics Store</span></p>
+               </div>
+               <div class="top_right">
+                  <ul>
+                     <li class="language">
+                        <a href="#"
+                           ><i class="zmdi zmdi-dribbble"></i> English1
+                        <i class="zmdi zmdi-caret-down"></i
+                           ></a>
+                        <ul class="dropdown_language">
+                           <li><a href="#">English</a></li>
+                           <li><a href="#">Germany</a></li>
                         </ul>
-                      </li>
-                      <li class="menu-item-has-children">
-                        <a href="#">other Pages</a>
-                        <ul class="sub-menu">
-                          <li><a href="cart.html">cart</a></li>
-                          <li><a href="wishlist.html">Wishlist</a></li>
-                          <li><a href="checkout.html">Checkout</a></li>
-                          <li><a href="my-account.html">my account</a></li>
-                          <li><a href="404.html">Error 404</a></li>
+                     </li>
+                     @if (userId != null)
+                     {
+                     <li class="top_links">
+                        <a href="/Customer/UserProfile/Deshboard/@userId"><i class="zmdi zmdi-account"></i> My account <i class="zmdi zmdi-caret-down"></i></a>
+                        <ul class="dropdown_links">
+                           <li><a href="checkout.html">Checkout </a></li>
+                           <li><a href="/Customer/UserProfile/Deshboard/@userId">My Account </a></li>
+                           <li><a href="cart.html">Shopping Cart</a></li>
+                           <li><a href="wishlist.html">Wishlist</a></li>
+                           <li><a href="wishlist.html">Wishlist</a></li>
                         </ul>
-                      </li>
-                      <li class="menu-item-has-children">
-                        <a href="#">Product Types</a>
-                        <ul class="sub-menu">
-                          <li>
-                            <a href="product-details.html">product details</a>
-                          </li>
-                          <li>
-                            <a href="product-sidebar.html">product sidebar</a>
-                          </li>
-                          <li>
-                            <a href="product-grouped.html">product grouped</a>
-                          </li>
-                          <li>
-                            <a href="variable-product.html">product variable</a>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                  <li class="menu-item-has-children">
-                    <a href="#">blog</a>
-                    <ul class="sub-menu">
-                      <li><a href="blog.html">blog</a></li>
-                      <li><a href="blog-details.html">blog details</a></li>
-                      <li><a href="blog-fullwidth.html">blog fullwidth</a></li>
-                      <li><a href="blog-sidebar.html">blog sidebar</a></li>
-                    </ul>
-                  </li>
-                  <li class="menu-item-has-children">
-                    <a href="#">pages </a>
-                    <ul class="sub-menu">
-                      <li><a href="about.html">About Us</a></li>
-                      <li><a href="services.html">services</a></li>
-                      <li><a href="portfolio.html">portfolio</a></li>
-                      <li><a href="faq.html">Frequently Questions</a></li>
-                      <li><a href="contact.html">contact</a></li>
-                      <li><a href="login.html">login</a></li>
-                      <li><a href="wishlist.html">Wishlist</a></li>
-                      <li><a href="404.html">Error 404</a></li>
-                    </ul>
-                  </li>
-                  <li class="menu-item-has-children">
-                    <a href="my-account.html">my account</a>
-                  </li>
-                  <li class="menu-item-has-children">
-                    <a href="about.html">about Us</a>
-                  </li>
-                  <li class="menu-item-has-children">
-                    <a href="contact.html"> Contact Us</a>
-                  </li>
-                </ul>
-              </div>
+                     </li>
+                     }else
+                     {
+                     <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+                     <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+                     }
+                  </ul>
+               </div>
+               <div class="search-container">
+                  <form method="post"  action="#">
+                     <div class="hover_category">
+                        <select class="select_option" name="select" id="categori2">
+                                    <option value="1">Laptops</option>
 
+                                    <option value="2">Vegetables</option>
+
+                                    <option value="3">Laptops & Desktops</option>
+
+                                </select>
+                     </div>
+                     <div class="search_box">
+                        <input placeholder="Search product..." name="SearchString" type="text" />
+                        <button type="submit">
+                        <i class="zmdi zmdi-search"></i>
+                        </button>
+                     </div>
+                  </form>
+               </div>
+               <div class="mini_cart_wrapper">
+                  <a asp-area="Customer" asp-controller="Home" asp-action="Cart"><i class="fas fa-shopping-cart"></i> (@count) Cart</a>
+               </div>
+               <div id="menu" class="text-left">
+                  <ul class="offcanvas_main_menu">
+                     <li class="menu-item-has-children">
+                        <a href="#">Shop</a>
+                        <ul class="sub-menu">
+                           <li class="menu-item-has-children">
+                              <a href="#">Shop Layouts</a>
+                              <ul class="sub-menu">
+                                 <li><a href="shop-fullwidth.html">Full Width</a></li>
+                                 <li>
+                                    <a href="shop-fullwidth-list.html"
+                                       >Full Width list</a
+                                       >
+                                 </li>
+                                 <li>
+                                    <a href="shop-right-sidebar.html">Right Sidebar </a>
+                                 </li>
+                                 <li>
+                                    <a href="shop-right-sidebar-list.html">
+                                    Right Sidebar list</a
+                                       >
+                                 </li>
+                                 <li><a href="shop-list.html">List View</a></li>
+                              </ul>
+                           </li>
+                           @if (userId != null)
+                           {
+                           <li class="menu-item-has-children">
+                              <a href="#">other Pages</a>
+                              <ul class="sub-menu">
+                                 <li><a href="cart.html">cart</a></li>
+                                 <li><a href="wishlist.html">Wishlist</a></li>
+                                 <li><a href="checkout.html">Checkout</a></li>
+                                 <li><a href="/Customer/UserProfile/Deshboard/@userId">My Account </a></li>
+                                 <li><a href="404.html">Error 404</a></li>
+                              </ul>
+                           </li>
+                           }
+                           <li class="menu-item-has-children">
+                              <a href="#">Product Types</a>
+                              <ul class="sub-menu">
+                                 <li>
+                                    <a href="product-details.html">product details</a>
+                                 </li>
+                                 <li>
+                                    <a href="product-sidebar.html">product sidebar</a>
+                                 </li>
+                                 <li>
+                                    <a href="product-grouped.html">product grouped</a>
+                                 </li>
+                                 <li>
+                                    <a href="variable-product.html">product variable</a>
+                                 </li>
+                              </ul>
+                           </li>
+                        </ul>
+                     </li>
+                     <li class="menu-item-has-children">
+                        <a href="#">blog</a>
+                        <ul class="sub-menu">
+                           <li><a href="blog.html">blog</a></li>
+                           <li><a href="blog-details.html">blog details</a></li>
+                           <li><a href="blog-fullwidth.html">blog fullwidth</a></li>
+                           <li><a href="blog-sidebar.html">blog sidebar</a></li>
+                        </ul>
+                     </li>
+                     <li class="menu-item-has-children">
+                        <a href="#">pages </a>
+                        <ul class="sub-menu">
+                           <li><a href="about.html">About Us</a></li>
+                           <li><a href="services.html">services</a></li>
+                           <li><a href="portfolio.html">portfolio</a></li>
+                           <li><a href="faq.html">Frequently Questions</a></li>
+                           <li><a href="contact.html">contact</a></li>
+                           <li><a href="login.html">login</a></li>
+                           <li><a href="wishlist.html">Wishlist</a></li>
+                           <li><a href="404.html">Error 404</a></li>
+                        </ul>
+                     </li>
+                     <li class="menu-item-has-children">
+                        @if (userId != null){ <a href="/Customer/UserProfile/Deshboard/@userId">my account</a>}
+                     </li>
+                     <li class="menu-item-has-children">
+                        <a href="about.html">about Us</a>
+                     </li>
+                     <li class="menu-item-has-children">
+                        <a href="contact.html"> Contact Us</a>
+                     </li>
+                  </ul>
+               </div>
             </div>
-          </div>
-        </div>
+         </div>
       </div>
-    </div>
-    <!--Offcanvas menu area end-->
-
-    <!--slider area start-->
-    <section class="slider_section mt-30">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-9 offset-lg-3">
-            <div class="slider_area slider_two owl-carousel">
-              <div class="single_slider d-flex align-items-center" data-bgimg="@Url.Content("~/img/slider/slider1.jpg")">
-                <div
-                  class="slider_content slider_content_two content_position_center">
-                  <h1>The NX-80</h1>
-                  <span
-                    >High-Fidelity Sound that takes <br />
-                    your breath away
-                  </span>
-                  <h2><span>form</span> $99 <span>00</span></h2>
-                  <a sp-area="" asp-controller="Home" asp-action="Index" class="zmdi zmdi-account">shop now</a>
-                </div>
-              </div>
-              <div
-                class="single_slider d-flex align-items-center"
-                         data-bgimg="@Url.Content("~/img/slider/slider14.jpg")">
-                <div
-                  class="slider_content slider_content_two content_position_left">
-                  <h1>The NX-80</h1>
-                  <span
-                    >High-Fidelity Sound that takes <br />
-                    your breath away
-                  </span>
-                  <h2><span>form</span> $99 <span>00</span></h2>
-                            <a sp-area="" asp-controller="Home" asp-action="Index" class="zmdi zmdi-account">shop now</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+   </div>
+</div>
+<!--Offcanvas menu area end-->
+<style>
+   /* Adjust the height of the carousel */
+   .carousel-inner .item img {
+   height: 450px; /* Adjust this value to increase or decrease the height */
+   width: auto; /* Maintain aspect ratio */
+   }
+</style>
+<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
+   <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+   </ol>
+   <div class="carousel-inner" role="listbox">
+      <div class="item active"   >
+         <img src="~/img/slider/000000.svg" alt="ASP.NET" class="img-responsive" />
+         <div class="carousel-caption" slider_content_two content_position_center role="option">
+            <h1>The NX-80</h1>
+            <span>High-Fidelity Sound that takes <br /> your breath away</span>
+            <h2><span>  <a sp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary"> shop now</a></span></h2>
+         </div>
       </div>
-    </section>
-
-    <!--slider area end-->
-
-    <!--category product area start-->
-    <section class="category_product_area mt-30 mb-50">
-      <div class="container">
-        <div class="row">
-          <div class="col-12">
+      <div class="item">
+         <img src="~/img/slider/banner-Slider-2.svg"  alt="Visual Studio" class="img-responsive" />
+         <div class="carousel-caption" slider_content_two content_position_center role="option">
+            <h2><  <a sp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary"> shop now</a></h2>
+         </div>
+      </div>
+      <div class="item">
+         <img src="~/img/slider/banner-slider-00.svg" alt="Microsoft Azure" class="img-responsive" />
+         <div class="carousel-caption" slider_content_two content_position_center role="option">
+            <h2><span>  <a sp-area="" asp-controller="Home" asp-action="Index" class="btn btn-secondary"> shop now</a></span></h2>
+         </div>
+      </div>
+   </div>
+   <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+   <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+   <span class="sr-only">Previous</span>
+   </a>
+   <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+   <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+   <span class="sr-only">Next</span>
+   </a>
+</div>
+<!--slider area end-->
+<!--category product area start-->
+<section class="category_product_area mt-30 mb-50">
+   <div class="container">
+      <div class="row">
+         <div class="col-12">
             <div
-              class="category_product_carousel category_column4 owl-carousel"
-            >
-              <div class="single_category_product">
-                <div class="category_product_thumb">
-                  <a href="shop.html"
-                    ><img src="~/img/category/category1.jpg" alt=""
-                  /></a>
-                </div>
-                <div class="category_product_name">
-                  <h2><a href="shop.html">television</a></h2>
-                </div>
-              </div>
-              <div class="single_category_product">
-                <div class="category_product_thumb">
-                  <a href="shop.html"><img src="~/img/category/category2.jpg" alt=""/></a>
-                </div>
-
-
-                <div class="category_product_name">
-                  <h2><a href="shop.html">audio</a></h2>
-                </div>
-              </div>
-              <div class="single_category_product">
-                <div class="category_product_thumb">
-                  <a href="shop.html"
-                    ><img src="~/img/category/category3.jpg" alt=""
-                  /></a>
-                </div>
-                <div class="category_product_name">
-                  <h2><a href="shop.html">Camera</a></h2>
-                </div>
-              </div>
-              <div class="single_category_product">
-                <div class="category_product_thumb">
-                  <a href="shop.html"
-                    ><img src="~/img/category/category4.jpg" alt=""
-                  /></a>
-                </div>
-                <div class="category_product_name">
-                  <h2><a href="shop.html">lundry</a></h2>
-                </div>
-              </div>
-              <div class="single_category_product">
-                <div class="category_product_thumb">
-                  <a href="shop.html"
-                    ><img src="~/img/category/category5.jpg" alt=""
-                  /></a>
-                </div>
-                <div class="category_product_name">
-                  <h2><a href="shop.html">cooling</a></h2>
-                </div>
-              </div>
-              <div class="single_category_product">
-                <div class="category_product_thumb">
-                  <a href="shop.html"
-                    ><img src="~/img/category/category2.jpg" alt=""
-                  /></a>
-                </div>
-                <div class="category_product_name">
-                  <h2><a href="shop.html">audio</a></h2>
-                </div>
-              </div>
+               class="category_product_carousel category_column4 owl-carousel">
+               @foreach (var product in Model)
+               {
+               <div class="single_category_product">
+                  <div class="category_product_thumb">
+                     <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" alt="catagory image" style="height: 200px; width: 70%; margin-top:10px" /></a>
+                  </div>
+                  <div class="category_product_name">
+                     <h2><a href="shop.html"> @product.Name</a></h2>
+                  </div>
+               </div>
+               }
             </div>
-          </div>
-        </div>
+         </div>
       </div>
-    </section>
-    <!--category product area end-->
+   </div>
+</section>
+<!--category product area end-->
 <!--deals product section area start-->
 <section class="deals_product_section mb-50">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="section_title">
-                    <h2>Today’s <span>Deals</span></h2>
-                </div>
-                <div class="deals_product_inner">
-                    <div class="deals_tab_list deals_tab_two">
-                        <ul class="nav" role="tablist">
-                            <li>
-                                <a class="active" data-bs-toggle="tab" href="#Funiture" role="tab" aria-controls="Funiture" aria-selected="true"> <i class="zmdi zmdi-boat"></i><h3>Funiture</h3></a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="tab" href="#laptop" role="tab" aria-controls="laptop" aria-selected="false"> <i class="zmdi zmdi-laptop-mac"></i><h3>laptop</h3> </a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="tab" href="#mobile" role="tab" aria-controls="mobile" aria-selected="false"><i class="zmdi zmdi-smartphone"></i> <h3>mobile</h3> </a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="tab" href="#Fridge" role="tab" aria-controls="Fridge" aria-selected="false"> <i class="zmdi zmdi-toys"></i><h3>Fridge</h3></a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="tab" href="#Camera" role="tab" aria-controls="Camera" aria-selected="false"><i class="zmdi zmdi-camera"></i> <h3>Camera  </h3>  </a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="tab" href="#tv" role="tab" aria-controls="tv" aria-selected="false"><i class="zmdi zmdi-laptop-mac"></i>   <h3>tv</h3></a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="tab" href="#speaker" role="tab" aria-controls="speaker" aria-selected="false"> <i class="zmdi zmdi-collection-speaker"></i> <h3>speaker</h3></a>
-                            </li>
-                            <li>
-                                <a data-bs-toggle="tab" href="#Toys" role="tab" aria-controls="Toys" aria-selected="false"> <i class="zmdi zmdi-cutlery"></i> <h3>Toys</h3></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="deals_product_wrapper">
-                        <div class="tab-content">
-                            <div class="tab-pane fade show active" id="Funiture" role="tabpanel"> <div class="deals_product_carousel deals_product_column2 owl-carousel">
-
-
-
-                                  @foreach (var product in Model)
-                                    {
-
-
-                                    <div class="single_deals_product">
-                                        <div class="product_thumb">
-                                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%;" alt="Card Image"></a>
-                                            <div class="label_product">
-                                                <span class="label_sale">sale</span>
-                                            </div>
-                                           
-                                            <div class="product_timing">
-                                                <div class="alarm_icone">
-                                                    <i class="zmdi zmdi-timer"></i>
-                                                </div>
-                                                <div data-countdown="2025/12/15"></div>
-                                            </div>
-                                        </div>
-                                        <div class="product_content">
-                                            <div class="product_name">
-                                                    <h3><a href="product-details.html">@product.Name</a></h3>
-                                            </div>
-                                            <div class="product_rating">
-                                                <ul>
-                                                    <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                    <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                    <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                    <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                    <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="price_box">
-                                                    <span class="current_price"> @product.Price  $</span>
-                                               
-                                            </div>
-                                            <div class="action_links">
-                                                <ul>
-                                                    <li class="wishlist"><a href="wishlist.html" title="Add to Wishlist"><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
-                                                    <li class="add_to_cart"><a href="cart.html" title="add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i> add to cart</a></li>
-                                                    <li class="compare"><a href="#" title="compare"><i class="zmdi zmdi-swap"></i></a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                }
-                                           </div>
-                            </div>
-                            <div class="tab-pane fade" id="laptop" role="tabpanel">
-                                <div class="deals_product_carousel deals_product_column2 owl-carousel">
-                                    @foreach (var product in Model)
-                                    {
-
-
-                                        <div class="single_deals_product">
-                                            <div class="product_thumb">
-                                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%;" alt="Card Image"></a>
-                                                <div class="label_product">
-                                                    <span class="label_sale">sale</span>
-                                                </div>
-
-                                                <div class="product_timing">
-                                                    <div class="alarm_icone">
-                                                        <i class="zmdi zmdi-timer"></i>
-                                                    </div>
-                                                    <div data-countdown="2025/12/15"></div>
-                                                </div>
-                                            </div>
-                                            <div class="product_content">
-                                                <div class="product_name">
-                                                    <h3><a href="product-details.html">@product.Name</a></h3>
-                                                </div>
-                                                <div class="product_rating">
-                                                    <ul>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="price_box">
-                                                    <span class="current_price"> @product.Price  $</span>
-
-                                                </div>
-                                                <div class="action_links">
-                                                    <ul>
-                                                        <li class="wishlist"><a href="wishlist.html" title="Add to Wishlist"><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
-                                                        <li class="add_to_cart"><a href="cart.html" title="add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i> add to cart</a></li>
-                                                        <li class="compare"><a href="#" title="compare"><i class="zmdi zmdi-swap"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    }
-                                
-                                
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="mobile" role="tabpanel">
-                                <div class="deals_product_carousel deals_product_column2 owl-carousel">
-
-                                    @foreach (var product in Model)
-                                    {
-                                        <div class="single_deals_product">
-                                            <div class="product_thumb">
-                                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%;" alt="Card Image"></a>
-                                                <div class="label_product">
-                                                    <span class="label_sale">sale</span>
-                                                </div>
-
-                                                <div class="product_timing">
-                                                    <div class="alarm_icone">
-                                                        <i class="zmdi zmdi-timer"></i>
-                                                    </div>
-                                                    <div data-countdown="2025/12/15"></div>
-                                                </div>
-                                            </div>
-                                            <div class="product_content">
-                                                <div class="product_name">
-                                                    <h3><a href="product-details.html">@product.Name</a></h3>
-                                                </div>
-                                                <div class="product_rating">
-                                                    <ul>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="price_box">
-                                                    <span class="current_price"> @product.Price  $</span>
-
-                                                </div>
-                                                <div class="action_links">
-                                                    <ul>
-                                                        <li class="wishlist"><a href="wishlist.html" title="Add to Wishlist"><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
-                                                        <li class="add_to_cart"><a href="cart.html" title="add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i> add to cart</a></li>
-                                                        <li class="compare"><a href="#" title="compare"><i class="zmdi zmdi-swap"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    }
-
-
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="Fridge" role="tabpanel">
-                                <div class="deals_product_carousel deals_product_column2 owl-carousel">
-                                    
-                                    @foreach (var product in Model)
-                                    {
-
-
-                                        <div class="single_deals_product">
-                                            <div class="product_thumb">
-                                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%;" alt="Card Image"></a>
-                                                <div class="label_product">
-                                                    <span class="label_sale">sale</span>
-                                                </div>
-
-                                                <div class="product_timing">
-                                                    <div class="alarm_icone">
-                                                        <i class="zmdi zmdi-timer"></i>
-                                                    </div>
-                                                    <div data-countdown="2025/12/15"></div>
-                                                </div>
-                                            </div>
-                                            <div class="product_content">
-                                                <div class="product_name">
-                                                    <h3><a href="product-details.html">@product.Name</a></h3>
-                                                </div>
-                                                <div class="product_rating">
-                                                    <ul>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="price_box">
-                                                    <span class="current_price"> @product.Price  $</span>
-
-                                                </div>
-                                                <div class="action_links">
-                                                    <ul>
-                                                        <li class="wishlist"><a href="wishlist.html" title="Add to Wishlist"><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
-                                                        <li class="add_to_cart"><a href="cart.html" title="add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i> add to cart</a></li>
-                                                        <li class="compare"><a href="#" title="compare"><i class="zmdi zmdi-swap"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    }
-                                
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="Camera" role="tabpanel">
-   <div class="deals_product_carousel deals_product_column2 owl-carousel">
-                                   
-                                    @foreach (var product in Model)
-                                    {
-
-                                        <div class="single_deals_product">
-                                            <div class="product_thumb">
-                                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%;" alt="Card Image"></a>
-                                                <div class="label_product">
-                                                    <span class="label_sale">sale</span>
-                                                </div>
-
-                                                <div class="product_timing">
-                                                    <div class="alarm_icone">
-                                                        <i class="zmdi zmdi-timer"></i>
-                                                    </div>
-                                                    <div data-countdown="2025/12/15"></div>
-                                                </div>
-                                            </div>
-                                            <div class="product_content">
-                                                <div class="product_name">
-                                                    <h3><a href="product-details.html">@product.Name</a></h3>
-                                                </div>
-                                                <div class="product_rating">
-                                                    <ul>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="price_box">
-                                                    <span class="current_price"> @product.Price  $</span>
-
-                                                </div>
-                                                <div class="action_links">
-                                                    <ul>
-                                                        <li class="wishlist"><a href="wishlist.html" title="Add to Wishlist"><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
-                                                        <li class="add_to_cart"><a href="cart.html" title="add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i> add to cart</a></li>
-                                                        <li class="compare"><a href="#" title="compare"><i class="zmdi zmdi-swap"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    }
-                               
-                                </div>
-                           
-                            </div>
-                            <div class="tab-pane fade" id="tv" role="tabpanel">
-                                <div class="deals_product_carousel deals_product_column2 owl-carousel">
-
-                                    @foreach (var product in Model)
-                                    {
-
-
-                                        <div class="single_deals_product">
-                                            <div class="product_thumb">
-                                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%;" alt="Card Image"></a>
-                                                <div class="label_product">
-                                                    <span class="label_sale">sale</span>
-                                                </div>
-
-                                                <div class="product_timing">
-                                                    <div class="alarm_icone">
-                                                        <i class="zmdi zmdi-timer"></i>
-                                                    </div>
-                                                    <div data-countdown="2025/12/15"></div>
-                                                </div>
-                                            </div>
-                                            <div class="product_content">
-                                                <div class="product_name">
-                                                    <h3><a href="product-details.html">@product.Name</a></h3>
-                                                </div>
-                                                <div class="product_rating">
-                                                    <ul>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="price_box">
-                                                    <span class="current_price"> @product.Price  $</span>
-
-                                                </div>
-                                                <div class="action_links">
-                                                    <ul>
-                                                        <li class="wishlist"><a href="wishlist.html" title="Add to Wishlist"><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
-                                                        <li class="add_to_cart"><a href="cart.html" title="add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i> add to cart</a></li>
-                                                        <li class="compare"><a href="#" title="compare"><i class="zmdi zmdi-swap"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    }
-
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="speaker" role="tabpanel">
-                                <div class="deals_product_carousel deals_product_column2 owl-carousel">
-
-                                    @foreach (var product in Model)
-                                    {
-
-
-                                        <div class="single_deals_product">
-                                            <div class="product_thumb">
-                                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%;" alt="Card Image"></a>
-                                                <div class="label_product">
-                                                    <span class="label_sale">sale</span>
-                                                </div>
-
-                                                <div class="product_timing">
-                                                    <div class="alarm_icone">
-                                                        <i class="zmdi zmdi-timer"></i>
-                                                    </div>
-                                                    <div data-countdown="2025/12/15"></div>
-                                                </div>
-                                            </div>
-                                            <div class="product_content">
-                                                <div class="product_name">
-                                                    <h3><a href="product-details.html">@product.Name</a></h3>
-                                                </div>
-                                                <div class="product_rating">
-                                                    <ul>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="price_box">
-                                                    <span class="current_price"> @product.Price  $</span>
-
-                                                </div>
-                                                <div class="action_links">
-                                                    <ul>
-                                                        <li class="wishlist"><a href="wishlist.html" title="Add to Wishlist"><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
-                                                        <li class="add_to_cart"><a href="cart.html" title="add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i> add to cart</a></li>
-                                                        <li class="compare"><a href="#" title="compare"><i class="zmdi zmdi-swap"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    }
-                              
-                                </div>
-                            </div>
-                            <div class="tab-pane fade" id="Toys" role="tabpanel">
-                             
-                            <div class="deals_product_carousel deals_product_column2 owl-carousel">
-                                   
-                                    @foreach (var product in Model)
-                                    {
-
-
-                                        <div class="single_deals_product">
-                                            <div class="product_thumb">
-                                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%;" alt="Card Image"></a>
-                                                <div class="label_product">
-                                                    <span class="label_sale">sale</span>
-                                                </div>
-
-                                                <div class="product_timing">
-                                                    <div class="alarm_icone">
-                                                        <i class="zmdi zmdi-timer"></i>
-                                                    </div>
-                                                    <div data-countdown="2025/12/15"></div>
-                                                </div>
-                                            </div>
-                                            <div class="product_content">
-                                                <div class="product_name">
-                                                    <h3><a href="product-details.html">@product.Name</a></h3>
-                                                </div>
-                                                <div class="product_rating">
-                                                    <ul>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                        <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                                <div class="price_box">
-                                                    <span class="current_price"> @product.Price  $</span>
-
-                                                </div>
-                                                <div class="action_links">
-                                                    <ul>
-                                                        <li class="wishlist"><a href="wishlist.html" title="Add to Wishlist"><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
-                                                        <li class="add_to_cart"><a href="cart.html" title="add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i> add to cart</a></li>
-                                                        <li class="compare"><a href="#" title="compare"><i class="zmdi zmdi-swap"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    }
-                              
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+   <div class="container">
+      <div class="row">
+         <div class="col-12">
+            <div class="section_title">
+               <h2>Today’s <span>Deals</span></h2>
             </div>
-        </div>
-    </div>
+            <div class="deals_product_inner">
+               <div class="deals_tab_list deals_tab_two">
+                  <ul class="nav" role="tablist">
+                     <li>
+                        <a class="active" data-bs-toggle="tab" href="#Funiture" role="tab" aria-controls="Funiture" aria-selected="true">
+                           <i class="zmdi zmdi-boat"></i>
+                           <h3>Funiture</h3>
+                        </a>
+                     </li>
+                     <li>
+                        <a data-bs-toggle="tab" href="#laptop" role="tab" aria-controls="laptop" aria-selected="false">
+                           <i class="zmdi zmdi-laptop-mac"></i>
+                           <h3>laptop</h3>
+                        </a>
+                     </li>
+                     <li>
+                        <a data-bs-toggle="tab" href="#mobile" role="tab" aria-controls="mobile" aria-selected="false">
+                           <i class="zmdi zmdi-smartphone"></i> 
+                           <h3>mobile</h3>
+                        </a>
+                     </li>
+                     <li>
+                        <a data-bs-toggle="tab" href="#Fridge" role="tab" aria-controls="Fridge" aria-selected="false">
+                           <i class="zmdi zmdi-toys"></i>
+                           <h3>Fridge</h3>
+                        </a>
+                     </li>
+                     <li>
+                        <a data-bs-toggle="tab" href="#Camera" role="tab" aria-controls="Camera" aria-selected="false">
+                           <i class="zmdi zmdi-camera"></i> 
+                           <h3>Camera  </h3>
+                        </a>
+                     </li>
+                     <li>
+                        <a data-bs-toggle="tab" href="#tv" role="tab" aria-controls="tv" aria-selected="false">
+                           <i class="zmdi zmdi-laptop-mac"></i>   
+                           <h3>tv</h3>
+                        </a>
+                     </li>
+                     <li>
+                        <a data-bs-toggle="tab" href="#speaker" role="tab" aria-controls="speaker" aria-selected="false">
+                           <i class="zmdi zmdi-collection-speaker"></i> 
+                           <h3>speaker</h3>
+                        </a>
+                     </li>
+                     <li>
+                        <a data-bs-toggle="tab" href="#Toys" role="tab" aria-controls="Toys" aria-selected="false">
+                           <i class="zmdi zmdi-cutlery"></i> 
+                           <h3>Toys</h3>
+                        </a>
+                     </li>
+                  </ul>
+               </div>
+               <div class="deals_product_wrapper">
+                  <div class="tab-content">
+                     <div class="tab-pane fade show active" id="Funiture" role="tabpanel">
+                        <div class="deals_product_carousel deals_product_column2 owl-carousel">
+                           @foreach (var product in Model)
+                           {
+                           <div class="single_deals_product">
+                              <div class="product_thumb">
+                                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%;  border-top:5px;" alt="Card Image"></a>
+                                 <div class="label_product">
+                                    <span class="label_sale">sale</span>
+                                 </div>
+                                 <div class="product_timing">
+                                    <div class="alarm_icone">
+                                       <i class="zmdi zmdi-timer"></i>
+                                    </div>
+                                    <div data-countdown="2025/12/15"></div>
+                                 </div>
+                              </div>
+                              <div class="product_content">
+                                 <div class="product_name">
+                                    <h3><a href="product-details.html">@product.Name</a></h3>
+                                 </div>
+                                 <div class="product_rating">
+                                    <ul>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                    </ul>
+                                 </div>
+                                 <div class="price_box">
+                                    <span class="current_price"> @product.Price  $</span>
+                                 </div>
+                                 <div class="action_links">
+                                    <ul>
+                                       <li class="wishlist"><a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id" title="Add to Wishlist"><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
+                                       <li class="add_to_cart"><a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id" title="add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i> add to cart</a></li>
+                                       <li class="compare"><a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id" title="compare"><i class="zmdi zmdi-swap"></i></a></li>
+                                    </ul>
+                                 </div>
+                              </div>
+                           </div>
+                           }
+                        </div>
+                     </div>
+                     <div class="tab-pane fade" id="laptop" role="tabpanel">
+                        <div class="deals_product_carousel deals_product_column2 owl-carousel">
+                           @foreach (var product in Model)
+                           {
+                           <div class="single_deals_product">
+                              <div class="product_thumb">
+                                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%; border-top:5px;" alt="Card Image"></a>
+                                 <div class="label_product">
+                                    <span class="label_sale">sale</span>
+                                 </div>
+                                 <div class="product_timing">
+                                    <div class="alarm_icone">
+                                       <i class="zmdi zmdi-timer"></i>
+                                    </div>
+                                    <div data-countdown="2025/12/15"></div>
+                                 </div>
+                              </div>
+                              <div class="product_content">
+                                 <div class="product_name">
+                                    <h3><a href="product-details.html">@product.Name</a></h3>
+                                 </div>
+                                 <div class="product_rating">
+                                    <ul>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                    </ul>
+                                 </div>
+                                 <div class="price_box">
+                                    <span class="current_price"> @product.Price  $</span>
+                                 </div>
+                              </div>
+                           </div>
+                           }
+                        </div>
+                     </div>
+                     <div class="tab-pane fade" id="mobile" role="tabpanel">
+                        <div class="deals_product_carousel deals_product_column2 owl-carousel">
+                           @foreach (var product in Model)
+                           {
+                           <div class="single_deals_product">
+                              <div class="product_thumb">
+                                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%; border-top:5px;" alt="Card Image"></a>
+                                 <div class="label_product">
+                                    <span class="label_sale">sale</span>
+                                 </div>
+                                 <div class="product_timing">
+                                    <div class="alarm_icone">
+                                       <i class="zmdi zmdi-timer"></i>
+                                    </div>
+                                    <div data-countdown="2025/12/15"></div>
+                                 </div>
+                              </div>
+                              <div class="product_content">
+                                 <div class="product_name">
+                                    <h3><a href="product-details.html">@product.Name</a></h3>
+                                 </div>
+                                 <div class="product_rating">
+                                    <ul>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                    </ul>
+                                 </div>
+                                 <div class="price_box">
+                                    <span class="current_price"> @product.Price  $</span>
+                                 </div>
+                              </div>
+                           </div>
+                           }
+                        </div>
+                     </div>
+                     <div class="tab-pane fade" id="Fridge" role="tabpanel">
+                        <div class="deals_product_carousel deals_product_column2 owl-carousel">
+                           @foreach (var product in Model)
+                           {
+                           <div class="single_deals_product">
+                              <div class="product_thumb">
+                                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%; border-top:5px;" alt="Card Image"></a>
+                                 <div class="label_product">
+                                    <span class="label_sale">sale</span>
+                                 </div>
+                                 <div class="product_timing">
+                                    <div class="alarm_icone">
+                                       <i class="zmdi zmdi-timer"></i>
+                                    </div>
+                                    <div data-countdown="2025/12/15"></div>
+                                 </div>
+                              </div>
+                              <div class="product_content">
+                                 <div class="product_name">
+                                    <h3><a href="product-details.html">@product.Name</a></h3>
+                                 </div>
+                                 <div class="product_rating">
+                                    <ul>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                    </ul>
+                                 </div>
+                                 <div class="price_box">
+                                    <span class="current_price"> @product.Price  $</span>
+                                 </div>
+                              </div>
+                           </div>
+                           }
+                        </div>
+                     </div>
+                     <div class="tab-pane fade" id="Camera" role="tabpanel">
+                        <div class="deals_product_carousel deals_product_column2 owl-carousel">
+                           @foreach (var product in Model)
+                           {
+                           <div class="single_deals_product">
+                              <div class="product_thumb">
+                                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%; border-top:5px; " alt="Card Image"></a>
+                                 <div class="label_product">
+                                    <span class="label_sale">sale</span>
+                                 </div>
+                                 <div class="product_timing">
+                                    <div class="alarm_icone">
+                                       <i class="zmdi zmdi-timer"></i>
+                                    </div>
+                                    <div data-countdown="2025/12/15"></div>
+                                 </div>
+                              </div>
+                              <div class="product_content">
+                                 <div class="product_name">
+                                    <h3><a href="product-details.html">@product.Name</a></h3>
+                                 </div>
+                                 <div class="product_rating">
+                                    <ul>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                    </ul>
+                                 </div>
+                                 <div class="price_box">
+                                    <span class="current_price"> @product.Price  $</span>
+                                 </div>
+                              </div>
+                           </div>
+                           }
+                        </div>
+                     </div>
+                     <div class="tab-pane fade" id="tv" role="tabpanel">
+                        <div class="deals_product_carousel deals_product_column2 owl-carousel">
+                           @foreach (var product in Model)
+                           {
+                           <div class="single_deals_product">
+                              <div class="product_thumb">
+                                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%; border-top:5px;" alt="Card Image"></a>
+                                 <div class="label_product">
+                                    <span class="label_sale">sale</span>
+                                 </div>
+                                 <div class="product_timing">
+                                    <div class="alarm_icone">
+                                       <i class="zmdi zmdi-timer"></i>
+                                    </div>
+                                    <div data-countdown="2025/12/15"></div>
+                                 </div>
+                              </div>
+                              <div class="product_content">
+                                 <div class="product_name">
+                                    <h3><a href="product-details.html">@product.Name</a></h3>
+                                 </div>
+                                 <div class="product_rating">
+                                    <ul>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                    </ul>
+                                 </div>
+                                 <div class="price_box">
+                                    <span class="current_price"> @product.Price  $</span>
+                                 </div>
+                                 <div class="action_links">
+                                    <ul>
+                                       <li class="wishlist"><a href="wishlist.html" title="Add to Wishlist"><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
+                                       <li class="add_to_cart"><a href="cart.html" title="add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i> add to cart</a></li>
+                                       <li class="compare"><a href="#" title="compare"><i class="zmdi zmdi-swap"></i></a></li>
+                                    </ul>
+                                 </div>
+                              </div>
+                           </div>
+                           }
+                        </div>
+                     </div>
+                     <div class="tab-pane fade" id="speaker" role="tabpanel">
+                        <div class="deals_product_carousel deals_product_column2 owl-carousel">
+                           @foreach (var product in Model)
+                           {
+                           <div class="single_deals_product">
+                              <div class="product_thumb">
+                                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%; border-top:5px;" alt="Card Image"></a>
+                                 <div class="label_product">
+                                    <span class="label_sale">sale</span>
+                                 </div>
+                                 <div class="product_timing">
+                                    <div class="alarm_icone">
+                                       <i class="zmdi zmdi-timer"></i>
+                                    </div>
+                                    <div data-countdown="2025/12/15"></div>
+                                 </div>
+                              </div>
+                              <div class="product_content">
+                                 <div class="product_name">
+                                    <h3><a href="product-details.html">@product.Name</a></h3>
+                                 </div>
+                                 <div class="product_rating">
+                                    <ul>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                    </ul>
+                                 </div>
+                                 <div class="price_box">
+                                    <span class="current_price"> @product.Price  $</span>
+                                 </div>
+                              </div>
+                           </div>
+                           }
+                        </div>
+                     </div>
+                     <div class="tab-pane fade" id="Toys" role="tabpanel">
+                        <div class="deals_product_carousel deals_product_column2 owl-carousel">
+                           @foreach (var product in Model)
+                           {
+                           <div class="single_deals_product">
+                              <div class="product_thumb">
+                                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%; border-top:5px;" alt="Card Image"></a>
+                                 <div class="label_product">
+                                    <span class="label_sale">sale</span>
+                                 </div>
+                                 <div class="product_timing">
+                                    <div class="alarm_icone">
+                                       <i class="zmdi zmdi-timer"></i>
+                                    </div>
+                                    <div data-countdown="2025/12/15"></div>
+                                 </div>
+                              </div>
+                              <div class="product_content">
+                                 <div class="product_name">
+                                    <h3><a href="product-details.html">@product.Name</a></h3>
+                                 </div>
+                                 <div class="product_rating">
+                                    <ul>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                       <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                    </ul>
+                                 </div>
+                                 <div class="price_box">
+                                    <span class="current_price"> @product.Price  $</span>
+                                 </div>
+                              </div>
+                           </div>
+                           }
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
 </section>
 <!--deals product section area end-->
-
-
 <!--new product area start-->
 <section class="new_product_area mb-50">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <div class="section_title">
-          <h2>New <span>Products</span></h2>
-        </div>
-      </div>
-    </div>
-
-    <div class="new_product_two_container">
-      <div class="row no-gutters">
-        <div class="col-lg-3 col-md-12">
-          <div class="single_banner">
-            <div class="banner_thumb">
-              <a href="shop.html"><img src="~/img/bg/banner7.jpg" alt="" /></a>
+   <div class="container">
+      <div class="row">
+         <div class="col-12">
+            <div class="section_title">
+               <h2>New <span>Products</span></h2>
             </div>
-          </div>
-        </div>
-        <div class="col-lg-9 col-md-12">
-          <div class="product_carousel product_column3 owl-carousel">
+         </div>
+      </div>
+      <div class="new_product_two_container">
+         <div class="row no-gutters">
+            <div class="col-lg-3 col-md-12">
+               <div class="single_banner">
+                  <div class="banner_thumb">
+                            <a href="shop.html"><img src="~/img/bg/banner7.jpg"  alt="" /></a>
+                  </div>
+               </div>
+            </div>
+            <div class="col-lg-9 col-md-12">
+               <div class="product_carousel product_column3 owl-carousel">
+                  @foreach (var product in Model)
+                  {
+                  <div class="single_product">
+                     <div class="product_thumb">
+                        <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id">
+                        <img src="~/@product.Image" alt="product image" class="card-img-top" style="height: 250px; width: 100%; object-fit: cover;border-top:10px; border-top-left-radius: 5px; border-top-right-radius: 5px;" />
+                        </a>
+                        <div class="label_product">
+                           <span class="label_sale">sale</span>
+                        </div>
+                        <div >
+                           <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id" data-bs-toggle="modal" data-bs-target="#modal_box" title="quick view"> </a>
+                        </div>
+                     </div>
+                     <div class="product_content">
+                        <div class="product_name">
+                           <h3><a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id">@product.Name</a></h3>
+                        </div>
+                        <div class="product_rating">
+                           <ul>
+                              <li> <a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                              <li> <a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                              <li> <a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                              <li> <a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                              <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                           </ul>
+                        </div>
+                        <div class="price_box">
+                           <span class="current_price"> @product.Price $</span>
+                        </div>
+                        <div class="action_links">
+                           <ul>
+                              <li class="wishlist"><a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id" title="Add to Wishlist"><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
+                              <li class="add_to_cart"><a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id" title="add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i> add to cart</a></li>
+                              <li class="compare"><a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id" title="compare"><i class="zmdi zmdi-swap"></i></a></li>
+                           </ul>
+                        </div>
+                     </div>
+                  </div>
+                  }
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+<!--new product area end-->
+<!--banner area end-->
+<!--custom product area start-->
+<section class="custom_product_area mb-50">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-lg-4">
+                <div class="small_product_area">
+                    <div class="section_title">
+                        <h2>Featured  <span>Products</span></h2>
+                    </div>
+                    <div class="small_product_wrapper">
+
                         @foreach (var product in Model)
                         {
-                            <div class="single_product">
+                            <div class="small_product_items">
                                 <div class="product_thumb">
                                     <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id">
-                                        <img src="~/@product.Image" alt="product image" class="card-img-top" style="height: 250px; width: 100%; object-fit: cover; border-top-left-radius: 5px; border-top-right-radius: 5px;" />
+                                        <img src="~/@product.Image" alt="product image"  />
                                     </a>
-                                    <div class="label_product">
-                                        <span class="label_sale">sale</span>
-                                    </div>
-                                    <div >
-                                        <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id" data-bs-toggle="modal" data-bs-target="#modal_box" title="quick view"> </a>
-                                    </div>
                                 </div>
                                 <div class="product_content">
                                     <div class="product_name">
-                                        <h3><a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id">@product.Name</a></h3>
+                                        <h3><a href="product-details.html">@product.Name</a></h3>
                                     </div>
                                     <div class="product_rating">
                                         <ul>
-                                            <li> <a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                            <li> <a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                            <li> <a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
-                                            <li> <a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                            <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                            <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                            <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                            <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
                                             <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
                                         </ul>
                                     </div>
                                     <div class="price_box">
-                                        <span class="current_price"> @product.Price $</span>
+                                        <span class="current_price">@product.Price  $</span>
+                                      
                                     </div>
-                                    <div class="action_links">
+                                </div>
+
+                            </div>
+
+                        }
+
+      
+                    
+
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="small_product_area">
+                    <div class="section_title">
+                        <h2>Best Seller <span>Products</span></h2>
+                    </div>
+                    <div class="small_product_wrapper">
+
+                        @foreach (var product in Model)
+                        {
+                            <div class="small_product_items">
+                                <div class="product_thumb">
+                                    <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id">
+                                        <img src="~/@product.Image" alt="product image" />
+                                    </a>
+                                </div>
+                                <div class="product_content">
+                                    <div class="product_name">
+                                        <h3><a href="product-details.html">@product.Name</a></h3>
+                                    </div>
+                                    <div class="product_rating">
                                         <ul>
-                                            <li class="wishlist"><a  title="Add to Wishlist"><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
-                                            <li class="add_to_cart"><a  title="add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i> add to cart</a></li>
-                                            <li class="compare"><a  title="compare"><i class="zmdi zmdi-swap"></i></a></li>
+                                            <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                            <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                            <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                            <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                            <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
                                         </ul>
                                     </div>
-                                
+                                    <div class="price_box">
+                                        <span class="current_price">@product.Price  $</span>
+
+                                    </div>
                                 </div>
+
                             </div>
+
                         }
-        </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!--new product area end-->
 
-
-    <!--banner area end-->
-
-
-    <!--brand newsletter area start-->
-    <div class="brand_newsletter_area">
-      <div class="container">
-        <div class="row">
-          <div class="col-12">
-            <div class="brand_container owl-carousel">
-              <div class="single_brand">
-                <a href="#"><img src="~/img/brand/brand.png" alt="" /></a>
-              </div>
-              <div class="single_brand">
-                <a href="#"><img src="~/img/brand/brand1.png" alt="" /></a>
-              </div>
-              <div class="single_brand">
-                <a href="#"><img src="~/img/brand/brand2.png" alt="" /></a>
-              </div>
-              <div class="single_brand">
-                <a href="#"><img src="~/img/brand/brand3.png" alt="" /></a>
-              </div>
-              <div class="single_brand">
-                <a href="#"><img src="~/img/brand/brand4.png" alt="" /></a>
-              </div>
-              <div class="single_brand">
-                <a href="#"><img src="~/img/brand/brand5.png" alt="" /></a>
-              </div>
-              <div class="single_brand">
-                <a href="#"><img src="~/img/brand/brand1.png" alt="" /></a>
-              </div>
+                    
+                    </div>
+                </div>
             </div>
-           
-          </div>
+
+
+
+            <div class="col-lg-4">
+                <div class="small_product_area">
+                    <div class="section_title">
+                        <h2>top rated <span>Products</span></h2>
+                    </div>
+
+                    <div class="small_product_wrapper">
+                        @foreach (var product in Model)
+                        {
+                            <div class="small_product_items">
+                                <div class="product_thumb">
+                                    <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id">
+                                        <img src="~/@product.Image" alt="product image" />
+                                    </a>
+                                </div>
+                                <div class="product_content">
+                                    <div class="product_name">
+                                        <h3><a href="product-details.html">@product.Name</a></h3>
+                                    </div>
+                                    <div class="product_rating">
+                                        <ul>
+                                            <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                            <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                            <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                            <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                            <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                        </ul>
+                                    </div>
+                                    <div class="price_box">
+                                        <span class="current_price">@product.Price  $</span>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        }
+
+                    
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-    <!--brand area end-->
+</section>
+<!--custom product area end-->
 
 
+
+<!--brand newsletter area start-->
+<div class="brand_newsletter_area">
+   <div class="container">
+      <div class="row">
+         <div class="col-12">
+            <div class="brand_container owl-carousel">
+               <div class="single_brand">
+                  <a href="#"><img src="~/img/brand/brand.png" alt="" /></a>
+               </div>
+               <div class="single_brand">
+                  <a href="#"><img src="~/img/brand/brand1.png" alt="" /></a>
+               </div>
+               <div class="single_brand">
+                  <a href="#"><img src="~/img/brand/brand2.png" alt="" /></a>
+               </div>
+               <div class="single_brand">
+                  <a href="#"><img src="~/img/brand/brand3.png" alt="" /></a>
+               </div>
+               <div class="single_brand">
+                  <a href="#"><img src="~/img/brand/brand4.png" alt="" /></a>
+               </div>
+               <div class="single_brand">
+                  <a href="#"><img src="~/img/brand/brand5.png" alt="" /></a>
+               </div>
+               <div class="single_brand">
+                  <a href="#"><img src="~/img/brand/brand1.png" alt="" /></a>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!--brand area end-->
 @* 
 <div class="row" style="display: flex; flex-wrap: wrap;">
-    @foreach (var product in Model)
-    {
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4" style="width: 25%; padding: 5px 10px; margin-top:20px">
-            <div class="card" style="border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                <div>
-                    <h5 class="card-title text-center">@product.Name</h5>
-                </div>
-                <br />
-                <img src="~/@product.Image" alt="Card Image" class="card-img-top" style="height: 250px; width: 100%; object-fit: cover; border-top-left-radius: 5px; border-top-right-radius: 5px;" />
-                <div class="card-body">
-                    <p class="card-text text-center">
-                        Price: <strong>@product.Price</strong>
-                    </p>
-                    <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id" class="btn btn-success" style="display: block; width: 100%; text-align: center; background-color: #28a745; color: #fff; padding: 8px 0; text-decoration: none; border-radius: 5px;">Details</a>
-                </div>
-            </div>
-        </div>
-    }
+   @foreach (var product in Model)
+   {
+   <div class="col-lg-3 col-md-4 col-sm-6 mb-4" style="width: 25%; padding: 5px 10px; margin-top:20px">
+      <div class="card" style="border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+         <div>
+            <h5 class="card-title text-center">@product.Name</h5>
+         </div>
+         <br />
+         <img src="~/@product.Image" alt="Card Image" class="card-img-top" style="height: 250px; width: 100%; object-fit: cover; border-top-left-radius: 5px; border-top-right-radius: 5px;" />
+         <div class="card-body">
+            <p class="card-text text-center">
+               Price: <strong>@product.Price</strong>
+            </p>
+            <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id" class="btn btn-success" style="display: block; width: 100%; text-align: center; background-color: #28a745; color: #fff; padding: 8px 0; text-decoration: none; border-radius: 5px;">Details</a>
+         </div>
+      </div>
+   </div>
+   }
 </div>
- *@
-
-
+*@
 <div>
-    @* @Html.PagedListPager(Model,
-    page => Url.Action("Index", new { page }),
-    PagedListRenderOptions.PageNumbersOnly) *@
-
- @Html.PagedListPager(Model, page => Url.Action("Index", new { page, foo1Param = "1", foo2Param = "2"})) 
-
+   @* @Html.PagedListPager(Model,
+   page => Url.Action("Index", new { page }),
+   PagedListRenderOptions.PageNumbersOnly) *@
+   @Html.PagedListPager(Model, page => Url.Action("Index", new { page, foo1Param = "1", foo2Param = "2"})) 
 </div>
-
 @section Scripts{
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+@{
+await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }
-
-
-
+<script>
+   $(document).ready(function () {
+       $('.slider_area').owlCarousel({
+           items: 1,
+           loop: true,
+           autoplay: true,
+           autoplayTimeout: 5000, // 5 seconds
+           autoplayHoverPause: false,
+           nav: true,
+           dots: false
+       });
+   });
+</script>
+}
+@* @section Scripts {
+<script>
+   $(document).ready(function(){
+       $('.slider_area').owlCarousel({
+           items: 1,
+           loop: true,
+           autoplay: true,
+           autoplayTimeout: 5000, // 5 seconds
+           autoplayHoverPause: true,
+           nav: true,
+           dots: false
+       });
+   });
+</script>
+}
+*@
