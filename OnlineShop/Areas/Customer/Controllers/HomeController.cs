@@ -43,7 +43,7 @@ namespace OnlineShop.Areas.Customer.Controllers
 
            public IActionResult Index(int? page)
         {
-            return View(_db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList().ToPagedList(page ?? 1, 8));
+            return View(_db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList().ToPagedList(page ?? 1, 10));
         }
 
 
@@ -74,7 +74,7 @@ namespace OnlineShop.Areas.Customer.Controllers
             }
 
             // Convert the filtered products to a paged list using the current page number
-            var pagedProducts = products.ToPagedList(page ?? 1, 8);
+            var pagedProducts = products.ToPagedList(page ?? 1, 10);
 
             return View(pagedProducts);
         }

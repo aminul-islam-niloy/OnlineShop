@@ -1,0 +1,40 @@
+﻿@model OnlineShop.Models.Products
+
+<div class="single_deals_product">
+    <div class="product_thumb">
+        <a asp-action="Detail" asp-controller="Home" asp-route-id="@Model.Id"><img src="~/@Model.Image" style="height: 280px; width: 60%;" alt="Card Image"></a>
+        <div class="label_product">
+            <span class="label_sale">sale</span>
+        </div>
+        <div class="product_timing">
+            <div class="alarm_icone">
+                <i class="zmdi zmdi-timer"></i>
+            </div>
+            <div data-countdown="2025/12/15"></div>
+        </div>
+    </div>
+    <div class="product_content">
+        <div class="product_name">
+            <h3><a href="product-details.html">@Model.Name</a></h3>
+        </div>
+        <div class="product_rating">
+            <ul>
+                <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+            </ul>
+        </div>
+        <div class="price_box">
+            <span class="current_price">@Model.Price $</span>
+        </div>
+        <div class="action_links">
+            <ul>
+                <li class="wishlist"><a href="wishlist.html" title="Add to Wishlist"><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
+                <li class="add_to_cart"><a href="cart.html" title="add to cart"><i class="zmdi zmdi-shopping-cart-plus"></i> add to cart</a></li>
+                <li class="compare"><a href="#" title="compare"><i class="zmdi zmdi-swap"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</div>
