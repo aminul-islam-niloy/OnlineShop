@@ -9,14 +9,22 @@ namespace OnlineShop.Areas.Customer.Controllers
 {
     [Area("Customer")]
     [AllowAnonymous]
+
+   
+       
+  
+
     public class AccountController : Controller
     {
+       
         private readonly UserManager<IdentityUser> _userManager;
 
         public AccountController(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
         }
+
+
 
         [HttpGet("confirm-email")]
         public async Task<IActionResult> ConfirmEmail(string uid, string token)
@@ -39,8 +47,9 @@ namespace OnlineShop.Areas.Customer.Controllers
             return View();
 
 
-           // return RedirectToAction("SuccessRegistration", "Account"); // or any other 
+            // return RedirectToAction("SuccessRegistration", "Account"); // or any other 
         }
+
 
         public IActionResult Index()
         {

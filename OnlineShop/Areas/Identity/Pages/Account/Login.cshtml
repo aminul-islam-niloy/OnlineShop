@@ -5,58 +5,99 @@
     ViewData["Title"] = "Log in";
 }
 
-<h2>@ViewData["Title"]</h2>
-<div class="row">
-    <div class="col-md-4">
-        <section>
-            <form method="post">
-                <h4>Use a local account to log in.</h4>
-                <hr />
-                <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Input.Email"></label>
-                    <input asp-for="Input.Email" class="form-control" />
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+
+<style>
+    /* Custom CSS */
+    .wide-input {
+        width: 100%;
+    }
+
+    .wide-button {
+        width: 100%;
+    }
+</style>
+
+
+
+<div class="container-fluid">
+    <div class="card text-black m-5" style="border-radius: 25px;">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-10 col-lg-6 order-2 order-lg-1 d-flex flex-column align-items-center">
+
+                    <form method="post">
+                        <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+                 
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Input.Email"></label>
+                            <input asp-for="Input.Email" class="form-control" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Input.Password"></label>
+                            <input asp-for="Input.Password" class="form-control" />
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label asp-for="Input.RememberMe">
+                                    <input asp-for="Input.RememberMe" />
+                                    @Html.DisplayNameFor(m => m.Input.RememberMe)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary   mb-4 wide-button">Log in</button>
+                        </div>
+                        <div class="form-group">
+                            <p>
+                                <a class="btn btn-default" asp-page="./ForgotPassword">Forgot your password?</a>
+                            </p>
+                            <p>
+                                <a asp-page="./Register" class="btn btn-info" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                            </p>
+                        </div>
+                    </form>
+
+
+
                 </div>
-                <div class="form-group">
-                    <label asp-for="Input.Password"></label>
-                    <input asp-for="Input.Password" class="form-control" />
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <div class="checkbox">
-                        <label asp-for="Input.RememberMe">
-                            <input asp-for="Input.RememberMe" />
-                            @Html.DisplayNameFor(m => m.Input.RememberMe)
-                        </label>
+
+                <div class="col-md-10 col-lg-6 order-1 order-lg-2">
+                    <div class="signup-image text-center">
+                        <figure><img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp" alt="sing up image" style="height:300px; width:100%"></figure>
+                       
+                    </div>
+                    <div class="text-center mt-4">
+                        <h4>Login with Other service </h4>
+                        <div class="mt-4">
+                            <a href="#" class="btn btn-danger mb-3"><i class="fa-brands fa-google"></i> Google</a>
+                            <a href="#" class="btn btn-primary mb-3"> <i class="fa-brands fa-facebook"> </i> Facebook</a>
+                            <a href="#" class="btn btn-success mb-3"> <i class="fa-brands fa-microsoft"></i>Microsoft </a>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-default">Log in</button>
-                </div>
-                <div class="form-group">
-                    <p>
-                        <a asp-page="./ForgotPassword">Forgot your password?</a>
-                    </p>
-                    <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                    </p>
-                </div>
-            </form>
-        </section>
+            </div>
+        </div>
     </div>
+</div>
+
+
+
     <div class="col-md-6 col-md-offset-2">
         <section>
-            <h4>Use another service to log in.</h4>
+            @* <h4>Use another service to log in.</h4> *@
             <hr />
             @{
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
                     <div>
-                        <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
-                        </p>
+                        // <p>
+                        //     There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                        //     for details on setting up this ASP.NET application to support logging in via external services.
+                        // </p>
                     </div>
                 }
                 else
@@ -76,6 +117,19 @@
         </section>
     </div>
 </div>
+
+
+
+
+<!-- Bootstrap JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

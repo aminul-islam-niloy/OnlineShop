@@ -4,55 +4,112 @@
     ViewData["Title"] = "Register";
 }
 
-<h2>@ViewData["Title"]</h2>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h4>Create a new account.</h4>
-            <hr />
-            <div asp-validation-summary="All" class="text-danger"></div>
-           
-            <div class="form-group">
-                <label asp-for="Input.FirstName"></label>
-                <input asp-for="Input.FirstName" class="form-control" />
-                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.LastName"></label>
-                <input asp-for="Input.LastName" class="form-control" />
-                <span asp-validation-for="Input.LastName" class="text-danger"></span>
-            </div>
-            
-            <div class="form-group">
-                <label asp-for="Input.Email"></label>
-                <input asp-for="Input.Email" class="form-control" />
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.Password"></label>
-                <input asp-for="Input.Password" class="form-control" />
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Input.ConfirmPassword"></label>
-                <input asp-for="Input.ConfirmPassword" class="form-control" />
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
+    <style>
+        /* Custom CSS */
+        .wide-input {
+            width: 100%; 
+        }
 
-            <div class="form-group">
-                <label>Select Role(s):</label><br />
-                <input type="checkbox" name="roles" value="Customer" /> Customer<br />
-                <input type="checkbox" name="roles" value="Farmer" /> Farmer<br />
-                <input type="checkbox" name="roles" value="Rider" /> Rider<br />
-                @* <input type="checkbox" name="roles" value="Admin" /> Admin<br />
-                <input type="checkbox" name="roles" value="SuperAdmin" />Super Admin<br /> *@
-            </div>
+        .wide-button {
+            width: 100%; 
+        }
+    </style>
 
-            <button type="submit" class="btn btn-default">Register</button>
-        </form>
+                     
+
+<div class="container-fluid">
+    <div class="card text-black m-5" style="border-radius: 25px;">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-10 col-lg-6 order-2 order-lg-1 d-flex flex-column align-items-center">
+
+                    <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+
+                        <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+
+                        <div class="d-flex flex-row align-items-center mb-4 form-group">
+                            <i class="fas fa-user me-3"></i>
+                            <input asp-for="Input.FirstName" class="form-control wide-input" placeholder="First Name">
+                            <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="d-flex flex-row align-items-center mb-4 form-group">
+                            <i class="fas fa-user me-3"></i>
+                            <input asp-for="Input.LastName" class="form-control wide-input" placeholder="Last Name">
+                            <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="d-flex flex-row align-items-center mb-4 form-group">
+                            <i class="fas fa-envelope me-3"></i>
+                            <input asp-for="Input.Email" class="form-control wide-input" placeholder="Your Email">
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex flex-row align-items-center mb-4 form-group">
+                            <i class="fas fa-lock me-3"></i>
+                            <input asp-for="Input.Password" class="form-control wide-input" placeholder="Password">
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+
+
+
+                        <div class="d-flex flex-row align-items-center mb-4 form-group">
+                            <i class="fas fa-key me-3"></i>
+                            <input asp-for="Input.ConfirmPassword" class="form-control wide-input" placeholder="Repeat your password">
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check form-group">
+                                <label>Select Role :</label> <br />
+                                <input type="checkbox" name="roles" value="Customer" /> Customer<br />
+                                @*   <input type="checkbox" name="roles" value="Farmer" /> Farmer<br /> *@
+                                <input type="checkbox" name="roles" value="Rider" /> Rider<br />
+                                @* <input type="checkbox" name="roles" value="Admin" /> Admin<br />
+                                <input type="checkbox" name="roles" value="SuperAdmin" />Super Admin<br /> *@
+                            </div>
+                        </div>
+
+
+                        <button class="btn btn-primary mb-4 wide-button" type="submit">Register</button>
+                    </form>
+
+
+
+                </div>
+
+                <div class="col-md-10 col-lg-6 order-1 order-lg-2">
+                    <div class="signup-image text-center">
+                        <figure><img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp" alt="sing up image" style="height:300px; width:100%"></figure>
+                        <a asp-area="Identity" asp-page="/Account/Login" class="signup-image-link">I am already a member</a>
+                    </div>
+                    <div class="text-center mt-4">
+                        <h4>Sign up with Other service </h4>
+                        <div class="mt-4">
+                            <a href="#" class="btn btn-danger mb-3"><i class="fa-brands fa-google"></i></a>
+                            <a href="#" class="btn btn-primary mb-3"> <i class="fa-brands fa-facebook"></i></a>
+                            <a href="#" class="btn btn-success mb-3"> <i class="fa-brands fa-microsoft"></i> </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
