@@ -118,21 +118,78 @@ namespace OnlineShop.Areas.Customer.Controllers
 
         //GET product detail acation method
 
+        //public ActionResult Detail(int? id)
+        //{
+
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var product = _db.Products.Include(c => c.ProductTypes).FirstOrDefault(c => c.Id == id);
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(product);
+        //}
+
+
+
+        //public ActionResult Detail(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var product = _db.Products
+        //        .Include(p => p.ProductTypes)
+        //        .Include(p => p.ImagesSmall)  // Include images
+        //        .FirstOrDefault(c => c.Id == id);
+
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(product);
+        //}
+
         public ActionResult Detail(int? id)
         {
-
             if (id == null)
             {
                 return NotFound();
             }
 
-            var product = _db.Products.Include(c => c.ProductTypes).FirstOrDefault(c => c.Id == id);
-            if (product == null)
+            var specificProduct = _db.Products
+                .Include(p => p.ProductTypes)
+                .Include(p => p.ImagesSmall)  // Include images
+                .FirstOrDefault(c => c.Id == id);
+
+            if (specificProduct == null)
             {
                 return NotFound();
             }
-            return View(product);
+
+            // Query related products ( products of the same category)
+            var relatedProducts = _db.Products
+                .Where(p => p.ProductTypeId == specificProduct.ProductTypeId && p.Id != specificProduct.Id)
+                .Take(12) // Assuming  want to display 12 related products
+                .ToList();
+
+            var viewModel = new ProductDetailViewModelHome
+            {
+                SpecificProduct = specificProduct,
+                RelatedProducts = relatedProducts
+            };
+
+            return View(viewModel);
         }
+
+
+
 
 
         [Authorize(Roles = "Customer")]

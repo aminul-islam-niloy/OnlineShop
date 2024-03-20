@@ -93,6 +93,8 @@
                         @if (User.IsInRole("Admin"))
                         {
                             <dt class="col-sm-4">Manage Orders:</dt>
+                            <dd class="col-sm-8"> <a asp-area="Admin" style="margin-left:10px" asp-controller="Products" asp-action="Index" class="btn btn-success">Manage Products</a></dd>
+                            <dt class="col-sm-4">Manage Orders:</dt>
                             <dd class="col-sm-8"> <a asp-area="Customer" style="margin-left:10px" asp-controller="Order" asp-action="Index" class="btn btn-success"><i class="fa-solid fa-bag-shopping"></i>Manage Orders</a></dd>
                             <dt class="col-sm-4">Manage Users:</dt>
                             <dd class="col-sm-8"> <a asp-area="Customer" style="margin-left:10px" class="btn btn-info" asp-controller="User" asp-action="Index" class="nav-link">Manage User</a> </dd>

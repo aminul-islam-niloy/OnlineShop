@@ -22,7 +22,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="main-img">
-                            <img class="img-fluid main-image" src="~/@Model.ImagesSmall.FirstOrDefault().ImagePath" width="150%" height="100px" style="border-radius: 2px;border: 1px solid #efefef" alt="ProductS">
+                            @if (Model.ImagesSmall != null && Model.ImagesSmall.Any())
+                            {
+                                <img class="img-fluid main-image" src="~/@Model.ImagesSmall.FirstOrDefault()?.ImagePath" width="150%" height="100px" style="border-radius: 2px;border: 1px solid #efefef" alt="ProductS">
+                            }
+
                             <div class="row my-6 previews">
                                 @foreach (var image in Model.ImagesSmall.Skip(1))
                                 {

@@ -154,12 +154,15 @@ namespace OnlineShop.Areas.Admin.Controllers
             {
                 if (ImagesSmall != null && ImagesSmall.Count > 0)
                 {
+                    // Initialize or clear the ImagesSmall collection
+                    product.ImagesSmall = new List<ProductImage>();
+
                     foreach (var image in ImagesSmall)
                     {
                         var name = Path.Combine(_he.WebRootPath + "/Images", Path.GetFileName(image.FileName));
                         await image.CopyToAsync(new FileStream(name, FileMode.Create));
-                        var productImage = new ProductImage { ProductId = product.Id, ImagePath = "Images/" + image.FileName };
-                        _db.ProductImages.Add(productImage); // Assuming ProductImages is your table for storing multiple images
+                        var productImage = new ProductImage { ImagePath = "Images/" + image.FileName };
+                        product.ImagesSmall.Add(productImage); // Add the image to the product's collection
                     }
                 }
 
@@ -177,10 +180,12 @@ namespace OnlineShop.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            // If ModelState is not valid, return the view with the product object
             ViewData["productTypeId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
             ViewData["TagId"] = new SelectList(_db.SpecialTag.ToList(), "Id", "Name");
             return View(product);
         }
+
 
 
 

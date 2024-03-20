@@ -1,271 +1,662 @@
-﻿
-@model OnlineShop.Models.Products
+﻿@model OnlineShop.Models.ProductDetailViewModelHome
 @{
     ViewData["Title"] = "Details";
-
 }
 
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+
+@{
+    string userId = UserManager.GetUserId(User);
+}
+﻿@using System.Net.Http
 @using OnlineShop.Session
 @using Microsoft.AspNetCore.Http
+
+
+
 @inject IHttpContextAccessor HttpContextAccessor
 @{
-
+    var userRole = HttpContextAccessor.HttpContext.Session.GetString("roleName");
+    int count = 0;
     List<Products> products = HttpContextAccessor.HttpContext.Session.Get<List<Products>>("products");
-    Products product = null;
-    if (products != null)
+    if (products == null)
     {
-        product = products.FirstOrDefault(c => c.Id == Model.Id);
+        products = new List<Products>();
     }
+    count = products.Count();
 
 }
 
 
-<br />
-<br />
 
 
-<h2 class="text-info">Product Details</h2>
-<form asp-action="Detail" method="post" enctype="multipart/form-data">
-    <input type="hidden" asp-for="Id" />
-    <div class="p-4 rounded border row">
-        <div asp-validation-summary="ModelOnly" class="text-danger">
-        </div>
-        <div class="col-lg-8">
-            <div class="form-group row">
-                <div class="col-lg-4">
-                    <label asp-for="Name"></label>
+﻿@using System.Net.Http
+@using OnlineShop.Session
+@using Microsoft.AspNetCore.Http
+
+
+@{
+    // Convert the discount percentage to a decimal value
+    decimal discountPercentage = 0.95m;
+}
+
+
+<!--header center area start-->
+<div class="header_middle">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-3">
+                <div class="logo">
+                    <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/logo/online-shoping.png" style="height: 50px; width: 60%;" alt=""></a>
                 </div>
-                <div class="col-lg-8">
-                  
-                    <input asp-for="Name" readonly="readonly" class="form-control" />
-                </div>
-                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group row">
-                <div class="col-lg-4">
-                    <label asp-for="Price"></label>
+            <div class="col-lg-9">
+                <div class="header_middle_inner">
+                    <div class="search-container">
+                        <form method="post" action="#">
+                            <div class="hover_category">
+                                <select class="select_option" name="select" id="categori">
+                                    <option selected value="1">All Categories</option>
+                                    <option value="2">Accessories</option>
+                                    <option value="3">Accessories & More</option>
+                                    <option value="4">Butters & Eggs</option>
+                                    <option value="5">Camera & Video </option>
+                                    <option value="6">Mornitors</option>
+                                    <option value="7">Tablets</option>
+                                    <option value="8">Laptops</option>
+                                    <option value="9">Handbags</option>
+                                    <option value="10">Headphone & Speaker</option>
+                                    <option value="11">Herbs & botanicals</option>
+                                    <option value="12">Vegetables</option>
+                                    <option value="13">Shop</option>
+                                    <option value="14">Laptops & Desktops</option>
+                                    <option value="15">Watchs</option>
+                                    <option value="16">Electronic</option>
+                                </select>
+                            </div>
+                            <div class="search_box">
+                                <input placeholder="Search product..." type="text" name="SearchString">
+                                <button type="submit"><i class="zmdi zmdi-search"></i></button>
+                            </div>
+                        </form>
+                    </div>
+
+
+                    <div>
+
+                        <div class="mini_cart_wrapper">
+                            <a asp-area="Customer" asp-controller="Home" asp-action="Cart"><i class="fas fa-shopping-cart"></i> (@count) Cart</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-lg-8">
-                    <input asp-for="Price" readonly="readonly" class="form-control" />
-                </div>
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-
-            <div class="form-group row">
-                <div class="col-lg-4">
-                    <label asp-for="Quantity"></label>
-                </div>
-                <div class="col-lg-8">
-                    <input asp-for="Quantity" readonly="readonly" class="form-control" />
-                </div>
-                <span asp-validation-for="Quantity" class="text-danger"></span>
-            </div>
-
-
-
-
-            <div class="form-group row">
-                <div class="col-lg-4">
-                    <label asp-for="ProductColor"></label>
-                </div>
-                <div class="col-lg-8">
-                    <input asp-for="ProductColor" readonly="readonly" readonly="readonly" class="form-control" />
-                </div>
-                <span asp-validation-for="ProductColor" class="text-danger"></span>
-            </div>
-
-
-            <div class="form-group row">
-                <div class="col-lg-4">
-                    <label asp-for="ProductTypeId"></label>
-                </div>
-                <div class="col-lg-8">
-                  
-                    <input asp-for="ProductTypes.ProductType" readonly="readonly" class="form-control" />
-                </div>
-                <span asp-validation-for="ProductTypeId" class="text-danger"></span>
-            </div>
-
-            <!-- Quantity selection -->
-            <div class="form-group">
-                <div class="col-lg-4">
-                <label asp-for="QuantityInCart" class="control-label">Quantity</label>
-                </div>
-                <div class="col-lg-8">
-                <input asp-for="QuantityInCart" class="form-control" type="number" min="1" max="@Model.Quantity" value="1" />
-                </div>
-                <span asp-validation-for="QuantityInCart" class="text-danger"></span>
-            </div>
-
-
-            <div class="form-group row">
-                <div class="col-lg-4">
-                </div>
-                <div class="col-lg-8">
-                    @if ( Model.Quantity!=0)
-                    {
-                        @if (product != null)
-                        {
-                            <button type="submit" class="btn btn-danger form-control" asp-action="RemoveToCart" asp-route-id="@Model.Id">Remove to Cart</button>
-                        }
-                        else
-                        {
-                            <input type="submit" class="btn btn-info form-control" value="Add to Cart" />
-                        }
-                    }
-                    else
-                    {
-                        <img src="~/Images/out.jpg" width="100px" height="100px" />
-                    }
-
-
-                </div>
-
-            </div>
-            <div class="form-group">
-                <a asp-action="Index" class="btn btn-success">Back to List</a>
             </div>
         </div>
-        <div class="col-lg-1"></div>
-        <div class="col-lg-3">
-            <img src="~/@Model.Image" width="100%" height="250px" style="border-radius: 5px;border: 1px solid #efefef" />
-            @if (Model.IsAvailable)
-            {
-                <img src="~/Images/stock.jpeg" width="50px" height="50px" />
-            }
-            
-
-        </div>
-
     </div>
+</div>
+<!--header center area end-->
+<!--header middel start-->
+<div class="header_bottom sticky-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12">
+                <div class="main_menu header_position">
+                    <nav>
+                        <ul>
+
+                            <li>
+                                <a asp-area="" asp-controller="Home" asp-action="Index"><i class="zmdi zmdi-home"></i> home <i class="zmdi zmdi-caret-down"></i></a>
+
+                            </li>
+                            <li class="mega_items active">
+                                <a href="shop.html"><i class="zmdi zmdi-shopping-basket"></i> shop <i class="zmdi zmdi-caret-down"></i></a>
+                                <div class="mega_menu">
+                                    <ul class="mega_menu_inner">
+                                        <li>
+                                            <a href="#">Shop Layouts</a>
+                                            <ul>
+                                                <li><a href="shop-fullwidth.html">Full Width</a></li>
+                                                <li><a href="shop-fullwidth-list.html">Full Width list</a></li>
+                                                <li><a href="shop-right-sidebar.html">Right Sidebar </a></li>
+                                                <li><a href="shop-right-sidebar-list.html"> Right Sidebar list</a></li>
+                                                <li><a href="shop-list.html">List View</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="#">other Pages</a>
+                                            <ul>
+                                                <li><a href="cart.html">cart</a></li>
+                                                <li><a href="wishlist.html">Wishlist</a></li>
+                                                <li><a href="checkout.html">Checkout</a></li>
+                                                <li><a href="my-account.html">my account</a></li>
+                                                <li><a href="404.html">Error 404</a></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <a href="#">Product Types</a>
+                                            <ul>
+                                                <li><a href="product-details.html">product details</a></li>
+                                                <li><a href="product-sidebar.html">product sidebar</a></li>
+                                                <li><a href="product-grouped.html">product grouped</a></li>
+                                                <li><a href="variable-product.html">product variable</a></li>
+
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li>
+                                <a href="blog.html"><i class="zmdi zmdi-collection-music"></i> blog <i class="zmdi zmdi-caret-down"></i></a>
+                                <ul class="sub_menu pages">
+                                    <li><a href="blog-details.html">blog details</a></li>
+                                    <li><a href="blog-fullwidth.html">blog fullwidth</a></li>
+                                    <li><a href="blog-sidebar.html">blog sidebar</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#"><i class="zmdi zmdi-star"></i> pages <i class="zmdi zmdi-caret-down"></i></a>
+                                <ul class="sub_menu pages">
+                                    <li><a href="about.html">About Us</a></li>
+                                    <li><a href="services.html">services</a></li>
+                                    <li><a href="portfolio.html">portfolio</a></li>
+                                    <li><a href="faq.html">Frequently Questions</a></li>
+                                    <li><a href="contact.html">contact</a></li>
+                                    <li><a href="login.html">login</a></li>
+                                    <li><a href="wishlist.html">Wishlist</a></li>
+                                    <li><a href="404.html">Error 404</a></li>
+                                </ul>
+                            </li>
+
+                            <li><a href="about.html"><i class="zmdi zmdi-comments"></i> about Us</a></li>
+                            <li><a href="contact.html"><i class="zmdi zmdi-account-box-mail"></i>  Contact Us</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--header middel end-->
+<!--header area end-->
+<!--Offcanvas menu area start-->
+
+<div class="off_canvars_overlay">
+</div>
+
+
+<!--Offcanvas menu area start-->
+<div class="off_canvars_overlay"></div>
+<div class="Offcanvas_menu">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="canvas_open">
+                    <span>MENU</span>
+                    <a href="javascript:void(0)"><i class="ion-navicon"></i></a>
+                </div>
+                <div class="Offcanvas_menu_wrapper">
+                    <div class="canvas_close">
+                        <a href="javascript:void(0)">
+                            <i class="ion-android-close"></i>
+                        </a>
+                    </div>
+                    <div class="welcome_text">
+                        <p>Welcome to <span> OnlineShop</span></p>
+                    </div>
+                    <div class="top_right">
+                        <ul>
+                            <li class="language">
+                                <a href="#">
+                                    <i class="zmdi zmdi-dribbble"></i> English1
+                                    <i class="zmdi zmdi-caret-down"></i>
+                                </a>
+                                <ul class="dropdown_language">
+                                    <li><a href="#">English</a></li>
+                                    <li><a href="#">Bangla</a></li>
+                                </ul>
+                            </li>
+                            @if (userId != null)
+                            {
+                                <li class="top_links">
+                                    <a href="/Customer/UserProfile/Deshboard/@userId"><i class="zmdi zmdi-account"></i> My account <i class="zmdi zmdi-caret-down"></i></a>
+                                    <ul class="dropdown_links">
+
+                                        <li><a href="/Customer/UserProfile/Deshboard/@userId">My Account </a></li>
+                                        <li> <a asp-area="Customer" asp-controller="Home" asp-action="Cart"><i class="fas fa-shopping-cart"></i> (@count) Cart</a></li>
+                                        <li><a href="wishlist.html">Wishlist</a></li>
+                                        <li><a href="wishlist.html">Wishlist</a></li>
+                                    </ul>
+                                </li>
+                            }
+                            else
+                            {
+                                <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+                                <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="search-container">
+                        <form method="post" action="#">
+                            <div class="hover_category">
+                                <select class="select_option" name="select" id="categori2">
+                                    <option value="1">Laptops</option>
+
+                                    <option value="2">Vegetables</option>
+
+                                    <option value="3">Laptops & Desktops</option>
+
+                                </select>
+                            </div>
+                            <div class="search_box">
+                                <input placeholder="Search product..." name="SearchString" type="text" />
+                                <button type="submit">
+                                    <i class="zmdi zmdi-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="mini_cart_wrapper">
+                        <a asp-area="Customer" asp-controller="Home" asp-action="Cart"><i class="fas fa-shopping-cart"></i> (@count) Cart</a>
+                    </div>
+                    <div id="menu" class="text-left">
+                        <ul class="offcanvas_main_menu">
+                            <li class="menu-item-has-children">
+                                <a asp-area="" asp-controller="Home" asp-action="Products">Shop</a>
+                                <ul class="sub-menu">
+
+                                    @if (userId != null)
+                                    {
+                                        <li class="menu-item-has-children">
+                                            <a href="#">other Pages</a>
+                                            <ul class="sub-menu">
+                                                <li> <a asp-area="Customer" asp-controller="Home" asp-action="Cart"><i class="fas fa-shopping-cart"></i> (@count) Cart</a></li>
+                                                <li><a href="wishlist.html">Wishlist</a></li>
+
+                                                <li><a href="/Customer/UserProfile/Deshboard/@userId">My Account </a></li>
+                                                <li><a href="404.html">Error 404</a></li>
+                                            </ul>
+                                        </li>
+                                    }
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Product Types</a>
+                                        <ul class="sub-menu">
+                                            <li>
+                                                <a href="product-details.html">product details</a>
+                                            </li>
+                                            <li>
+                                                <a href="product-sidebar.html">product sidebar</a>
+                                            </li>
+                                            <li>
+                                                <a href="product-grouped.html">product grouped</a>
+                                            </li>
+                                            <li>
+                                                <a href="variable-product.html">product variable</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">blog</a>
+                                <ul class="sub-menu">
+                                    <li><a href="blog.html">blog</a></li>
+                                    <li><a href="blog-details.html">blog details</a></li>
+                                    <li><a href="blog-fullwidth.html">blog fullwidth</a></li>
+                                    <li><a href="blog-sidebar.html">blog sidebar</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">pages </a>
+                                <ul class="sub-menu">
+                                    <li><a href="about.html">About Us</a></li>
+                                    <li><a href="services.html">services</a></li>
+                                    <li><a href="portfolio.html">portfolio</a></li>
+                                    <li><a href="faq.html">Frequently Questions</a></li>
+                                    <li><a href="contact.html">contact</a></li>
+
+                                    <li><a href="wishlist.html">Wishlist</a></li>
+                                    <li><a href="404.html">Error 404</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                              
+                                
+                             
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="about.html">about Us</a>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="contact.html"> Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Offcanvas menu area end-->
+
+
+
+<form asp-action="Detail" method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="SpecificProduct.Id" />
+
+<!--product details start-->
+<div class="product_details mt-50 mb-50">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="product-details-tab">
+                    <div id="img-1" class="zoomWrapper single-zoom">
+                        <a href="#">
+                                <img id="zoom1" src="~/@Model.SpecificProduct.Image" style="  width:100%; height:400px;" data-zoom-image="~/img/product/productbig1.jpg" alt="big-1">
+                        </a>
+                    </div>
+                    <div class="single-zoom-thumb">
+                        <ul class="s-tab-zoom owl-carousel single-product-active" id="gallery_01">
+
+                                @foreach (var image in Model.SpecificProduct.ImagesSmall)
+                                {
+                                    <li>
+                                        <a href="#" class="elevatezoom-gallery active" data-update="" data-image="@Url.Content(image.ImagePath)" data-zoom-image="@Url.Content(image.ImagePath)">
+                                            <img src="~/@Url.Content(image.ImagePath)" style="  width:100%; height:100px;" alt="No Image show" />
+                                        </a>
+                                    </li>
+                                }
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="product_d_right">
+             
+                        <h1>@Model.SpecificProduct.Name </h1>
+                        <div class="product_nav">
+                            @if (@Model.SpecificProduct.IsAvailable)
+                            {
+                                <img src="~/Images/stock.jpeg" style=" width:50px; height:50px; " alt="Stock"/>
+                            }
+                            else
+                            {
+                                <img src="~/Images/out.jpg" style=" width:50px; height:50px; " alt="out of Stock" />
+                            }
+
+                        </div>
+                        <div class="product_rating">
+                            <ul>
+                                <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="price_box">
+                            
+
+                            <span class="current_price">@Model.SpecificProduct.Price"</span>
+                           @*  <span class="old_price">asp-for="Price"</span> *@
+
+                        </div>
+                        <div class="product_desc">
+                            <p>@Model.SpecificProduct.Description eget velit. Donec ac tempus ante.  sed commodo augue nisi non neque.   lorem et placerat vestibulum metus nisi posuere nisl</p>
+                        </div>
+                        <div class="product_variant color">
+                            <h3>Available Options</h3>
+                            <label>color</label>
+                            <label>@Model.SpecificProduct.ProductColor</label>
+                            <ul>
+                                <li class="color1"><a href="#"> </a></li>
+                                <li class="color2"><a href="#"></a></li>
+                                <li class="color3"><a href="#"></a></li>
+                                <li class="color4"><a href="#"></a></li>
+                            </ul>
+                        </div>
+
+                     
+
+                        <div class="product_variant quantity">
+                            <label>quantity : </label>
+                            <label>@Model.SpecificProduct.Quantity</label>
+                        
+                        
+                        </div>
+
+                        <div class="action_links">
+                            <ul>
+                                @if (Model.SpecificProduct.Quantity != 0)
+                                {
+                                    @* Check if the product is already in the cart *@
+                                    var existingProduct = products.FirstOrDefault(p => p.Id == Model.SpecificProduct.Id);
+                                    if (existingProduct != null)
+                                    {
+                                        <li>
+                                            <button type="submit" class="btn btn-danger form-control" asp-action="RemoveToCart" asp-route-id="@Model.SpecificProduct.Id"> Remove from Cart</button>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li>
+                                            <input asp-for="SpecificProduct.QuantityInCart" name="quantityInCart" class="form-control" type="number" min="1" max="@Model.SpecificProduct.Quantity" value="1" />
+                                        </li>
+                                        <li>
+                                            <input type="submit" class="btn btn-info form-control" value="Add to Cart" />
+                                        </li>
+                                    }
+                                }
+                                <li class="wishlist"><a href="wishlist.html" title="Add to Wishlist"><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
+                            </ul>
+                        </div>
+
+
+                        <div class="product_meta">
+                            <label>Catagory : </label>
+                            <span>@Model.SpecificProduct.ProductTypes.ProductType</span>
+                        </div>
+
+                 
+                    <div class="priduct_social">
+                        <ul>
+                            <li><a class="facebook" href="#" title="facebook"><i class="fa fa-facebook"></i> Like</a></li>
+                            <li><a class="twitter" href="#" title="twitter"><i class="fa fa-twitter"></i> tweet</a></li>
+                            <li><a class="pinterest" href="#" title="pinterest"><i class="fa fa-pinterest"></i> save</a></li>
+                            <li><a class="google-plus" href="#" title="google +"><i class="fa fa-google-plus"></i> share</a></li>
+                            <li><a class="linkedin" href="#" title="linkedin"><i class="fa fa-linkedin"></i> linked</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="form-group">
+        <a asp-action="Index" class="btn btn-success">Back to List</a>
+    </div>
+
 </form>
 
 
-<div class="container my-5">
-    <div class="row">
-        <div class="col-md-5">
-            <div class="main-img">
-                <img class="img-fluid" src="~/@Model.Image" alt="ProductS">
-                <div class="row my-3 previews">
-                    <div class="col-md-3">
-                        <img class="w-100" src="~/@Model.Image" alt="Sale">
+<!--product details end-->
+<!--product info start-->
+<div class="product_d_info">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="product_d_inner">
+                    <div class="product_info_button">
+                        <ul class="nav" role="tablist">
+                            <li>
+                                <a class="active" data-bs-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="false">Description</a>
+                            </li>
+                            <li>
+                                <a data-bs-toggle="tab" href="#sheet" role="tab" aria-controls="sheet" aria-selected="false">Specification</a>
+                            </li>
+                            <li>
+                                <a data-bs-toggle="tab" href="#reviews" role="tab" aria-controls="reviews" aria-selected="false">Reviews (1)</a>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="col-md-3">
-                        <img class="w-100" src="~/@Model.Image" alt="Sale">
-                    </div>
-                    <div class="col-md-3">
-                        <img class="w-100" src="~/@Model.Image" alt="Sale">
-                    </div>
-                    <div class="col-md-3">
-                        <img class="w-100" src="~/@Model.Image" alt="Sale">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="info" role="tabpanel">
+                            <div class="product_info_content">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam fringilla augue nec est tristique auctor. Donec non est at libero vulputate rutrum. Morbi ornare lectus quis justo gravida semper. Nulla tellus mi, vulputate adipiscing cursus eu, suscipit id nulla.</p>
+                                <p>Pellentesque aliquet, sem eget laoreet ultrices, ipsum metus feugiat sem, quis fermentum turpis eros eget velit. Donec ac tempus ante. Fusce ultricies massa massa. Fusce aliquam, purus eget sagittis vulputate, sapien libero hendrerit est, sed commodo augue nisi non neque. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempor, lorem et placerat vestibulum, metus nisi posuere nisl, in accumsan elit odio quis mi. Cras neque metus, consequat et blandit et, luctus a nunc. Etiam gravida vehicula tellus, in imperdiet ligula euismod eget.</p>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="sheet" role="tabpanel">
+                            <div class="product_d_table">
+                                <form action="#">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td class="first_child">Compositions</td>
+                                                <td>Polyester</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="first_child">Styles</td>
+                                                <td>Girly</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="first_child">Properties</td>
+                                                <td>Short Dress</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+                            <div class="product_info_content">
+                                <p>Fashion has been creating well-designed collections since 2010. The brand offers feminine designs delivering stylish separates and statement dresses which have since evolved into a full ready-to-wear collection in which every item is a vital part of a woman's wardrobe. The result? Cool, easy, chic looks with youthful elegance and unmistakable signature style. All the beautiful pieces are made in Italy and manufactured with the greatest attention. Now Fashion extends to a range of accessories including shoes, hats, belts and more!</p>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="reviews" role="tabpanel">
+                            <div class="reviews_wrapper">
+                                <h2>1 review for Donec eu furniture</h2>
+                                <div class="reviews_comment_box">
+                                    <div class="comment_thmb">
+                                        <img src="~/img/blog/comment2.jpg" alt="">
+                                    </div>
+                                    <div class="comment_text">
+                                        <div class="reviews_meta">
+                                            <div class="star_rating">
+                                                <ul>
+                                                    <li><a href="#"><i class="ion-ios-star"></i></a></li>
+                                                    <li><a href="#"><i class="ion-ios-star"></i></a></li>
+                                                    <li><a href="#"><i class="ion-ios-star"></i></a></li>
+                                                    <li><a href="#"><i class="ion-ios-star"></i></a></li>
+                                                    <li><a href="#"><i class="ion-ios-star"></i></a></li>
+                                                </ul>
+                                            </div>
+                                            <p><strong>admin </strong>- September 12, 2018</p>
+                                            <span>roadthemes</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="comment_title">
+                                    <h2>Add a review </h2>
+                                    <p>Your email address will not be published.  Required fields are marked </p>
+                                </div>
+                                <div class="product_ratting mb-10">
+                                    <h3>Your rating</h3>
+                                    <ul>
+                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product_review_form">
+                                    <form action="#">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <label for="review_comment">Your review </label>
+                                                <textarea name="comment" id="review_comment"></textarea>
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <label for="author">Name</label>
+                                                <input id="author" type="text">
+
+                                            </div>
+                                            <div class="col-lg-6 col-md-6">
+                                                <label for="email">Email </label>
+                                                <input id="email" type="text">
+                                            </div>
+                                        </div>
+                                        <button type="submit">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-7">
-            <div class="main-description px-2">
-                <div class="category text-bold">
-                    Category: @Model.ProductTypes.ToString();
+    </div>
+</div>
+<!--product info end-->
+<!--product area start-->
+<section class="product_area related_products mb-47">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section_title">
+                    <h2>Related Products</h2>
                 </div>
-                <div class="product-title text-bold my-3">
-                   Product Details
-                </div>
+                <div class="product_carousel product_column4 owl-carousel">
 
-
-                <div class="price-area my-4">
-                    <p class="old-price mb-1"><del>$@Model.Price +20 </del> <span class="old-price-discount text-danger">(20% off)</span></p>
-                    <p class="new-price text-bold mb-1">$@Model.Price</p>
-                    <p class="text-secondary mb-1">(Additional tax may apply on checkout)</p>
-
-                </div>
-
-
-                <div class="buttons d-flex my-5">
-                    <div class="block">
-                        <a href="#" class="shadow btn custom-btn ">Wishlist</a>
-                    </div>
-                    <div class="block">
-                        <input type="submit" class="btn btn-info form-control" value="Add to Cart" />
+                    @foreach(var  product in Model.RelatedProducts)
+                    {
                         
+                    <div class="single_product">
+                        <div class="product_thumb">
+                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" alt="Releted Image" style="height:200px; width:100%"></a>
+                            <div class="label_product">
+                                <span class="label_sale">sale</span>
+                            </div>
+                           
+                        </div>
+                        <div class="product_content">
+                            <div class="product_name">
+                                <h3><a href="product-details.html">@product.Name</a></h3>
+                            </div>
+                            <div class="product_rating">
+                                <ul>
+                                    <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                    <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                    <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                    <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                    <li><a href="#"><i class="zmdi zmdi-star-outline"></i></a></li>
+                                </ul>
+                            </div>
+                            <div class="price_box">
+                                <span class="current_price">@product.Price</span>
+                             @*    <span class="old_price">$70.00</span> *@
+                            </div>
+                            <div class="action_links">
+                                <ul>
+                                    <li class="wishlist"><a href="wishlist.html" title="Add to Wishlist"><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
+                                   
+                                </ul>
+                            </div>
+                        </div>
                     </div>
+                   
+                
+                }
 
-                    <div class="block quantity">
-                        <input type="number" class="form-control" id="cart_quantity" value="1" min="0" max="5" placeholder="Enter email" name="cart_quantity">
-                    </div>
                 </div>
-
-
-
-
-            </div>
-
-            <div class="product-details my-4">
-                <p class="details-title text-color mb-1">Product Details</p>
-                <p class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat excepturi odio recusandae aliquid ad impedit autem commodi earum voluptatem laboriosam? </p>
-            </div>
-
-            <div class="row questions bg-light p-3">
-                <div class="col-md-1 icon">
-                    <i class="fa-brands fa-rocketchat questions-icon"></i>
-                </div>
-                <div class="col-md-11 text">
-                    Have a question about our products at E-Store? Feel free to contact our representatives via live chat or email.
-                </div>
-            </div>
-
-            <div class="delivery my-4">
-                <p class="font-weight-bold mb-0"><span><i class="fa-solid fa-truck"></i></span> <b>Delivery done in 3 days from date of purchase</b> </p>
-                <p class="text-secondary">Order now to get this product delivery</p>
-            </div>
-            <div class="delivery-options my-4">
-                <p class="font-weight-bold mb-0"><span><i class="fa-solid fa-filter"></i></span> <b>Delivery options</b> </p>
-                <p class="text-secondary">View delivery options here</p>
-            </div>
-
-
-        </div>
-    </div>
-</div>
-
-
-
-<div class="container similar-products my-4">
-    <hr>
-    <p class="display-5">Similar Products</p>
-
-    <div class="row">
-        <div class="col-md-3">
-            <div class="similar-product">
-                <img class="w-100" src="https://source.unsplash.com/gsKdPcIyeGg" alt="Preview">
-                <p class="title">Lovely black dress</p>
-                <p class="price">$100</p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="similar-product">
-                <img class="w-100" src="https://source.unsplash.com/sg_gRhbYXhc" alt="Preview">
-                <p class="title">Lovely Dress with patterns</p>
-                <p class="price">$85</p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="similar-product">
-                <img class="w-100" src="https://source.unsplash.com/gJZQcirK8aw" alt="Preview">
-                <p class="title">Lovely fashion dress</p>
-                <p class="price">$200</p>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="similar-product">
-                <img class="w-100" src="https://source.unsplash.com/qbB_Z2pXLEU" alt="Preview">
-                <p class="title">Lovely red dress</p>
-                <p class="price">$120</p>
             </div>
         </div>
     </div>
-</div>
-
-
+</section>
+<!--product area end-->
 
 @section Scripts{
     @{
