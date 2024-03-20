@@ -43,7 +43,14 @@ namespace OnlineShop.Areas.Customer.Controllers
 
            public IActionResult Index(int? page)
         {
-            return View(_db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList().ToPagedList(page ?? 1, 10));
+            return View(_db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList().ToPagedList(page ?? 1, 12));
+        }
+
+
+        public IActionResult Products(int? page)
+        {
+
+            return View(_db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList().ToPagedList(page ?? 1, 12));
         }
 
 
@@ -74,7 +81,25 @@ namespace OnlineShop.Areas.Customer.Controllers
             }
 
             // Convert the filtered products to a paged list using the current page number
-            var pagedProducts = products.ToPagedList(page ?? 1, 10);
+            var pagedProducts = products.ToPagedList(page ?? 1, 12);
+
+            return View(pagedProducts);
+        }
+
+
+        [HttpPost]
+        public IActionResult Products(string searchString, int? page)
+        {
+            var products = _db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                // Filter products based on search string
+                products = products.Where(p => p.Name.Contains(searchString)).ToList();
+            }
+
+            // Convert the filtered products to a paged list using the current page number
+            var pagedProducts = products.ToPagedList(page ?? 1, 12);
 
             return View(pagedProducts);
         }
