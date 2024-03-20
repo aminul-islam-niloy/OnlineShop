@@ -351,7 +351,7 @@
                 <div class="product-details-tab">
                     <div id="img-1" class="zoomWrapper single-zoom">
                         <a href="#">
-                                <img id="zoom1" src="~/@Model.SpecificProduct.Image" style="  width:100%; height:400px;" data-zoom-image="~/img/product/productbig1.jpg" alt="big-1">
+                                <img id="zoom1" src="~/@Model.SpecificProduct.Image" style="  width:100%; height:460px;" data-zoom-image="~/img/product/productbig1.jpg" alt="big-1">
                         </a>
                     </div>
                     <div class="single-zoom-thumb">
@@ -375,7 +375,7 @@
              
                         <h1>@Model.SpecificProduct.Name </h1>
                         <div class="product_nav">
-                            @if (@Model.SpecificProduct.IsAvailable)
+                            @if (@Model.SpecificProduct.IsAvailable && @Model.SpecificProduct.Quantity>0)
                             {
                                 <img src="~/Images/stock.jpeg" style=" width:50px; height:50px; " alt="Stock"/>
                             }

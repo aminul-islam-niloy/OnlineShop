@@ -16,75 +16,91 @@
     }
 
 }
-<br />
-<br />
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        /* CSS to style the div */
-        .background-div {
-            width: 100%; /* Adjust width as needed */
-            height: 180px; /* Adjust height as needed */
-            background-image: url('https://cdn.shopify.com/s/files/1/0552/6909/7643/files/image.png?v=1681296196');
-            background-size: cover; /* Ensure the image covers the entire div */
-            background-position: center; /* Center the image within the div */
-            border: 10px solid solid; /* Optional border for better visualization */
-        }
-    </style>
-</head>
-<body>
-    <!-- HTML div with the image as background -->
-    <div class="background-div"></div>
-</body>
-</html>
-
-<br />
-<br />
 
 
-<form id="paymentForm" method="post" action="CreatePayment">
-    <!-- Add a hidden input field to include the orderId -->
-    <input type="hidden" name="orderId" value="@ViewBag.orderId" />
+<style>
+    /* Custom CSS */
+    .wide-input {
+        width: 100%;
+    }
+    /* Custom CSS */
+    .wide-button {
+        width: 100%;
+    }
 
 
-    <div class="row">
-        <div class="col-lg-2"> </div>
-        <div class="col-lg-2">
-            <label for="paymentMethod">Payment Method</label>
-        </div>
-        <div class="col-lg-4">
-            <div>
-                <!-- Payment method selection -->
-           
-                <select id="paymentMethod" class="form-control" onchange="handlePaymentMethodChange()">
-                    <option value="CashOnDelivery" selected>Cash on Delivery</option>
-                    <option value="Card">Card</option>
-                    <option value="MobileBanking">Mobile Banking</option>
-                </select>
+    .wide-button {
+        width: 100%;
+    }
+</style>
+<div class="container-fluid">
+    <div class="card text-black m-5" style="border-radius: 20px;">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-lg-6 col-md-10  order-2 order-lg-1 d-flex flex-column align-items-center">
+
+                    <form id="paymentForm" method="post" action="CreatePayment">
+                        <p class="text-center h3 fw-bold mb-5 mx-1 mx-md-4  mt-4">Select Payment Method </p>
+
+                        <input type="hidden" name="orderId" value="@ViewBag.orderId" />
+
+                        <div class="row">
+                            <div >
+                                <label for="paymentMethod"><h4>Payment Method </h4></label>
+                            </div>
+
+                            <br />
+                            <br />
+
+                            <div >
+                                <div class="form-select mt-10 mb-20">
+                                    <select id="paymentMethod" class="form-control" onchange="handlePaymentMethodChange()">
+                                        <option value="CashOnDelivery" selected>Cash on Delivery</option>
+                                        <option value="Card">Card</option>
+                                        <option value="MobileBanking">Mobile Banking</option>
+                                        <option value="MobileBanking"> Banking</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3" id="paymentFields" style="display: none;">
+                            <!-- Your payment fields go here -->
+                        </div>
+                        <br />
+                        <br />
+
+
+                        <div>
+                            <div >
+                                <button id="paymentButton" type="submit" class="btn btn-success wide-button">Payment with Stripe</button>
+                            </div>
+                            <div >
+                                <a asp-area="Customer" id="confirmButton" onclick="confirmCashOnDelivery()" asp-controller="Order" asp-action="UserOrders" class="btn btn-success wide-button">Confirm Order</a>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+                <div class="col-lg-6 col-md-10 order-1 order-lg-2">
+                    <div class="text-center">
+                        <figure><img src="https://www.bucketlistgrouptravel.com/wp-content/uploads/2020/01/paypal-stripe.jpg" alt="payment" style="height:300px; width:100%"></figure>
+                    </div>
+                    <div class="text-center mt-4">
+                        <h4>Use Other service </h4>
+                        <div class="mt-4">
+                            <a href="#" class="btn btn-danger mb-3"> Paypal</a>
+                            <a href="#" class="btn btn-primary mb-3"> SLL Ecommarz </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col-lg-4">
-            <!-- Payment fields section - will be displayed for Card and MobileBanking -->
-            <div id="paymentFields" style="display: none;">
-                <!-- Add payment fields here if needed -->
-            </div>
-
-            <!-- Payment button -->
-            <button id="paymentButton" type="submit" class="btn btn-success" >Payment with Stripe</button>
-            <a asp-area="Customer" id="confirmButton" onclick="confirmCashOnDelivery()" asp-controller="Order" asp-action="UserOrders" class="btn btn-success">Confirm Order</a>
-           @*  <button id="confirmButton" type="button" onclick="confirmCashOnDelivery()" style="display: none;">Confirm Cash on Delivery</button> *@
         </div>
     </div>
-  
+</div>
 
-   
-</form>
 
-<br />
-<br />
 
 @section Scripts{
     @{

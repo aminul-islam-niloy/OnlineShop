@@ -15,17 +15,16 @@
 
     <div class="table-bordered ">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-6 col-md-10">
                 <div class="mt-4 ml-4">
                     <h4>Order ID :  @orderDetails.OrderId</h4>
                     <h4>Order No : @orderDetails.OrderNo</h4>
                     <h4>User ID: @orderDetails.UserName</h4>
                 </div>
 
-
-
-
             </div>
+
+
             <div class="col-lg-2">
                 <div class="mt-4">
                     <h4>Delivary Info</h4>
@@ -142,8 +141,7 @@
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
                     }
-                    // Optionally, perform some action after successful deletion
-                    // For example, remove the item from the DOM
+                  
                     form.closest('div').remove();
                 })
                 .catch(error => {
