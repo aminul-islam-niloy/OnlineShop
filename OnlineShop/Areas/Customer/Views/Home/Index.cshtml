@@ -37,7 +37,7 @@
       <div class="row align-items-center">
          <div class="col-lg-3">
             <div class="logo">
-               <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/logo/online-shoping.png" style="height: 80px; width: 100%;" alt=""></a>
+               <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/logo/online-shoping.png" style="height: 50px; width: 60%;" alt=""></a>
             </div>
          </div>
          <div class="col-lg-9">
@@ -292,6 +292,9 @@
       </div>
    </div>
 </div>
+
+
+
 <!--Offcanvas menu area start-->
 <div class="off_canvars_overlay"></div>
 <div class="Offcanvas_menu">
@@ -309,7 +312,7 @@
                      ></a>
                </div>
                <div class="welcome_text">
-                  <p>Welcome to <span>Electronics Store</span></p>
+                  <p>Welcome to <span> OnlineShop</span></p>
                </div>
                <div class="top_right">
                   <ul>
@@ -320,7 +323,7 @@
                            ></a>
                         <ul class="dropdown_language">
                            <li><a href="#">English</a></li>
-                           <li><a href="#">Germany</a></li>
+                           <li><a href="#">Bangla</a></li>
                         </ul>
                      </li>
                      @if (userId != null)
@@ -328,9 +331,9 @@
                      <li class="top_links">
                         <a href="/Customer/UserProfile/Deshboard/@userId"><i class="zmdi zmdi-account"></i> My account <i class="zmdi zmdi-caret-down"></i></a>
                         <ul class="dropdown_links">
-                           <li><a href="checkout.html">Checkout </a></li>
+                           
                            <li><a href="/Customer/UserProfile/Deshboard/@userId">My Account </a></li>
-                           <li><a href="cart.html">Shopping Cart</a></li>
+                           <li> <a asp-area="Customer" asp-controller="Home" asp-action="Cart"><i class="fas fa-shopping-cart"></i> (@count) Cart</a></li>
                            <li><a href="wishlist.html">Wishlist</a></li>
                            <li><a href="wishlist.html">Wishlist</a></li>
                         </ul>
@@ -368,36 +371,17 @@
                <div id="menu" class="text-left">
                   <ul class="offcanvas_main_menu">
                      <li class="menu-item-has-children">
-                        <a href="#">Shop</a>
+                                <a asp-area="" asp-controller="Home" asp-action="Products">Shop</a>
                         <ul class="sub-menu">
-                           <li class="menu-item-has-children">
-                              <a href="#">Shop Layouts</a>
-                              <ul class="sub-menu">
-                                 <li><a href="shop-fullwidth.html">Full Width</a></li>
-                                 <li>
-                                    <a href="shop-fullwidth-list.html"
-                                       >Full Width list</a
-                                       >
-                                 </li>
-                                 <li>
-                                    <a href="shop-right-sidebar.html">Right Sidebar </a>
-                                 </li>
-                                 <li>
-                                    <a href="shop-right-sidebar-list.html">
-                                    Right Sidebar list</a
-                                       >
-                                 </li>
-                                 <li><a href="shop-list.html">List View</a></li>
-                              </ul>
-                           </li>
+                          
                            @if (userId != null)
                            {
                            <li class="menu-item-has-children">
                               <a href="#">other Pages</a>
                               <ul class="sub-menu">
-                                 <li><a href="cart.html">cart</a></li>
+                                 <li> <a asp-area="Customer" asp-controller="Home" asp-action="Cart"><i class="fas fa-shopping-cart"></i> (@count) Cart</a></li>
                                  <li><a href="wishlist.html">Wishlist</a></li>
-                                 <li><a href="checkout.html">Checkout</a></li>
+                             
                                  <li><a href="/Customer/UserProfile/Deshboard/@userId">My Account </a></li>
                                  <li><a href="404.html">Error 404</a></li>
                               </ul>
@@ -439,7 +423,7 @@
                            <li><a href="portfolio.html">portfolio</a></li>
                            <li><a href="faq.html">Frequently Questions</a></li>
                            <li><a href="contact.html">contact</a></li>
-                           <li><a href="login.html">login</a></li>
+                           
                            <li><a href="wishlist.html">Wishlist</a></li>
                            <li><a href="404.html">Error 404</a></li>
                         </ul>
@@ -461,6 +445,8 @@
    </div>
 </div>
 <!--Offcanvas menu area end-->
+
+
 <style>
    /* Adjust the height of the carousel */
    .carousel-inner .item img {

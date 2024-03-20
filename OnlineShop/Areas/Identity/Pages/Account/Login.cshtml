@@ -27,7 +27,7 @@
                 <div class="col-md-10 col-lg-6 order-2 order-lg-1 d-flex flex-column align-items-center">
 
                     <form method="post">
-                        <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+                        <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Login </p>
                  
                         <div asp-validation-summary="All" class="text-danger"></div>
                         <div class="form-group">
@@ -67,7 +67,7 @@
 
                 <div class="col-md-10 col-lg-6 order-1 order-lg-2">
                     <div class="signup-image text-center">
-                        <figure><img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp" alt="sing up image" style="height:300px; width:100%"></figure>
+                        <figure><img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp" alt="sing up image" style="height:260px; width:100%"></figure>
                        
                     </div>
                     <div class="text-center mt-4">
@@ -93,12 +93,7 @@
             @{
                 if ((Model.ExternalLogins?.Count ?? 0) == 0)
                 {
-                    <div>
-                        // <p>
-                        //     There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                        //     for details on setting up this ASP.NET application to support logging in via external services.
-                        // </p>
-                    </div>
+                  
                 }
                 else
                 {

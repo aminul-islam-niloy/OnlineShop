@@ -34,7 +34,7 @@
         <div class="row align-items-center">
             <div class="col-lg-3">
                 <div class="logo">
-                    <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/logo/online-shoping.png" style="height: 70px; width: 90%;" alt=""></a>
+                    <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/logo/online-shoping.png" style="height: 50px; width: 60%;" alt=""></a>
                 </div>
             </div>
             <div class="col-lg-9">
@@ -67,11 +67,15 @@
                             </div>
                         </form>
                     </div>
-                    <div class="mini_cart_wrapper">
-                        <a href="javascript:void(0)"><i class="zmdi zmdi-shopping-basket"></i> <span>2items - $213.00</span> </a>
+
+
+                    <div>
+                        
                         <!--mini cart-->
-                        <div class="mini_cart">
-                            <div class="cart_item">
+                        <div >
+                            <div>
+                                <a asp-area="Customer" asp-controller="Home" asp-action="Cart"><i class="fas fa-shopping-cart fa-2x "></i> </a>
+                            
                             </div>
 
 
@@ -94,7 +98,7 @@
                         <ul>
 
                             <li>
-                                <a href="index.html"><i class="zmdi zmdi-home"></i> home <i class="zmdi zmdi-caret-down"></i></a>
+                                 <a asp-area="" asp-controller="Home" asp-action="Index"><i class="zmdi zmdi-home"></i> home <i class="zmdi zmdi-caret-down"></i></a>
 
                             </li>
                             <li class="mega_items active">
@@ -172,6 +176,9 @@
 <div class="off_canvars_overlay">
 </div>
 
+
+<!--Offcanvas menu area start-->
+<div class="off_canvars_overlay"></div>
 <div class="Offcanvas_menu">
     <div class="container">
         <div class="row">
@@ -182,171 +189,148 @@
                 </div>
                 <div class="Offcanvas_menu_wrapper">
                     <div class="canvas_close">
-                        <a href="javascript:void(0)"><i class="ion-android-close"></i></a>
+                        <a href="javascript:void(0)">
+                            <i class="ion-android-close"></i>
+                        </a>
                     </div>
                     <div class="welcome_text">
-                        <p>Welcome to <span>Online Store</span> </p>
+                        <p>Welcome to <span> OnlineShop</span></p>
                     </div>
-
                     <div class="top_right">
                         <ul>
-
                             <li class="language">
-                                <a href="#"><i class="zmdi zmdi-dribbble"></i> English1 <i class="zmdi zmdi-caret-down"></i></a>
+                                <a href="#">
+                                    <i class="zmdi zmdi-dribbble"></i> English1
+                                    <i class="zmdi zmdi-caret-down"></i>
+                                </a>
                                 <ul class="dropdown_language">
                                     <li><a href="#">English</a></li>
                                     <li><a href="#">Bangla</a></li>
                                 </ul>
                             </li>
-                            <li class="top_links">
-                                <a href="#"><i class="zmdi zmdi-account"></i> My account <i class="zmdi zmdi-caret-down"></i></a>
-                                <ul class="dropdown_links">
-                                    <li><a href="checkout.html">Checkout </a></li>
-                                    <li><a href="my-account.html">My Account </a></li>
-                                    <li><a href="cart.html">Shopping Cart</a></li>
-                                    <li><a href="wishlist.html">Wishlist</a></li>
-                                </ul>
-                            </li>
+                            @if (userId != null)
+                            {
+                                <li class="top_links">
+                                    <a href="/Customer/UserProfile/Deshboard/@userId"><i class="zmdi zmdi-account"></i> My account <i class="zmdi zmdi-caret-down"></i></a>
+                                    <ul class="dropdown_links">
 
+                                        <li><a href="/Customer/UserProfile/Deshboard/@userId">My Account </a></li>
+                                        <li> <a asp-area="Customer" asp-controller="Home" asp-action="Cart"><i class="fas fa-shopping-cart"></i> (@count) Cart</a></li>
+                                        <li><a href="wishlist.html">Wishlist</a></li>
+                                        <li><a href="wishlist.html">Wishlist</a></li>
+                                    </ul>
+                                </li>
+                            }
+                            else
+                            {
+                                <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+                                <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
+                            }
                         </ul>
                     </div>
                     <div class="search-container">
                         <form method="post" action="#">
                             <div class="hover_category">
                                 <select class="select_option" name="select" id="categori2">
-                                    <option selected value="1">All Categories</option>
-                                    <option value="2">Accessories</option>
-                                    <option value="3">Accessories & More</option>
-                                    <option value="4">Butters & Eggs</option>
-                                    <option value="5">Camera & Video </option>
-                                    <option value="6">Mornitors</option>
-                                    <option value="7">Tablets</option>
-                                    <option value="8">Laptops</option>
-                                    <option value="9">Handbags</option>
-                                    <option value="10">Headphone & Speaker</option>
-                                    <option value="11">Herbs & botanicals</option>
-                                    <option value="12">Vegetables</option>
-                                    <option value="13">Shop</option>
-                                    <option value="14">Laptops & Desktops</option>
-                                    <option value="15">Watchs</option>
-                                    <option value="16">Electronic</option>
+                                    <option value="1">Laptops</option>
+
+                                    <option value="2">Vegetables</option>
+
+                                    <option value="3">Laptops & Desktops</option>
+
                                 </select>
                             </div>
                             <div class="search_box">
-                                <input placeholder="Search product..." type="text" name="SearchString">
-                                <button type="submit"><i class="zmdi zmdi-search"></i></button>
+                                <input placeholder="Search product..." name="SearchString" type="text" />
+                                <button type="submit">
+                                    <i class="zmdi zmdi-search"></i>
+                                </button>
                             </div>
                         </form>
                     </div>
                     <div class="mini_cart_wrapper">
-                        <a href="javascript:void(0)"><i class="zmdi zmdi-shopping-basket"></i> <span>2items - $213.00</span> </a>
-                        <!--mini cart-->
-                        <div class="mini_cart">
-                            <div class="cart_item">
-                            </div>
-                            <!--mini cart end-->
-                        </div>
-                        <div id="menu" class="text-left ">
-                            <ul class="offcanvas_main_menu">
-                                <li class="menu-item-has-children active">
-                                    <a href="#">Home</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="index.html">Home 1</a></li>
-                                        <li><a href="index-2.html">Home 2</a></li>
-                                        <li><a href="index-3.html">Home 3</a></li>
-                                        <li><a href="index-4.html">Home 4</a></li>
-                                        <li><a href="index-5.html">Home 5</a></li>
-                                        <li><a href="index-6.html">Home 6</a></li>
-                                        <li><a href="index-7.html">Home 7</a></li>
-                                        <li><a href="index-8.html">Home 8</a></li>
-                                    </ul>
-                                </li>
-                                <li class="menu-item-has-children">
-                                    <a href="#">Shop</a>
-                                    <ul class="sub-menu">
-                                        <li class="menu-item-has-children">
-                                            <a href="#">Shop Layouts</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="shop-fullwidth.html">Full Width</a></li>
-                                                <li><a href="shop-fullwidth-list.html">Full Width list</a></li>
-                                                <li><a href="shop-right-sidebar.html">Right Sidebar </a></li>
-                                                <li><a href="shop-right-sidebar-list.html"> Right Sidebar list</a></li>
-                                                <li><a href="shop-list.html">List View</a></li>
-                                            </ul>
-                                        </li>
+                        <a asp-area="Customer" asp-controller="Home" asp-action="Cart"><i class="fas fa-shopping-cart"></i> (@count) Cart</a>
+                    </div>
+                    <div id="menu" class="text-left">
+                        <ul class="offcanvas_main_menu">
+                            <li class="menu-item-has-children">
+                                <a asp-area="" asp-controller="Home" asp-action="Products">Shop</a>
+                                <ul class="sub-menu">
+
+                                    @if (userId != null)
+                                    {
                                         <li class="menu-item-has-children">
                                             <a href="#">other Pages</a>
                                             <ul class="sub-menu">
-                                                <li><a href="cart.html">cart</a></li>
+                                                <li> <a asp-area="Customer" asp-controller="Home" asp-action="Cart"><i class="fas fa-shopping-cart"></i> (@count) Cart</a></li>
                                                 <li><a href="wishlist.html">Wishlist</a></li>
-                                                <li><a href="checkout.html">Checkout</a></li>
-                                                <li><a href="my-account.html">my account</a></li>
+
+                                                <li><a href="/Customer/UserProfile/Deshboard/@userId">My Account </a></li>
                                                 <li><a href="404.html">Error 404</a></li>
                                             </ul>
                                         </li>
-                                        <li class="menu-item-has-children">
-                                            <a href="#">Product Types</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="product-details.html">product details</a></li>
-                                                <li><a href="product-sidebar.html">product sidebar</a></li>
-                                                <li><a href="product-grouped.html">product grouped</a></li>
-                                                <li><a href="variable-product.html">product variable</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="menu-item-has-children">
-                                    <a href="#">blog</a>
-                                    <ul class="sub-menu">
-                                        <li><a href="blog.html">blog</a></li>
-                                        <li><a href="blog-details.html">blog details</a></li>
-                                        <li><a href="blog-fullwidth.html">blog fullwidth</a></li>
-                                        <li><a href="blog-sidebar.html">blog sidebar</a></li>
-                                    </ul>
+                                    }
+                                    <li class="menu-item-has-children">
+                                        <a href="#">Product Types</a>
+                                        <ul class="sub-menu">
+                                            <li>
+                                                <a href="product-details.html">product details</a>
+                                            </li>
+                                            <li>
+                                                <a href="product-sidebar.html">product sidebar</a>
+                                            </li>
+                                            <li>
+                                                <a href="product-grouped.html">product grouped</a>
+                                            </li>
+                                            <li>
+                                                <a href="variable-product.html">product variable</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">blog</a>
+                                <ul class="sub-menu">
+                                    <li><a href="blog.html">blog</a></li>
+                                    <li><a href="blog-details.html">blog details</a></li>
+                                    <li><a href="blog-fullwidth.html">blog fullwidth</a></li>
+                                    <li><a href="blog-sidebar.html">blog sidebar</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="#">pages </a>
+                                <ul class="sub-menu">
+                                    <li><a href="about.html">About Us</a></li>
+                                    <li><a href="services.html">services</a></li>
+                                    <li><a href="portfolio.html">portfolio</a></li>
+                                    <li><a href="faq.html">Frequently Questions</a></li>
+                                    <li><a href="contact.html">contact</a></li>
 
-                                </li>
-                                <li class="menu-item-has-children">
-                                    <a href="#">pages </a>
-                                    <ul class="sub-menu">
-                                        <li><a href="about.html">About Us</a></li>
-                                        <li><a href="services.html">services</a></li>
-                                        <li><a href="portfolio.html">portfolio</a></li>
-                                        <li><a href="faq.html">Frequently Questions</a></li>
-                                        <li><a href="contact.html">contact</a></li>
-                                        <li><a href="login.html">login</a></li>
-                                        <li><a href="wishlist.html">Wishlist</a></li>
-                                        <li><a href="404.html">Error 404</a></li>
-                                    </ul>
-                                </li>
-                                <li class="menu-item-has-children">
-                                    <a href="my-account.html">my account</a>
-                                </li>
-                                <li class="menu-item-has-children">
-                                    <a href="about.html">about Us</a>
-                                </li>
-                                <li class="menu-item-has-children">
-                                    <a href="contact.html"> Contact Us</a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="Offcanvas_footer">
-                            <span><a href="#"><i class="fa fa-envelope-o"></i> onlineshop.com</a></span>
-                            <ul>
-                                <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li class="twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li class="pinterest"><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
-                                <li class="google-plus"><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                                <li class="linkedin"><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                            </ul>
-                        </div>
+                                    <li><a href="wishlist.html">Wishlist</a></li>
+                                    <li><a href="404.html">Error 404</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-item-has-children">
+                                @if (userId != null)
+                                {
+                                    <a href="/Customer/UserProfile/Deshboard/@userId">my account</a>
+                                }
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="about.html">about Us</a>
+                            </li>
+                            <li class="menu-item-has-children">
+                                <a href="contact.html"> Contact Us</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+<!--Offcanvas menu area end-->
 
 <!--Offcanvas menu area end-->
 <!--breadcrumbs area start-->
