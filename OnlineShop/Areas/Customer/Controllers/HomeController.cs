@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
 using OnlineShop.Models;
@@ -26,32 +27,15 @@ namespace OnlineShop.Areas.Customer.Controllers
         }
 
 
-        //public async Task<ViewResult> Index(int? page)
-        //{
-
-            //UserEmailOptions options = new UserEmailOptions
-            //{
-            //    ToEmails = new List<string>() { "heyalex4@gmail.com" },
-            //    PlaceHolders = new List<KeyValuePair<string, string>>()
-            //    {
-            //        new KeyValuePair<string, string>("{{UserName}}", "Alex")
-            //    }
-            //};
-
-            //await _emailService.SendTestEmail(options);
-        //}
-
+      
            public IActionResult Index(int? page)
         {
-            return View(_db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList().ToPagedList(page ?? 1, 12));
-        }
 
-
-        public IActionResult Products(int? page)
-        {
+            ViewData["productTypeSearchId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
 
             return View(_db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList().ToPagedList(page ?? 1, 12));
         }
+
 
 
         ////POST Index action method
@@ -87,22 +71,38 @@ namespace OnlineShop.Areas.Customer.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult Products(string searchString, int? page)
+        public IActionResult Products(int? page)
         {
-            var products = _db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList();
+           // ViewBag.ProductTypes = _db.ProductTypes.ToList();
+
+            ViewData["productTypeSearchId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
+            var products = _db.Products.Include(p => p.ProductTypes).ToList().ToPagedList(page ?? 1, 12);
+            return View(products);
+        }
+
+        // POST: Filter products based on search criteria
+        [HttpPost]
+        public IActionResult Products(int? page, int productTypeId, string searchString)
+        {
+            ViewData["productTypeSearchId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
+            var productsQuery = _db.Products.Include(p => p.ProductTypes).AsQueryable();
+
+            if (productTypeId != 0)
+            {
+                productsQuery = productsQuery.Where(p => p.ProductTypes.Id == productTypeId);
+            }
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                // Filter products based on search string
-                products = products.Where(p => p.Name.Contains(searchString)).ToList();
+                productsQuery = productsQuery.Where(p => p.Name.Contains(searchString));
             }
 
-            // Convert the filtered products to a paged list using the current page number
-            var pagedProducts = products.ToPagedList(page ?? 1, 12);
-
+            var pagedProducts = productsQuery.ToPagedList(page ?? 1, 12);
             return View(pagedProducts);
         }
+
+
+
 
 
 
@@ -115,49 +115,10 @@ namespace OnlineShop.Areas.Customer.Controllers
 
 
 
-
-        //GET product detail acation method
-
-        //public ActionResult Detail(int? id)
-        //{
-
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var product = _db.Products.Include(c => c.ProductTypes).FirstOrDefault(c => c.Id == id);
-        //    if (product == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(product);
-        //}
-
-
-
-        //public ActionResult Detail(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var product = _db.Products
-        //        .Include(p => p.ProductTypes)
-        //        .Include(p => p.ImagesSmall)  // Include images
-        //        .FirstOrDefault(c => c.Id == id);
-
-        //    if (product == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(product);
-        //}
-
         public ActionResult Detail(int? id)
         {
+            ViewData["productTypeSearchId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
+
             if (id == null)
             {
                 return NotFound();
@@ -197,6 +158,8 @@ namespace OnlineShop.Areas.Customer.Controllers
         [ActionName("Detail")]
         public ActionResult ProductDetail(int? id, int quantityInCart)
         {
+            ViewData["productTypeSearchId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
+
             if (id == null)
             {
                 return NotFound();
@@ -302,6 +265,9 @@ namespace OnlineShop.Areas.Customer.Controllers
             [Authorize(Roles = "Customer")]
         public IActionResult Cart()
         {
+
+            ViewData["productTypeSearchId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
+
             List<Products> products = HttpContext.Session.Get<List<Products>>("products");
             if (products == null)
             {

@@ -42,29 +42,18 @@
             <div class="col-lg-9">
                 <div class="header_middle_inner">
                     <div class="search-container">
-                        <form method="post" action="#">
+                        <form method="post" action="@Url.Action("Products", "Home")">
                             <div class="hover_category">
-                                <select class="select_option" name="select" id="categori">
-                                    <option selected value="1">All Categories</option>
-                                    <option value="2">Accessories</option>
-                                    <option value="3">Accessories & More</option>
-                                    <option value="4">Butters & Eggs</option>
-                                    <option value="5">Camera & Video </option>
-                                    <option value="6">Mornitors</option>
-                                    <option value="7">Tablets</option>
-                                    <option value="8">Laptops</option>
-                                    <option value="9">Handbags</option>
-                                    <option value="10">Headphone & Speaker</option>
-                                    <option value="11">Herbs & botanicals</option>
-                                    <option value="12">Vegetables</option>
-                                    <option value="13">Shop</option>
-                                    <option value="14">Laptops & Desktops</option>
-                                    <option value="15">Watchs</option>
-                                    <option value="16">Electronic</option>
+                                <select class="select_option" name="productTypeId">
+                                    <option selected value="0">All Categories</option>
+                                    @foreach (var productType in ViewData["productTypeSearchId"] as SelectList)
+                                    {
+                                        <option value="@productType.Value">@productType.Text</option>
+                                    }
                                 </select>
                             </div>
                             <div class="search_box">
-                                <input placeholder="Search product..." type="text" name="SearchString">
+                                <input placeholder="Search product..." type="text" name="searchString">
                                 <button type="submit"><i class="zmdi zmdi-search"></i></button>
                             </div>
                         </form>
@@ -90,7 +79,7 @@
 
                             </li>
                             <li class="mega_items active">
-                                <a href="shop.html"><i class="zmdi zmdi-shopping-basket"></i> shop <i class="zmdi zmdi-caret-down"></i></a>
+                                <a asp-area="" asp-controller="Home" asp-action="Products"><i class="zmdi zmdi-shopping-basket"></i> shop <i class="zmdi zmdi-caret-down"></i></a>
                                 <div class="mega_menu">
                                     <ul class="mega_menu_inner">
                                         <li>
@@ -106,10 +95,7 @@
                                         <li>
                                             <a href="#">other Pages</a>
                                             <ul>
-                                                <li><a href="cart.html">cart</a></li>
-                                                <li><a href="wishlist.html">Wishlist</a></li>
-                                                <li><a href="checkout.html">Checkout</a></li>
-                                                <li><a href="my-account.html">my account</a></li>
+                                           
                                                 <li><a href="404.html">Error 404</a></li>
                                             </ul>
                                         </li>
@@ -142,8 +128,7 @@
                                     <li><a href="portfolio.html">portfolio</a></li>
                                     <li><a href="faq.html">Frequently Questions</a></li>
                                     <li><a href="contact.html">contact</a></li>
-                                    <li><a href="login.html">login</a></li>
-                                    <li><a href="wishlist.html">Wishlist</a></li>
+                                  
                                     <li><a href="404.html">Error 404</a></li>
                                 </ul>
                             </li>
@@ -163,6 +148,8 @@
 
 <div class="off_canvars_overlay">
 </div>
+
+
 
 
 <!--Offcanvas menu area start-->
@@ -217,24 +204,23 @@
                         </ul>
                     </div>
                     <div class="search-container">
-                        <form method="post" action="#">
+
+                        <form method="post" action="@Url.Action("Products", "Home")">
                             <div class="hover_category">
-                                <select class="select_option" name="select" id="categori2">
-                                    <option value="1">Laptops</option>
-
-                                    <option value="2">Vegetables</option>
-
-                                    <option value="3">Laptops & Desktops</option>
-
+                                <select class="select_option" name="productTypeId">
+                                    <option selected value="0">All Categories</option>
+                                    @foreach (var productType in ViewData["productTypeSearchId"] as SelectList)
+                                    {
+                                        <option value="@productType.Value">@productType.Text</option>
+                                    }
                                 </select>
                             </div>
                             <div class="search_box">
-                                <input placeholder="Search product..." name="SearchString" type="text" />
-                                <button type="submit">
-                                    <i class="zmdi zmdi-search"></i>
-                                </button>
+                                <input placeholder="Search product..." type="text" name="searchString">
+                                <button type="submit"><i class="zmdi zmdi-search"></i></button>
                             </div>
                         </form>
+
                     </div>
                     <div class="mini_cart_wrapper">
                         <a asp-area="Customer" asp-controller="Home" asp-action="Cart"><i class="fas fa-shopping-cart"></i> (@count) Cart</a>
@@ -252,8 +238,11 @@
                                             <ul class="sub-menu">
                                                 <li> <a asp-area="Customer" asp-controller="Home" asp-action="Cart"><i class="fas fa-shopping-cart"></i> (@count) Cart</a></li>
                                                 <li><a href="wishlist.html">Wishlist</a></li>
+                                                @if (userId != null)
+                                                {
+                                                    <li><a href="/Customer/UserProfile/Deshboard/@userId">My Account </a></li>
 
-                                                <li><a href="/Customer/UserProfile/Deshboard/@userId">My Account </a></li>
+                                                }
                                                 <li><a href="404.html">Error 404</a></li>
                                             </ul>
                                         </li>
