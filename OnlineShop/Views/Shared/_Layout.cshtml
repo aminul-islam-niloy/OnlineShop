@@ -103,12 +103,34 @@
 
                         <div class="top_right text-right">
                             <ul>
-                                <li><a asp-area="" asp-controller="Home" asp-action="Index" >  OnlineShop </a></li>
-                 
-                                <li class="nav-item"> <a asp-area="Customer" asp-controller="Home" asp-action="Cart"><i class="fas fa-shopping-cart"></i> (@count) Cart</a></li>
-                                <li><a asp-area="Customer" asp-controller="Order" asp-action="UserOrders"><i class="fa-solid fa-suitcase"></i> My Orders</a></li>
+                                <li><a asp-area="" asp-controller="Home" asp-action="Index">  OnlineShop </a></li>
+                                 @if (userRole =="SuperAdmin")
+                                {
+
+                                    <li ><a asp-area="Admin" asp-controller="Role" asp-action="Index" class="nav-link">Role User</a></li>
+                                }
+                                 @if (userRole =="Admin")
+                                {
+                        
+                                    <li >
+                                        <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="nav-link">Products</a>
+                                    </li>
+
+                                }
+                            
+
+                                @if (userRole =="Customer")
+                                {
+                                    <li><a asp-area="Customer" asp-controller="Order" asp-action="UserOrders"><i class="fa-solid fa-suitcase"></i> My Orders</a></li>
+                                }
+
+                                <li class="nav-item"> <a asp-area="Customer" asp-controller="Home" asp-action="Cart"><i class="fas fa-shopping-cart "></i> (@count) Cart</a></li>
+
                             </ul>
                         </div>
+
+         
+
                     </div>
                     <div class="col-lg-2"></div>
                     <div class="col-lg-6">
@@ -116,7 +138,7 @@
                             <ul>
                                 <li class="language">
                                     <a href="#">
-                                        <i class="zmdi zmdi-dribbble"></i> English1
+                                        <i class="zmdi zmdi-dribbble"></i> English
                                         <i class="zmdi zmdi-caret-down"></i>
                                     </a>
                                     <ul class="dropdown_language">
@@ -133,10 +155,10 @@
                                             <i class="zmdi zmdi-caret-down"></i>
                                         </a>
                                         <ul class="dropdown_links">
-                                            <li><a href="checkout.html">Checkout </a></li>
+                                            <li><a asp-area="Customer" asp-controller="Home" asp-action="Cart">Checkout </a></li>
                                             <li><a href="/Customer/UserProfile/Deshboard/@userId" title="Manage"> <i class="fa-solid fa-user"></i>  @UserManager.GetUserName(User)</a></li>
-                                            <li><a href="cart.html">Shopping Cart</a></li>
-                                            <li><a href="wishlist.html">Wishlist</a></li>
+                                            <li><a asp-area="Customer" asp-controller="Home" asp-action="Cart">Shopping Cart</a></li>
+                                            <li><a asp-area="Customer" asp-controller="Home" asp-action="Cart">Wishlist</a></li>
                                         </ul>
                                     </li>
 
@@ -180,11 +202,11 @@
                     <div class="row">
                         <div class="col-lg-4 col-md-5">
                             <div class="widgets_container contact_us">
-                                @*  <a href="index.html"><img src="~/img/logo/logo.png" alt=""></a> *@
+                               
                                 <div class="footer_contact">
                                     <ul>
                                         <li><i class="zmdi zmdi-home"></i><span>Addresss:</span> Gazipur Dhaka</li>
-                                        <li><i class="zmdi zmdi-phone-setting"></i><span>Phone:</span><a href="tel:(+88) 866-540-3229">(+88) 866-540-3229</a> </li>
+                                        <li><i class="zmdi zmdi-phone-setting"></i><span>Phone:</span><a href="tel:(+88) 01568105212">(+88) 1985119290</a> </li>
                                         <li><i class="zmdi zmdi-email"></i><span>Email:</span>  onlineshop@gmail.com</li>
                                     </ul>
                                 </div>
@@ -194,11 +216,11 @@
                                             <a href="#" title="rss"><i class="fa fa-share-alt"></i></a>
                                             <div class="social_title">
                                                 <p>Subscribe</p>
-                                                <h3>Rss Feed</h3>
+                                                <h3> </h3>
                                             </div>
                                         </li>
-                                        <li class="twitter">
-                                            <a href="#" title="twitter"><i class="fa fa-twitter"></i></a>
+                                        <li class="instagram">
+                                            <a href="#" title="twitter"><i class="fa fa-instagram"></i></a>
                                             <div class="social_title">
                                                 <p>Follow Us</p>
                                                 <h3>Twitter</h3>
@@ -211,11 +233,11 @@
                                                 <h3>Facebook</h3>
                                             </div>
                                         </li>
-                                        <li class="google_plus">
-                                            <a href="#" title="google"><i class="fa fa-google-plus"></i></a>
+                                        <li class="Github">
+                                            <a href="#" title="Github"><i class="fa fa-github "></i></a>
                                             <div class="social_title">
                                                 <p>Find Us</p>
-                                                <h3>Google+</h3>
+                                                <h3>Github</h3>
                                             </div>
                                         </li>
                                     </ul>
@@ -229,14 +251,14 @@
                                         <h3>CUSTOMER SERVICE</h3>
                                         <div class="footer_menu">
                                             <ul>
-                                                <li><a href="#">Shipping & Returns</a></li>
-                                                <li><a href="#"> Secure Shopping</a></li>
-                                                <li><a href="#">International Shipping</a></li>
-                                                <li><a href="#"> Affiliates</a></li>
-                                                <li><a href="contact.html"> Contact</a></li>
-                                                <li><a href="#"> Travel</a></li>
-                                                <li><a href="#">ecommerce</a></li>
-                                                <li><a href="#"> Creative</a></li>
+                                                <li><a >Shipping & Returns</a></li>
+                                                <li><a > Secure Shopping</a></li>
+                                                <li><a >International Shipping</a></li>
+                                                <li><a> Affiliates</a></li>
+                                                <li><a > Contact</a></li>
+                                                <li><a > Travel</a></li>
+                                                <li><a >ecommerce</a></li>
+                                                <li><a > Creative</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -247,11 +269,11 @@
                                         <h3>Information</h3>
                                         <div class="footer_menu">
                                             <ul>
-                                                <li><a href="about.html">About Us</a></li>
+                                                <li><a >About Us</a></li>
                                                 <li><a href="#">Delivery infomation</a></li>
                                                 <li><a href="#">Privacy Policy</a></li>
                                                 <li><a href="#"> Travel</a></li>
-                                                <li><a href="blog.html">Blog</a></li>
+                                                <li><a > Blog</a></li>
                                                 <li><a href="#">Portfolio</a></li>
                                                 <li><a href="#">Conditions</a></li>
                                                 <li><a href="#"> Frequently Questions</a></li>
@@ -276,7 +298,7 @@
                                         <li><a href="#">Delivery infomation</a></li>
                                         <li><a href="#">Privacy Policy</a></li>
                                         <li><a href="#"> Travel</a></li>
-                                        <li><a href="blog.html">Blog</a></li>
+                                        <li><a >Blog</a></li>
                                         <li><a href="#">Portfolio</a></li>
                                         <li><a href="#">Conditions</a></li>
                                         <li><a href="#"> Frequently Questions</a></li>
