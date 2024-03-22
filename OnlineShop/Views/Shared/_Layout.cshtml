@@ -68,8 +68,8 @@
         <!-- Main Style CSS -->
         <link rel="stylesheet" href="~/css/style.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/2.0.1/css/dataTables.dataTables.css" />
-       <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" /> 
-                <link rel="stylesheet" href="~/css/style.css" /> 
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/style.css" />
         <script src="https://kit.fontawesome.com/238e4a8eca.js" crossorigin="anonymous"></script>
     </environment>
 
@@ -78,7 +78,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css" *@
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
-          <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" /> 
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
         <link rel="stylesheet" href="~/css/plugins.css">
 
         <!-- Main Style CSS -->
@@ -104,22 +104,22 @@
                         <div class="top_right text-right">
                             <ul>
                                 <li><a asp-area="" asp-controller="Home" asp-action="Index">  OnlineShop </a></li>
-                                 @if (userRole =="SuperAdmin")
+                                @if (userRole == "SuperAdmin")
                                 {
 
-                                    <li ><a asp-area="Admin" asp-controller="Role" asp-action="Index" class="nav-link">Role User</a></li>
+                                    <li><a asp-area="Admin" asp-controller="Role" asp-action="Index" class="nav-link">Role User</a></li>
                                 }
-                                 @if (userRole =="Admin")
+                                @if (userRole == "Admin")
                                 {
-                        
-                                    <li >
+
+                                    <li>
                                         <a asp-area="Admin" asp-controller="Products" asp-action="Index" class="nav-link">Products</a>
                                     </li>
 
                                 }
-                            
 
-                                @if (userRole =="Customer")
+
+                                @if (userRole == "Customer")
                                 {
                                     <li><a asp-area="Customer" asp-controller="Order" asp-action="UserOrders"><i class="fa-solid fa-suitcase"></i> My Orders</a></li>
                                 }
@@ -128,8 +128,6 @@
 
                             </ul>
                         </div>
-
-         
 
                     </div>
                     <div class="col-lg-2"></div>
@@ -146,7 +144,7 @@
                                         <li><a href="#">Bangla</a></li>
                                     </ul>
                                 </li>
-                            
+
                                 @if (SignInManager.IsSignedIn(User))
                                 {
                                     <li class="top_links">
@@ -170,7 +168,7 @@
                                 }
                                 else
                                 {
-                                    <li><a asp-area="Identity" asp-page="/Account/Register" >Register</a></li>
+                                    <li><a asp-area="Identity" asp-page="/Account/Register">Register</a></li>
                                     <li><a asp-area="Identity" asp-page="/Account/Login">Login</a></li>
                                 }
                             </ul>
@@ -202,7 +200,7 @@
                     <div class="row">
                         <div class="col-lg-4 col-md-5">
                             <div class="widgets_container contact_us">
-                               
+
                                 <div class="footer_contact">
                                     <ul>
                                         <li><i class="zmdi zmdi-home"></i><span>Addresss:</span> Gazipur Dhaka</li>
@@ -219,8 +217,9 @@
                                                 <h3> </h3>
                                             </div>
                                         </li>
-                                        <li facebook>
-                                            <a href="https://www.instagram.com/aminul_islam_122/?hl=en" title="instagram"><i class="fa fa-instagram"></i></a>
+                                        <li>
+                                            <i class="fa fa-instagram fs-2"></i>
+                                            <a href="https://www.instagram.com/aminul_islam_122/?hl=en" title="instagram"> Instagram <i class="fa fa-instagram"></i> </a>
                                             <div class="social_title">
                                                 <p>Follow Us</p>
                                                 <h3>Instagram</h3>
@@ -233,8 +232,9 @@
                                                 <h3>Facebook</h3>
                                             </div>
                                         </li>
-                                        <li class="Github">
-                                            <a href="https://github.com/aminul-islam-niloy" title="Github"><i class="fa-brands fa-github"></i></a>
+                                        <li>
+                                            <i class="fa-brands fa-github fs-2"></i>
+                                            <a href="https://github.com/aminul-islam-niloy" title="Github">Github <i class="fa-brands fa-github"></i></a>
                                             <div class="social_title">
                                                 <p>Find Us</p>
                                                 <h3>Github</h3>
@@ -251,41 +251,36 @@
                                         <h3>CUSTOMER SERVICE</h3>
                                         <div class="footer_menu">
                                             <ul>
-                                                <li><a >Shipping & Returns</a></li>
-                                                <li><a > Secure Shopping</a></li>
-                                                <li><a >International Shipping</a></li>
+                                                <li><a>Shipping & Returns</a></li>
+                                                <li><a> Secure Shopping</a></li>
+                                                <li><a>International Shipping</a></li>
                                                 <li><a> Affiliates</a></li>
-                                                <li><a > Contact</a></li>
-                                                <li><a > Travel</a></li>
-                                                <li><a >ecommerce</a></li>
-                                                <li><a > Creative</a></li>
+                                                <li><a> Contact</a></li>
+                                                <li><a> Travel</a></li>
+                                                <li><a>ecommerce</a></li>
+                                                <li><a> Creative</a></li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
-                               
+
                                 <div class="col-lg-6 col-md-6">
                                     <div class="widgets_container widget_menu">
                                         <h3>Information</h3>
                                         <div class="footer_menu">
                                             <ul>
-                                                <li><a >About Us</a></li>
+                                                <li><a>About Us</a></li>
                                                 <li><a href="#">Delivery infomation</a></li>
                                                 <li><a href="#">Privacy Policy</a></li>
                                                 <li><a href="#"> Travel</a></li>
-                                                <li><a > Blog</a></li>
+                                                <li><a> Blog</a></li>
                                                 <li><a href="#">Portfolio</a></li>
                                                 <li><a href="#">Conditions</a></li>
                                                 <li><a href="#"> Frequently Questions</a></li>
-
                                             </ul>
                                         </div>
-
                                     </div>
                                 </div>
-
-                         
-                            
                             </div>
 
                         </div>
@@ -298,14 +293,14 @@
                                         <li><a href="#">Delivery infomation</a></li>
                                         <li><a href="#">Privacy Policy</a></li>
                                         <li><a href="#"> Travel</a></li>
-                                        <li><a >Blog</a></li>
+                                        <li><a>Blog</a></li>
                                         <li><a href="#">Portfolio</a></li>
                                         <li><a href="#">Conditions</a></li>
                                         <li><a href="#"> Frequently Questions</a></li>
 
                                     </ul>
                                 </div>
-                            
+
                             </div>
                         </div>
 
@@ -356,7 +351,7 @@
                         <div class="col-lg-6 col-md-5">
                             <div class="footer_payment text-right">
 
-                                 <p><img src="~/img/icon/payment.png" alt=""></p> 
+                                <p><img src="~/img/icon/payment.png" alt=""></p>
                             </div>
                         </div>
                     </div>
@@ -364,8 +359,8 @@
             </div>
 
             <!--footer area end-->
-  <br />
-  <br />
+            <br />
+            <br />
         </footer>
 
         <br />
@@ -375,8 +370,8 @@
     <environment include="Development">
         <script src="https://cdn.datatables.net/2.0.1/js/dataTables.js"></script>
         <script src="~/lib/jquery/dist/jquery.js"></script>
-            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script> 
-        <script src="~/js/site.js"  asp-append-version="true" ></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
 
     <environment exclude="Development">
@@ -388,7 +383,7 @@
                 integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
         </script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
-         asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js" 
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
                 crossorigin="anonymous"
                 integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">

@@ -1,105 +1,90 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using OnlineShop.Data;
 using OnlineShop.Models;
 using OnlineShop.Service;
 using OnlineShop.Session;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using X.PagedList;
 
+
 namespace OnlineShop.Areas.Customer.Controllers
 {
     [Area("Customer")]
-
     public class HomeController : Controller
     {
         private ApplicationDbContext _db;
         private readonly IEmailService _emailService;
+        private readonly IMemoryCache _cache;
 
-        public HomeController(ApplicationDbContext db, IEmailService emailService)
+        public HomeController(ApplicationDbContext db, IEmailService emailService, IMemoryCache memoryCache)
         {
             _db = db;
             _emailService = emailService;
+            _cache = memoryCache;
         }
 
-        public IActionResult Index(int? page)
+        public async Task<IActionResult> Index(int? page)
         {
-            // Retrieve products for each category
-            var laptops = _db.Products
-                .Where(p => p.ProductTypes.ProductType == "Laptop")
-                .Include(p => p.ProductTypes)
-                .Include(p => p.SpecialTag)
-                .ToList();
+            // Check if the data is already cached
+            if (!_cache.TryGetValue("products", out IEnumerable<Products> products))
+            {
+                // Data is not in cache, so retrieve it from the database
+                products = await _db.Products
+                    .Include(p => p.ProductTypes)
+                    .Include(p => p.SpecialTag)
+                    .ToListAsync();
 
+                // Cache the data for 5 minutes
+                _cache.Set("products", products, TimeSpan.FromMinutes(5));
+            }
 
-            var phones = _db.Products
-                .Where(p => p.ProductTypes.ProductType == "Mobile")
-                .Include(p => p.ProductTypes)
-                .Include(p => p.SpecialTag)
-                .ToList();
-
-            var otherFurniture = _db.Products
-                .Where(p => p.ProductTypes.ProductType == "Furniture")
-                .Include(p => p.ProductTypes)
-                .Include(p => p.SpecialTag)
-                .ToList();
-
-            var Camera = _db.Products
-              .Where(p => p.ProductTypes.ProductType == "Camera")
-              .Include(p => p.ProductTypes)
-              .Include(p => p.SpecialTag)
-              .ToList();
-
-            var TvandMonitor = _db.Products
-             .Where(p => p.ProductTypes.ProductType == "Tv and Monitor")
-             .Include(p => p.ProductTypes)
-             .Include(p => p.SpecialTag)
-             .ToList();
-
-            var Car = _db.Products
-            .Where(p => p.ProductTypes.ProductType == "Car")
-            .Include(p => p.ProductTypes)
-            .Include(p => p.SpecialTag)
-            .ToList();
-
-                var Bike = _db.Products
-             .Where(p => p.ProductTypes.ProductType == "Bike")
-             .Include(p => p.ProductTypes)
-             .Include(p => p.SpecialTag)
-             .ToList();
-
-                var Hardware = _db.Products
-             .Where(p => p.ProductTypes.ProductType == "Hardware")
-             .Include(p => p.ProductTypes)
-             .Include(p => p.SpecialTag)
-             .ToList();
-
-            //all Product
-            var products = _db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList();
-
+            // You can use the cached data here
             ViewData["productTypeSearchId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
-
 
             var viewModel = new IndexPageViewModel
             {
-                products = products,
-                Laptop = laptops,
-                Phone = phones,
-                Furniture = otherFurniture,
-                Camera = Camera,
-                TvandMonitor = TvandMonitor,
-                Car = Car,
-                bike = Bike,
-                Hardware = Hardware
+                products = (List<Products>)products,
+                Laptop = (List<Products>)GetCachedProductsByCategory("Laptop"),
+                Phone = (List<Products>)GetCachedProductsByCategory("Mobile"),
+                Furniture = (List<Products>)GetCachedProductsByCategory("Furniture"),
+                Camera = (List<Products>)GetCachedProductsByCategory("Camera"),
+                TvandMonitor = (List<Products>)GetCachedProductsByCategory("Tv and Monitor"),
+                Car = (List<Products>)GetCachedProductsByCategory("Car"),
+                bike = (List<Products>)GetCachedProductsByCategory("Bike"),
+                Hardware = (List<Products>)GetCachedProductsByCategory("Hardware")
             };
 
             return View(viewModel);
         }
+
+        // Helper method to retrieve cached products by category
+        private IEnumerable<Products> GetCachedProductsByCategory(string category)
+        {
+            if (!_cache.TryGetValue(category, out IEnumerable<Products> cachedProducts))
+            {
+                // Data is not in cache, so retrieve it from the database
+                cachedProducts = _db.Products
+                    .Where(p => p.ProductTypes.ProductType == category)
+                    .Include(p => p.ProductTypes)
+                    .Include(p => p.SpecialTag)
+                    .ToList();
+
+                // Cache the data for 5 minutes
+                _cache.Set(category, cachedProducts, TimeSpan.FromMinutes(5));
+            }
+
+            return cachedProducts;
+        }
+
 
 
         //public IActionResult Index(int? page)
@@ -109,6 +94,7 @@ namespace OnlineShop.Areas.Customer.Controllers
 
         //    return View(_db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList().ToPagedList(page ?? 1, 12));
         //}
+
 
 
         [HttpPost]
@@ -128,31 +114,34 @@ namespace OnlineShop.Areas.Customer.Controllers
             return View(pagedProducts);
         }
 
-
+        // GET: Customer/Home/Products
         public IActionResult Products(int? page)
         {
-
-            // Fetch minimum and maximum prices from the database
-            var minPrice = _db.Products.Min(p => p.Price);
-            var maxPrice = _db.Products.Max(p => p.Price);
-
-            ViewData["MinPrice"] = minPrice;
-            ViewData["MaxPrice"] = maxPrice;
-
-            // ViewBag.ProductTypes = _db.ProductTypes.ToList();
-
             ViewData["productTypeSearchId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
-            var products = _db.Products.Include(p => p.ProductTypes).ToList().ToPagedList(page ?? 1, 12);
-            return View(products);
+            // Check if products are already cached
+            if (!_cache.TryGetValue("AllProducts", out IPagedList<Products> cachedProducts))
+            {
+                // Products not found in cache, retrieve them from the database
+                var products = _db.Products.Include(p => p.ProductTypes).ToList().ToPagedList(page ?? 1, 12);
+
+                // Cache the products for 5 minutes
+                _cache.Set("AllProducts", products, TimeSpan.FromMinutes(5));
+
+                return View(products);
+            }
+
+            // Products found in cache, return them
+            return View(cachedProducts);
         }
-
-
 
 
         // POST: Filter products based on search criteria
         [HttpPost]
         public IActionResult Products(int? page, int productTypeId, string searchString, decimal? lowAmount, decimal? largeAmount, string sortOrder)
         {
+            // Remove cached products to ensure fresh results are fetched
+            _cache.Remove("AllProducts");
+
             ViewData["productTypeSearchId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
 
             // Fetch minimum and maximum prices from the database
@@ -195,8 +184,11 @@ namespace OnlineShop.Areas.Customer.Controllers
                     break;
             }
 
-            var pagedProducts = productsQuery.ToPagedList(page ?? 1, 12);
-            return View(pagedProducts);
+            // Retrieve and cache the filtered products
+            var filteredProducts = productsQuery.ToPagedList(page ?? 1, 12);
+            _cache.Set("AllProducts", filteredProducts, TimeSpan.FromMinutes(5));
+
+            return View(filteredProducts);
         }
 
 
