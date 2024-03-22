@@ -15,7 +15,7 @@ using X.PagedList;
 namespace OnlineShop.Areas.Customer.Controllers
 {
     [Area("Customer")]
-  
+
     public class HomeController : Controller
     {
         private ApplicationDbContext _db;
@@ -27,32 +27,89 @@ namespace OnlineShop.Areas.Customer.Controllers
             _emailService = emailService;
         }
 
-
-      
-           public IActionResult Index(int? page)
+        public IActionResult Index(int? page)
         {
+            // Retrieve products for each category
+            var laptops = _db.Products
+                .Where(p => p.ProductTypes.ProductType == "Laptop")
+                .Include(p => p.ProductTypes)
+                .Include(p => p.SpecialTag)
+                .ToList();
+
+
+            var phones = _db.Products
+                .Where(p => p.ProductTypes.ProductType == "Mobile")
+                .Include(p => p.ProductTypes)
+                .Include(p => p.SpecialTag)
+                .ToList();
+
+            var otherFurniture = _db.Products
+                .Where(p => p.ProductTypes.ProductType == "Furniture")
+                .Include(p => p.ProductTypes)
+                .Include(p => p.SpecialTag)
+                .ToList();
+
+            var Camera = _db.Products
+              .Where(p => p.ProductTypes.ProductType == "Camera")
+              .Include(p => p.ProductTypes)
+              .Include(p => p.SpecialTag)
+              .ToList();
+
+            var TvandMonitor = _db.Products
+             .Where(p => p.ProductTypes.ProductType == "Tv and Monitor")
+             .Include(p => p.ProductTypes)
+             .Include(p => p.SpecialTag)
+             .ToList();
+
+            var Car = _db.Products
+            .Where(p => p.ProductTypes.ProductType == "Car")
+            .Include(p => p.ProductTypes)
+            .Include(p => p.SpecialTag)
+            .ToList();
+
+                var Bike = _db.Products
+             .Where(p => p.ProductTypes.ProductType == "Bike")
+             .Include(p => p.ProductTypes)
+             .Include(p => p.SpecialTag)
+             .ToList();
+
+                var Hardware = _db.Products
+             .Where(p => p.ProductTypes.ProductType == "Hardware")
+             .Include(p => p.ProductTypes)
+             .Include(p => p.SpecialTag)
+             .ToList();
+
+            //all Product
+            var products = _db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList();
 
             ViewData["productTypeSearchId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
 
-            return View(_db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList().ToPagedList(page ?? 1, 12));
+
+            var viewModel = new IndexPageViewModel
+            {
+                products = products,
+                Laptop = laptops,
+                Phone = phones,
+                Furniture = otherFurniture,
+                Camera = Camera,
+                TvandMonitor = TvandMonitor,
+                Car = Car,
+                bike = Bike,
+                Hardware = Hardware
+            };
+
+            return View(viewModel);
         }
 
 
-
-        ////POST Index action method
-        //[HttpPost]
-        //public IActionResult Index( string searchString,int?page)
+        //public IActionResult Index(int? page)
         //{
-        //    var products = _db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList().ToPagedList(page ?? 1, 8); 
 
-        //    if (!string.IsNullOrEmpty(searchString))
-        //    {
-        //        // Filter products based on search string
-        //        products = products.Where(p => p.Name.Contains(searchString)).ToList().ToList().ToPagedList(page ?? 1, 8);
-        //    }
+        //    ViewData["productTypeSearchId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
 
-        //    return View(products);
+        //    return View(_db.Products.Include(c => c.ProductTypes).Include(c => c.SpecialTag).ToList().ToPagedList(page ?? 1, 12));
         //}
+
 
         [HttpPost]
         public IActionResult Index(string searchString, int? page)
@@ -89,26 +146,6 @@ namespace OnlineShop.Areas.Customer.Controllers
             return View(products);
         }
 
-        // POST: Filter products based on search criteria
-        //[HttpPost]
-        //public IActionResult Products(int? page, int productTypeId, string searchString)
-        //{
-        //    ViewData["productTypeSearchId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
-        //    var productsQuery = _db.Products.Include(p => p.ProductTypes).AsQueryable();
-
-        //    if (productTypeId != 0)
-        //    {
-        //        productsQuery = productsQuery.Where(p => p.ProductTypes.Id == productTypeId);
-        //    }
-
-        //    if (!string.IsNullOrEmpty(searchString))
-        //    {
-        //        productsQuery = productsQuery.Where(p => p.Name.Contains(searchString));
-        //    }
-
-        //    var pagedProducts = productsQuery.ToPagedList(page ?? 1, 12);
-        //    return View(pagedProducts);
-        //}
 
 
 
@@ -161,9 +198,6 @@ namespace OnlineShop.Areas.Customer.Controllers
             var pagedProducts = productsQuery.ToPagedList(page ?? 1, 12);
             return View(pagedProducts);
         }
-
-
-
 
 
 
@@ -265,7 +299,7 @@ namespace OnlineShop.Areas.Customer.Controllers
             else
             {
                 return NotFound();
-               
+
             }
 
             return RedirectToAction(nameof(Index));
@@ -318,12 +352,12 @@ namespace OnlineShop.Areas.Customer.Controllers
         }
 
 
-  
+
 
 
         //GET product Cart action method
 
-            [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer")]
         public IActionResult Cart()
         {
 
@@ -351,7 +385,7 @@ namespace OnlineShop.Areas.Customer.Controllers
         {
             return View();
         }
-        
+
         public IActionResult Order(int id)
         {
             var order = _db.Orders.Include(o => o.OrderDetails)

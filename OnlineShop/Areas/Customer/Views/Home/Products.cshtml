@@ -326,22 +326,15 @@
                     <div class="widget_list widget_categories">
                         <h2>categories</h2>
                         <ul>
-                            <li>
-                                <a href="#">Laptop <span>(6)</span></a>
-                            </li>
-                            <li>
-                                <a href="#">Electronics <span>(10)</span></a>
-                            </li>
-                            <li>
-                                <a href="#">Phone <span>(4)</span></a>
-                            </li>
-                            <li>
-                                <a href="#">Hardware <span>(10)</span></a>
-                            </li>
-                            <li>
-                                <a href="#">furniture <span>(8)</span></a>
-                            </li>
 
+                            @foreach (var productType in ViewData["productTypeSearchId"] as SelectList)
+                            {
+                                <li>
+                                    <a> @productType.Text <span> </span></a>
+                                </li>
+                               
+                            }
+                         
                         </ul>
                     </div>
 
@@ -474,15 +467,25 @@
                         <button data-role="grid_list" type="button" class="btn-list" data-bs-toggle="tooltip" title="List"></button>
                     </div>
 
+                    <style>
+                        /* CSS to increase the size of the dropdown area and the font */
+                        .form-select {
+                            font-size: 18px; /* Adjust the font size as needed */
+                            padding: 10px; /* Adjust the padding to increase the dropdown area */
+                            width: 200px; /* Adjust the width of the dropdown */
+                        }
+                    </style>
+
                     <div class="dropdown">
-                        <form method="post" class=" d-flex">
+                        <form method="post" class="d-flex">
                             <select id="sortOrder" name="sortOrder" class="form-select me-2">
-                                <option selected value="PriceLowToHigh"><h5> Low to High</h5></option>
-                                <option value="PriceHighToLow"><h5>High to Low</h5></option>
+                                <option selected value="PriceLowToHigh">Low to High</option>
+                                <option value="PriceHighToLow">High to Low</option>
                             </select>
                             <button class="btn btn-primary" type="submit">Sort</button>
                         </form>
                     </div>
+
 
   
              

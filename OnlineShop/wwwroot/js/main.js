@@ -578,36 +578,65 @@
         if($(window).width() < 991){
             $('.mini_cart').slideToggle('medium');
         }
-    });
+   });
+
+   //comment out this to active toggle. 
     
-    /*categories slideToggle*/
-    $(".categories_title").on("click", function() {
-        $(this).toggleClass('active');
-        $('.categories_menu_toggle').slideToggle('medium');
-    }); 
+ //   /*categories slideToggle*/
+ //   $(".categories_title").on("click", function() {
+ //       $(this).toggleClass('active');
+ //       $('.categories_menu_toggle').slideToggle('medium');
+ //   });
 
-    /*----------  Category more toggle  ----------*/
+ //   /*----------  Category more toggle  ----------*/
 
-	$(".categories_menu_toggle li.hidden").hide();
-	   $("#more-btn").on('click', function (e) {
+	//$(".categories_menu_toggle li.hidden").hide();
+	//   $("#more-btn").on('click', function (e) {
 
-		e.preventDefault();
-		$(".categories_menu_toggle li.hidden").toggle(500);
-		var htmlAfter = '<i class="fa fa-minus" aria-hidden="true"></i> Less Categories';
-		var htmlBefore = '<i class="fa fa-plus" aria-hidden="true"></i> More Categories';
+	//	e.preventDefault();
+	//	$(".categories_menu_toggle li.hidden").toggle(500);
+	//	var htmlAfter = '<i class="fa fa-minus" aria-hidden="true"></i> Less Categories';
+	//	var htmlBefore = '<i class="fa fa-plus" aria-hidden="true"></i> More Categories';
 
 
-		if ($(this).html() == htmlBefore) {
-			$(this).html(htmlAfter);
-		} else {
-			$(this).html(htmlBefore);
-		}
-	});
-    
-    
+	//	if ($(this).html() == htmlBefore) {
+	//		$(this).html(htmlAfter);
+	//	} else {
+	//		$(this).html(htmlBefore);
+	//	}
+	//});
+
+
     /* ---------------------
 	 Category menu
 	--------------------- */
+
+
+    $(document).ready(function () {
+        $(".categories_title").on("click", function () {
+            $(this).toggleClass('active');
+            $('.categories_menu_toggle').slideToggle('medium');
+        });
+
+        $(".categories_menu_toggle li.hidden").hide();
+        $("#more-btn").on('click', function (e) {
+            e.preventDefault();
+            $(".categories_menu_toggle li.hidden").toggle(500);
+            var htmlAfter = '<i class="fa fa-minus" aria-hidden="true"></i> Less Categories';
+            var htmlBefore = '<i class="fa fa-plus" aria-hidden="true"></i> More Categories';
+            if ($(this).html() == htmlBefore) {
+                $(this).html(htmlAfter);
+            } else {
+                $(this).html(htmlBefore);
+            }
+        });
+    });
+
+
+
+
+
+
     
    
     function categorySubMenuToggle(){

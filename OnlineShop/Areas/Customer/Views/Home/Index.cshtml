@@ -1,6 +1,8 @@
 ﻿@using OnlineShop.Models;
-@model X.PagedList.IPagedList<Products>
-@using X.PagedList.Mvc.Core
+@* @model X.PagedList.IPagedList<Products>
+@using X.PagedList.Mvc.Core *@
+
+@model IndexPageViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -37,7 +39,7 @@
       <div class="row align-items-center">
          <div class="col-lg-3">
             <div class="logo">
-               <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/logo/online-shoping.png" style="height: 50px; width: 60%;" alt=""></a>
+               <a asp-area="" asp-controller="Home" asp-action="Index"><img src="~/img/logo/online-shoping.png" style="height: 60px; width: 100%;" alt=""></a>
             </div>
          </div>
          <div class="col-lg-9">
@@ -72,7 +74,7 @@
    <div class="container">
       <div class="row align-items-center">
          <div class="col-lg-3">
-            <div class="categories_menu categori_two">
+            <div class="categories_menu categori_two"; style=" display: none;">
                <div class="categories_title">
                   <h2 class="categori_toggle">Categories</h2>
                </div>
@@ -487,7 +489,7 @@
          <div class="col-12">
             <div
                class="category_product_carousel category_column4 owl-carousel">
-               @foreach (var product in Model)
+               @foreach (var product in Model.products)
                {
                <div class="single_category_product">
                   <div class="category_product_thumb">
@@ -554,7 +556,7 @@
                      <li>
                         <a data-bs-toggle="tab" href="#speaker" role="tab" aria-controls="speaker" aria-selected="false">
                            <i class="zmdi zmdi-collection-speaker"></i> 
-                           <h3>speaker</h3>
+                           <h3>Car</h3>
                         </a>
                      </li>
                      <li>
@@ -569,7 +571,7 @@
                   <div class="tab-content">
                      <div class="tab-pane fade show active" id="Funiture" role="tabpanel">
                         <div class="deals_product_carousel deals_product_column2 owl-carousel">
-                           @foreach (var product in Model)
+                           @foreach (var product in Model.Furniture)
                            {
                            <div class="single_deals_product">
                               <div class="product_thumb">
@@ -614,7 +616,7 @@
                      </div>
                      <div class="tab-pane fade" id="laptop" role="tabpanel">
                         <div class="deals_product_carousel deals_product_column2 owl-carousel">
-                           @foreach (var product in Model)
+                           @foreach (var product in Model.Laptop)
                            {
                            <div class="single_deals_product">
                               <div class="product_thumb">
@@ -652,7 +654,7 @@
                      </div>
                      <div class="tab-pane fade" id="mobile" role="tabpanel">
                         <div class="deals_product_carousel deals_product_column2 owl-carousel">
-                           @foreach (var product in Model)
+                           @foreach (var product in Model.Phone)
                            {
                            <div class="single_deals_product">
                               <div class="product_thumb">
@@ -690,7 +692,7 @@
                      </div>
                      <div class="tab-pane fade" id="Fridge" role="tabpanel">
                         <div class="deals_product_carousel deals_product_column2 owl-carousel">
-                           @foreach (var product in Model)
+                           @foreach (var product in Model.products)
                            {
                            <div class="single_deals_product">
                               <div class="product_thumb">
@@ -728,7 +730,7 @@
                      </div>
                      <div class="tab-pane fade" id="Camera" role="tabpanel">
                         <div class="deals_product_carousel deals_product_column2 owl-carousel">
-                           @foreach (var product in Model)
+                           @foreach (var product in Model.Camera)
                            {
                            <div class="single_deals_product">
                               <div class="product_thumb">
@@ -766,7 +768,7 @@
                      </div>
                      <div class="tab-pane fade" id="tv" role="tabpanel">
                         <div class="deals_product_carousel deals_product_column2 owl-carousel">
-                           @foreach (var product in Model)
+                           @foreach (var product in Model.TvandMonitor)
                            {
                            <div class="single_deals_product">
                               <div class="product_thumb">
@@ -811,8 +813,8 @@
                      </div>
                      <div class="tab-pane fade" id="speaker" role="tabpanel">
                         <div class="deals_product_carousel deals_product_column2 owl-carousel">
-                           @foreach (var product in Model)
-                           {
+                           @foreach (var product in Model.Car)
+                           { 
                            <div class="single_deals_product">
                               <div class="product_thumb">
                                                 <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%; border-top:5px;" alt="Card Image"></a>
@@ -849,11 +851,11 @@
                      </div>
                      <div class="tab-pane fade" id="Toys" role="tabpanel">
                         <div class="deals_product_carousel deals_product_column2 owl-carousel">
-                           @foreach (var product in Model)
+                           @foreach (var product in Model.bike)
                            {
                            <div class="single_deals_product">
                               <div class="product_thumb">
-                                                <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%; border-top:5px;" alt="Card Image"></a>
+                                    <a asp-action="Detail" asp-controller="Home" asp-route-id="@product.Id"><img src="~/@product.Image" style="height: 320px; width: 60%; border-top:5px;" alt="Card Image"></a>
                                  <div class="label_product">
                                     <span class="label_sale">sale</span>
                                  </div>
@@ -908,13 +910,13 @@
             <div class="col-lg-3 col-md-12">
                <div class="single_banner">
                   <div class="banner_thumb">
-                            <a href="shop.html"><img src="~/img/bg/banner7.jpg"  alt="" /></a>
+                            <a asp-area="" asp-controller="Home" asp-action="Products"><img src="~/img/bg/banner7.jpg" alt="" /></a>
                   </div>
                </div>
             </div>
             <div class="col-lg-9 col-md-12">
                <div class="product_carousel product_column3 owl-carousel">
-                  @foreach (var product in Model)
+                  @foreach (var product in Model.products)
                   {
                   <div class="single_product">
                      <div class="product_thumb">
@@ -968,7 +970,7 @@
             <div class="col-lg-6 col-md-6">
                 <div class="single_banner">
                     <div class="banner_thumb">
-                        <a href="shop.html"> <img src="~/img/bg/banner2.jpg" alt=""></a>
+                        <a asp-area="" asp-controller="Home" asp-action="Products"> <img src="~/img/bg/banner2.jpg" alt=""></a>
                     </div>
 
                 </div>
@@ -976,7 +978,7 @@
             <div class="col-lg-6 col-md-6">
                 <div class="single_banner">
                     <div class="banner_thumb">
-                        <a href="shop.html"><img src="~/img/bg/banner3.jpg" alt=""></a>
+                        <a asp-area="" asp-controller="Home" asp-action="Products"><img src="~/img/bg/banner3.jpg" alt=""></a>
                     </div>
 
                 </div>
@@ -994,11 +996,11 @@
             <div class="col-lg-4">
                 <div class="small_product_area">
                     <div class="section_title">
-                        <h2>Featured  <span>Products</span></h2>
+                        <h2>Mobile Phone  <span>Products</span></h2>
                     </div>
                     <div class="small_product_wrapper">
 
-                        @foreach (var product in Model)
+                        @foreach (var product in Model.Phone)
                         {
                             <div class="small_product_items">
                                 <div class="product_thumb">
@@ -1041,11 +1043,11 @@
             <div class="col-lg-4">
                 <div class="small_product_area">
                     <div class="section_title">
-                        <h2>Best Seller <span>Products</span></h2>
+                        <h2>Bikes <span>Products</span></h2>
                     </div>
                     <div class="small_product_wrapper">
 
-                        @foreach (var product in Model)
+                        @foreach (var product in Model.bike)
                         {
                             <div class="small_product_items">
                                 <div class="product_thumb">
@@ -1086,11 +1088,11 @@
             <div class="col-lg-4">
                 <div class="small_product_area">
                     <div class="section_title">
-                        <h2>top rated <span>Products</span></h2>
+                        <h2>Furniture <span>Products</span></h2>
                     </div>
 
                     <div class="small_product_wrapper">
-                        @foreach (var product in Model)
+                        @foreach (var product in Model.Furniture)
                         {
                             <div class="small_product_items">
                                 <div class="product_thumb">
@@ -1169,13 +1171,19 @@
    @* @Html.PagedListPager(Model,
    page => Url.Action("Index", new { page }),
    PagedListRenderOptions.PageNumbersOnly) *@
-   @Html.PagedListPager(Model, page => Url.Action("Index", new { page, foo1Param = "1", foo2Param = "2"})) 
+  @*  @Html.PagedListPager(Model, page => Url.Action("Index", new { page, foo1Param = "1", foo2Param = "2"}))  *@
 </div>
+
+
 @section Scripts{
 @{
 await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }
+
+
 <script>
+
+  
    $(document).ready(function () {
        $('.slider_area').owlCarousel({
            items: 1,
