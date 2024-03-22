@@ -84,7 +84,7 @@
 
                             </li>
                             <li class="mega_items active">
-                                <a href="shop.html"><i class="zmdi zmdi-shopping-basket"></i> shop <i class="zmdi zmdi-caret-down"></i></a>
+                                <a asp-area="" asp-controller="Home" asp-action="Products"><i class="zmdi zmdi-shopping-basket"></i> shop <i class="zmdi zmdi-caret-down"></i></a>
                                 <div class="mega_menu">
                                     <ul class="mega_menu_inner">
                                         <li>
@@ -344,16 +344,40 @@
 
                         </ul>
                     </div>
-                    <div class="widget_list widget_filter">
-                        <h2>Filter by price</h2>
-                        <form action="#">
-                            <div id="slider-range"></div>
-                            <input type="text" name="text" id="amount" />
-                            <button type="submit">Filter</button>
-                        </form>
-                    </div>
+
+
+                   
+                    <br />
 
                     <div class="widget_list">
+
+                  
+                    <h4 class="card-title">Product Filter with Range</h4>
+                    <br />
+                    <div class="price-range d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="text">Min Price: @ViewData["MinPrice"]</h5>
+                        <h5 class="text">Max Price: @ViewData["MaxPrice"]</h5>
+                    </div>
+
+                    <form method="post">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="lowAmount" class="form-label">Low Amount:</label>
+                                <input type="number" class="form-control" id="lowAmount" name="lowAmount" placeholder="Enter minimum price" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="largeAmount" class="form-label">High Amount:</label>
+                                <input type="number" class="form-control" id="largeAmount" name="largeAmount" placeholder="Enter maximum price" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success float-end"> Filter Price </button>
+                        <br />
+                    </form>
+                    <br />
+                    </div>
+
+                    <div class="widget_list mt-10">
                         <h2>Sub Catagories</h2>
                         <ul>
                             <li>
@@ -449,32 +473,28 @@
 
                         <button data-role="grid_list" type="button" class="btn-list" data-bs-toggle="tooltip" title="List"></button>
                     </div>
-                    <div class=" niceselect_option">
 
-
-
-
-
-
-                        <form class="select_option" action="#">
-                            <select name="orderby" id="short">
-
-                                <option selected value="1">Sort by price: low to high</option>
-                                <option value="2">Sort by price: high to low</option>
-
+                    <div class="dropdown">
+                        <form method="post" class=" d-flex">
+                            <select id="sortOrder" name="sortOrder" class="form-select me-2">
+                                <option selected value="PriceLowToHigh"><h5> Low to High</h5></option>
+                                <option value="PriceHighToLow"><h5>High to Low</h5></option>
                             </select>
+                            <button class="btn btn-primary" type="submit">Sort</button>
                         </form>
-
-
-
-
                     </div>
 
+  
+             
 
                     <div class="page_amount">
                         @*      <p>Showing 1–9 of 21 results</p> *@
                     </div>
                 </div>
+
+
+
+               
                 <!--shop toolbar end-->
 
                 <div class="row no-gutters shop_wrapper">
@@ -570,6 +590,14 @@
 </div>
 <!--shop  area end-->
 <!-- modal area end-->
+
+
+
+
+
+
+
+
 @section Scripts{
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

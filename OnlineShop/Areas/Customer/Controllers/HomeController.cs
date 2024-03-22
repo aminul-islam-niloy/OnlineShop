@@ -7,6 +7,7 @@ using OnlineShop.Models;
 using OnlineShop.Service;
 using OnlineShop.Session;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using X.PagedList;
@@ -73,7 +74,15 @@ namespace OnlineShop.Areas.Customer.Controllers
 
         public IActionResult Products(int? page)
         {
-           // ViewBag.ProductTypes = _db.ProductTypes.ToList();
+
+            // Fetch minimum and maximum prices from the database
+            var minPrice = _db.Products.Min(p => p.Price);
+            var maxPrice = _db.Products.Max(p => p.Price);
+
+            ViewData["MinPrice"] = minPrice;
+            ViewData["MaxPrice"] = maxPrice;
+
+            // ViewBag.ProductTypes = _db.ProductTypes.ToList();
 
             ViewData["productTypeSearchId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
             var products = _db.Products.Include(p => p.ProductTypes).ToList().ToPagedList(page ?? 1, 12);
@@ -81,20 +90,72 @@ namespace OnlineShop.Areas.Customer.Controllers
         }
 
         // POST: Filter products based on search criteria
+        //[HttpPost]
+        //public IActionResult Products(int? page, int productTypeId, string searchString)
+        //{
+        //    ViewData["productTypeSearchId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
+        //    var productsQuery = _db.Products.Include(p => p.ProductTypes).AsQueryable();
+
+        //    if (productTypeId != 0)
+        //    {
+        //        productsQuery = productsQuery.Where(p => p.ProductTypes.Id == productTypeId);
+        //    }
+
+        //    if (!string.IsNullOrEmpty(searchString))
+        //    {
+        //        productsQuery = productsQuery.Where(p => p.Name.Contains(searchString));
+        //    }
+
+        //    var pagedProducts = productsQuery.ToPagedList(page ?? 1, 12);
+        //    return View(pagedProducts);
+        //}
+
+
+
+        // POST: Filter products based on search criteria
         [HttpPost]
-        public IActionResult Products(int? page, int productTypeId, string searchString)
+        public IActionResult Products(int? page, int productTypeId, string searchString, decimal? lowAmount, decimal? largeAmount, string sortOrder)
         {
             ViewData["productTypeSearchId"] = new SelectList(_db.ProductTypes.ToList(), "Id", "ProductType");
+
+            // Fetch minimum and maximum prices from the database
+            var minPrice = _db.Products.Min(p => p.Price);
+            var maxPrice = _db.Products.Max(p => p.Price);
+
+            ViewData["MinPrice"] = minPrice;
+            ViewData["MaxPrice"] = maxPrice;
+
             var productsQuery = _db.Products.Include(p => p.ProductTypes).AsQueryable();
 
+            // Filter by product type
             if (productTypeId != 0)
             {
                 productsQuery = productsQuery.Where(p => p.ProductTypes.Id == productTypeId);
             }
 
+            // Filter by search string
             if (!string.IsNullOrEmpty(searchString))
             {
                 productsQuery = productsQuery.Where(p => p.Name.Contains(searchString));
+            }
+
+            // Filter by price range
+            if (lowAmount.HasValue && largeAmount.HasValue)
+            {
+                productsQuery = productsQuery.Where(p => p.Price >= lowAmount && p.Price <= largeAmount);
+            }
+
+            // Apply sorting
+            switch (sortOrder)
+            {
+                case "PriceLowToHigh":
+                    productsQuery = productsQuery.OrderBy(p => p.Price);
+                    break;
+                case "PriceHighToLow":
+                    productsQuery = productsQuery.OrderByDescending(p => p.Price);
+                    break;
+                default:
+                    break;
             }
 
             var pagedProducts = productsQuery.ToPagedList(page ?? 1, 12);
