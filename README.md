@@ -45,37 +45,37 @@ Welcome to Online Shop! This project is a complete e-commerce website built usin
 
 To run the Online Shop locally, follow these steps:
 
-1. **Clone the Repository**: Clone this repository to your local machine using `git clone: https://github.com/aminul-islam-niloy/OnlineShop.git.`
+1. **Clone the Repository**: Clone this repository to your local machine using git clone: https://github.com/aminul-islam-niloy/OnlineShop.git.
 
 2. **Install Dependencies**: Navigate to the project directory and install the necessary dependencies using a package manager NuGet .
 
-````markdown
+
 ## Dependency Installation
 
 **Entity Framework Core:**
 
 Install the Entity Framework Core package via NuGet Package Manager Console or manage NuGet packages within Visual Studio.
 
-```bash
+
 Install-Package Microsoft.EntityFrameworkCore
-```
-````
+
+
 
 **Entity Framework Core Design Tools:**
 
 Install the EF Core design tools package to enable database migrations.
 
-```bash
+
 Install-Package Microsoft.EntityFrameworkCore.Tools
-```
+
 
 **ASP.NET Core Identity (if not included):**
 
 Install ASP.NET Core Identity packages for user management.
 
-```bash
+
 Install-Package Microsoft.AspNetCore.Identity.EntityFrameworkCore
-```
+
 
 ## Database Migration
 
@@ -90,31 +90,25 @@ Configure the connection string in `appsettings.json` to specify the database pr
 **Initial Migration:**
 
 Create an initial migration to scaffold the initial database schema.
-
-```bash
 dotnet ef migrations add InitialCreate
-```
+
 
 **Apply Migrations:**
 
 Apply the migrations to create the database.
 
-```bash
 dotnet ef database update
-```
 
 **Additional Migrations:**
 
 Create additional migrations whenever there are changes to the database schema.
 
-```bash
+
 dotnet ef migrations add <MigrationName>
 dotnet ef database update
-```
 
-By following these steps, you can successfully set up dependencies and perform database migrations in your ASP.NET Core MVC project using Entity Framework Core.
+### By following these steps, you can successfully set up dependencies and perform database migrations in your ASP.NET Core MVC project using Entity Framework Core.
 
-```
 
 3. **Database Setup**: Configure the database connection string in the `appsettings.json` file. Run Entity Framework Core migrations to create the database schema.
 
@@ -134,4 +128,4 @@ This project is licensed under the [MIT License](LICENSE).
 - ASP.NET Core Team for providing a powerful framework for building web applications.
 - Microsoft Identity Team for developing the Identity Framework Core.
 - Various open-source libraries and packages used in the development of this project.
-```
+
