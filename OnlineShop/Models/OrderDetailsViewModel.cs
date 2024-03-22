@@ -21,6 +21,7 @@ namespace OnlineShop.Models
         public string ProductImage { get; set; }
         public string ProductColor { get; set; }
         public int Quantity { get; set; }
+        public PaymentMethods PaymentMethods { get; set; }
         public decimal Price { get; set; }
         public decimal TotalPrice { get; set; }
 

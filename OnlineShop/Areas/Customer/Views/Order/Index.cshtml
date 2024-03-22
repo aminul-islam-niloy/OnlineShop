@@ -49,6 +49,7 @@
                     <th>Phone</th>
                     <th>Order Date</th>
                     <th>Total Price</th>
+                    <th>Payment Method</th>
                     <th></th>
                 </tr>
             </thead>
@@ -60,6 +61,7 @@
                     <td>@orderDetails.CustomerPhone</td>
                     <td>@orderDetails.OrderDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
                     <td>@orderDetails.TotalPrice</td>
+                    <td>@orderDetails.PaymentMethods</td>
                     <td>
                         <form method="post" asp-action="Delete" onsubmit="return confirm('Are you sure you want to delete this item?');">
                             <input type="hidden" name="id" value="@orderDetails.OrderId" />
@@ -89,7 +91,20 @@
                         <td><img src="~/@product.Image" alt="Product Image" width="70" height="70" /></td>
                         <td>@product.ProductColor</td>
                         <td>@product.Quantity</td>
-                        <td>Cash On Delivery</td>
+                        <td>
+                           @if (orderDetails.PaymentMethods == PaymentMethods.CashOnDelivery)
+                            {
+                                <span>With Cash</span>
+                            }
+                            else if (orderDetails.PaymentMethods == PaymentMethods.Card)
+                            {
+                                <span>Paid</span>
+                            }
+                        </td>
+               
+                        
+
+                        
                     </tr>
                 }
             </tbody>

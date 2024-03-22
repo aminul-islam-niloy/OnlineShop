@@ -126,7 +126,9 @@ namespace OnlineShop.Areas.Customer.Controllers
                     od.Order.PhoneNo,
                     od.Order.OrderDate,
                     od.Order.UserId, // Include user ID in grouping
-                    od.Order.User.UserName // Include username
+                    od.Order.User.UserName,
+               
+                    // Include username
                     // Include email
                 })
                 .Select(g => new OrderDetailsViewModel
@@ -140,6 +142,8 @@ namespace OnlineShop.Areas.Customer.Controllers
                     OrderDate = g.Key.OrderDate,
                     UserId = g.Key.UserId, // Add user ID to the view model
                     UserName = g.Key.UserName,
+                    PaymentMethods = g.First().PaymentMethods,
+
 
                     Products = g.Select(od => new ProductViewModel
                     {
@@ -212,7 +216,9 @@ namespace OnlineShop.Areas.Customer.Controllers
                     ProductImage = od.Product.Image,
                     ProductColor = od.Product.ProductColor,
                     Quantity = od.Quantity,
-                    Price = od.Price
+                    Price = od.Price,
+                    PaymentMethods = od.PaymentMethods,
+                    
                 }).ToList()
             }).ToList();
 
@@ -246,6 +252,7 @@ namespace OnlineShop.Areas.Customer.Controllers
         }
 
     
+        //stripe payment method
 
         //public IActionResult CreatePayment(string amount)
         //{
