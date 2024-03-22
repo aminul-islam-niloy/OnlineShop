@@ -71,7 +71,6 @@ namespace OnlineShop.Areas.Admin.Controllers
             return View();
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Create(Products product, List<IFormFile> ImagesSmall)
         {
@@ -92,18 +91,33 @@ namespace OnlineShop.Areas.Admin.Controllers
 
                     foreach (var image in ImagesSmall)
                     {
-                        var imagePath = Path.Combine(_he.WebRootPath + "/Images", Path.GetFileName(image.FileName));
-                        await image.CopyToAsync(new FileStream(imagePath, FileMode.Create));
+                        try
+                        {
+                            var imagePath = Path.Combine(_he.WebRootPath + "/Images", Path.GetFileName(image.FileName));
 
-                        // Add the image path to the product's images collection
-                        product.ImagesSmall.Add(new ProductImage { ImagePath = "Images/" + image.FileName });
+                            // Ensure the directory exists
+                            Directory.CreateDirectory(Path.GetDirectoryName(imagePath));
+
+                            using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                            {
+                                await image.CopyToAsync(fileStream);
+                            }
+
+                            // Add the image path to the product's images collection
+                            product.ImagesSmall.Add(new ProductImage { ImagePath = "Images/" + image.FileName });
+                        }
+                        catch (Exception ex)
+                        {
+                            // Log any exceptions that occur
+                            // This can help diagnose the issue further
+                            Console.WriteLine($"Error copying image: {ex.Message}");
+                        }
                     }
                 }
                 else
                 {
                     product.ImagesSmall = new List<ProductImage>(); // Ensure collection is initialized
                 }
-
 
                 // Check if there are any images in ImagesSmall collection
                 if (product.ImagesSmall != null && product.ImagesSmall.Any())
@@ -146,38 +160,64 @@ namespace OnlineShop.Areas.Admin.Controllers
             return View(product);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Edit(Products product, List<IFormFile> ImagesSmall)
         {
             if (ModelState.IsValid)
             {
-                if (ImagesSmall != null && ImagesSmall.Count > 0)
+                try
                 {
-                    // Initialize or clear the ImagesSmall collection
+                    // Clear existing images to avoid conflicts
                     product.ImagesSmall = new List<ProductImage>();
 
-                    foreach (var image in ImagesSmall)
+                    if (ImagesSmall != null && ImagesSmall.Count > 0)
                     {
-                        var name = Path.Combine(_he.WebRootPath + "/Images", Path.GetFileName(image.FileName));
-                        await image.CopyToAsync(new FileStream(name, FileMode.Create));
-                        var productImage = new ProductImage { ImagePath = "Images/" + image.FileName };
-                        product.ImagesSmall.Add(productImage); // Add the image to the product's collection
+                        foreach (var image in ImagesSmall)
+                        {
+                            try
+                            {
+                                // Construct the image path
+                                var imagePath = Path.Combine(_he.WebRootPath, "Images", Path.GetFileName(image.FileName));
+
+                                // Ensure the directory exists
+                                Directory.CreateDirectory(Path.GetDirectoryName(imagePath));
+
+                                // Copy the image to the destination path
+                                using (var fileStream = new FileStream(imagePath, FileMode.Create))
+                                {
+                                    await image.CopyToAsync(fileStream);
+                                }
+
+                                // Add the image to the product's collection
+                                product.ImagesSmall.Add(new ProductImage { ImagePath = "Images/" + image.FileName });
+                            }
+                            catch (Exception ex)
+                            {
+                                // Log any exceptions that occur while copying images
+                                Console.WriteLine($"Error copying image: {ex.Message}");
+                            }
+                        }
                     }
-                }
 
-                // Check if there are any images in ImagesSmall collection
-                if (product.ImagesSmall != null && product.ImagesSmall.Any())
+                    // Check if there are any images in ImagesSmall collection
+                    if (product.ImagesSmall != null && product.ImagesSmall.Any())
+                    {
+                        // Set the Image property to the path of the first image
+                        product.Image = product.ImagesSmall.First().ImagePath;
+                    }
+
+                    // Update other product details as needed
+                    _db.Products.Update(product);
+                    await _db.SaveChangesAsync();
+                    TempData["save"] = "Product has been updated";
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
                 {
-                    // Set the Image property to the path of the first image
-                    product.Image = product.ImagesSmall.First().ImagePath;
+                    // Log any unexpected exceptions
+                    Console.WriteLine($"Error editing product: {ex.Message}");
+                    TempData["error"] = "An unexpected error occurred while editing the product.";
                 }
-
-                // Update other product details as needed
-                _db.Products.Update(product);
-                await _db.SaveChangesAsync();
-                TempData["save"] = "Product has been updated";
-                return RedirectToAction(nameof(Index));
             }
 
             // If ModelState is not valid, return the view with the product object
@@ -185,6 +225,7 @@ namespace OnlineShop.Areas.Admin.Controllers
             ViewData["TagId"] = new SelectList(_db.SpecialTag.ToList(), "Id", "Name");
             return View(product);
         }
+
 
 
 
